@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer() {
+export default function Footer() {
   return (
     <div>
       <h3 className="text-3xl font-bold text-red-800 underline">
@@ -8,6 +8,4 @@ function Footer() {
       </h3>
     </div>
   );
-}
-
-export default Footer;
+};
