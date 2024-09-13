@@ -1,13 +1,15 @@
 
 import HomeFirstSection from "@/component/HomeFirstSection";
-import Slider from "@/component/Slider";
+import PostCSblogList from "@/component/PostCS";
+import SliderCOM from "@/component/SliderCS";
 import React from "react";
 
 export default function page() {
   return (
     <div className="mx-4">
       <HomeFirstSection />
-      <Slider />
+      <SliderCOM />
+      <PostCSblogList />
     </div>
   );
-};
+}
