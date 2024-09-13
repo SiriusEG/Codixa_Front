@@ -1,15 +1,15 @@
-import Footer from "@/component/Footer";
-import Header from "@/component/Header";
-import Slider from "@/component/Slider";
+
+import HomeFirstSection from "@/component/HomeFirstSection";
+import PostCSblogList from "@/component/PostCS";
+import SliderCOM from "@/component/SliderCS";
 import React from "react";
 
 export default function page() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold ">Hello world!</h1>
-      <Header />
-      <Slider />
-      <Footer />
+    <div className="mx-4">
+      <HomeFirstSection />
+      <SliderCOM />
+      <PostCSblogList />
     </div>
   );
-};
+}
