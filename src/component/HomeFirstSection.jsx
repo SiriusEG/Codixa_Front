@@ -3,7 +3,7 @@ import React from "react";
 
 function HomeFirstSection() {
   return (
-    <section className="bg-primary/20 grid grid-cols-1 md:grid-cols-2 rounded-lg gap-8 px-6 py-12 md:px-12 md:py-20">
+    <section className="bg-primary/20 grid grid-cols-1 lg:grid-cols-2 rounded-lg text-center md:text-start gap-12 px-6 py-12 md:px-12 md:py-20">
       <div className="flex flex-col items-start justify-center gap-6">
         <h4 className="text-xl md:text-2xl text-gray-700">
           By Themadbrains in{" "}
@@ -21,16 +21,18 @@ function HomeFirstSection() {
         </p>
       </div>
 
-      <div className="relative flex justify-center  items-center">
-        <div className="absolute bg-transparent rounded-full border-4 border-primary -top-6 right-0 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
-        <div className="absolute bg-transparent rounded-full border-4 border-primary -top-4 right-8 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
-        <Image
-          src="/home-first-sec.png"
-          alt="first-sec-image"
-          width={1500}
-          height={1500}
-          className="relative z-10 w-[180px] h-[180px] md:w-[400px] md:h-[350px] rounded-lg object-cover"
-        />
+      <div className=" flex justify-center lg:justify-end  items-center">
+        <div className="relative">
+          <div className="absolute bg-transparent rounded-full border-4 border-primary -top-6 -right-0 md:right-0 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
+          <div className="absolute bg-transparent rounded-full border-4 border-primary -top-6 -right-8 md:right-8 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
+          <Image
+            src="/home-first-sec.png"
+            alt="first-sec-image"
+            width={1500}
+            height={1500}
+            className="relative z-10 w-[180px] h-[180px] md:w-[400px] md:h-[350px] rounded-lg object-cover"
+          />
+        </div>
       </div>
     </section>
   );

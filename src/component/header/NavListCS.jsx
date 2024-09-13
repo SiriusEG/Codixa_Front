@@ -1,17 +1,15 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
 function NavListCS() {
-    const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
-    <>
-
-    <nav aria-label="Global" >
-      <ul className="flex items-center gap-6 text-sm">
+    <nav aria-label="Global">
+      <ul className="flex items-center gap-6 text-sm flex-col lg:flex-row">
         <li>
           <Link
             href="/"
@@ -68,24 +66,7 @@ function NavListCS() {
         </li>
       </ul>
     </nav>
-
-<div className="sm:flex sm:gap-4">
-<Link
-  className="hidden rounded-md text-sm bg-gray-100 px-3 py-1.5  font-semibold text-primary transition hover:text-secondary sm:block"
-  href="/login"
->
-  Login
-</Link>
-
-<Link
-  className="block rounded-md text-sm bg-primary px-3 py-1.5  font-semibold text-white transition hover:bg-secondary"
-  href="/register"
->
-  Create free account
-</Link>
-</div>
-</>
-  )
+  );
 }
 
-export default NavListCS
+export default NavListCS;
