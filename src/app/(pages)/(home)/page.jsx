@@ -1,4 +1,3 @@
-// import CourseShowCS from "@/app/(pages)/(home)/courseShowCS";
 import HomeFirstSection from "@/app/(pages)/(home)/HomeFirstSection";
 import PostCSblogList from "@/app/(pages)/(home)/PostCS";
 import SliderCOM from "@/app/(pages)/(home)/SliderCS";
@@ -11,7 +10,6 @@ export default function Page() {
       <HomeFirstSection />
       <SliderCOM />
       <PostCSblogList />
-      {/* <CourseShowCS /> */}
       <CoursesSec />
     </div>
   );

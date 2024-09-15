@@ -1,13 +1,12 @@
 import React from "react";
 import SocialLinks from "./socialLinks";
-// import "./footer.css";
 import LeftFooter from "./leftFooter";
 import Logo from "../logo";
 
 export default function Footer() {
   return (
     <footer className="bg-primary-100">
-      <div className="container py-20 flex flex-col gap-16 *:w-full">
+      <div className="container py-12 flex flex-col gap-8 *:w-full">
         <div className="flex items-start justify-around m-lg:flex-col">
           <div className="flex items-start justify-around gap-6 m-lg:w-full m-lg:mb-12">
             <Logo className="w-24" />
