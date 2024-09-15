@@ -43,14 +43,14 @@ const CourseShowCS = () => {
         {courses.slice(0, 2).map((course) => (
           <div
             key={course.id}
-            className="bg-white flex flex-row  border-primary border-[1px] rounded-2xl overflow-hidden  transition-transform transform  relative"
+            className="bg-white shadow-lg flex flex-row  rounded-2xl overflow-hidden  transition-transform transform  relative"
           >
             <div className="relative">
               <img
                 src={course.image}
                 alt={course.title}
                 className="w-[600px] h-[300px] object-cover rounded-r-3xl rounded-l-2xl"
-                style={{ borderTop: "2px solid #27131385" }}
+                style={{ borderTop: "3px solid #27131385" }}
               />
             </div>
             <div className="p-4">
@@ -75,7 +75,7 @@ const CourseShowCS = () => {
       </div>
 
       {/* Right column: shows one course */}
-      <div className="flex w-2/3  border-primary border-[1px] rounded-xl">
+      <div className="flex w-2/3  rounded-xl">
         <div
           key={courses[2].id}
           className="bg-white shadow-lg rounded-[10px] overflow-hidden pb-4 transition-transform transform  hover:shadow-xl duration-500 relative"
@@ -85,6 +85,7 @@ const CourseShowCS = () => {
               src={courses[2].image}
               alt={courses[2].title}
               className="w-full h-[300px] object-cover rounded-b-3xl"
+              style={{ borderTop: "3px solid #27131385" }}
             />
           </div>
           <div className="p-4">
