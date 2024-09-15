@@ -4,6 +4,12 @@
 /* Slick Carousel */
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
-.hovringFooter {
-  @apply hover:text-primary hover:text-[15px] transition-all duration-300 ease-in-out cursor-pointer hover:font-semibold;
+
+.footer-badge {
+  @apply flex items-center gap-2;
+
+  &::after {
+    content: attr(data-badge) !important;
+    @apply bg-white text-primary-100 py-1 px-2 rounded-2xl text-xs font-medium;
+  }
 }
