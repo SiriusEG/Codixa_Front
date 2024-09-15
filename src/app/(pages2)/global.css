@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Slick Carousel */
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+.hovringFooter {
+  @apply hover:text-primary hover:scale-105 transition delay-100 cursor-pointer;
+}
