@@ -1,4 +1,4 @@
-
+import CourseShowCS from "@/component/courseShowCS";
 import HomeFirstSection from "@/component/HomeFirstSection";
 import PostCSblogList from "@/component/PostCS";
 import SliderCOM from "@/component/SliderCS";
@@ -10,6 +10,7 @@ export default function page() {
       <HomeFirstSection />
       <SliderCOM />
       <PostCSblogList />
+      <CourseShowCS />
     </div>
   );
 }
