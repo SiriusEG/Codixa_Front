@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const FormComponent = ({ isLogin }) => {
+const FormComponent = ({ setIsLogin, isLogin }) => {
   const [show, setshow] = useState(false);
   const showpass = () => {
     setshow(!show);
@@ -12,12 +12,16 @@ const FormComponent = ({ isLogin }) => {
   const showpass2 = () => {
     setshow2(!show2);
   };
+  const haveaccount = () => {
+    setIsLogin(true);
+  };
+
   return (
     <div className="w-full max-w-sm">
       {isLogin ? (
         // Login form
         <form className="bg-white rounded px-8 pt-6 pb-8 mb-4">
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               className="block font-semibold ml-[-10px] text-black text-sm  mb-3"
               htmlFor="username"
@@ -25,13 +29,13 @@ const FormComponent = ({ isLogin }) => {
               Username
             </label>
             <input
-              className="shadow appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-4 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
+              className=" appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
               id="username"
               type="text"
               placeholder=" username"
             />
           </div>
-          <div className="mb-6 relative">
+          <div className="mb-3 relative">
             <label
               className="block font-semibold ml-[-10px] text-black text-sm  mb-3"
               htmlFor="password"
@@ -39,39 +43,39 @@ const FormComponent = ({ isLogin }) => {
               Password
             </label>
             <input
-              className="shadow appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-4 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
+              className=" appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
               id="password"
               type={show2 ? "text" : "password"}
               placeholder="password"
             />
             {show2 ? (
               <FaEye
-                className="right-0 absolute w-[49px] bottom-[25px] cursor-pointer"
+                className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
                 onClick={showpass2}
               />
             ) : (
               <FaEyeSlash
-                className="right-0 absolute w-[49px] bottom-[25px] cursor-pointer"
+                className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
                 onClick={showpass2}
               />
             )}
           </div>
-          <div className=" flex  justify-between mt-[-30px] mb-7">
+          <div className=" flex  justify-between mt-[-5%] mb-7">
             <div className=" flex items-center gap-1">
               <input type="checkbox" name="Remember" id="remember" />
               <label
-                className="text-gray-600 text-[12px] hover:text-gray-900"
+                className="text-gray-600 text-[10px] hover:text-gray-900"
                 htmlFor="remember"
               >
-                Remember me !{" "}
+                Remember me!{" "}
               </label>
             </div>
-            <a href="#" className=" underline text-[12px]  text-cyan-600">
+            <a href="#" className="  text-[10px]  text-cyan-600">
               {" "}
               Forget Password?
             </a>
           </div>
-          <div className="flex justify-end">
+          <div className="flex  justify-center">
             <button
               className="bg-primary  w-[150px]  text-white font-semibold py-2 px-5 rounded-3xl outline-none focus:shadow-outline"
               type="submit"
@@ -91,7 +95,7 @@ const FormComponent = ({ isLogin }) => {
               Username
             </label>
             <input
-              className="shadow appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-4 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
+              className=" appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
               id="username"
               type="text"
               placeholder="Enter your username"
@@ -105,13 +109,13 @@ const FormComponent = ({ isLogin }) => {
               Email
             </label>
             <input
-              className="shadow appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-4 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
+              className=" appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
               id="email"
               type="email"
               placeholder="Enter your email"
             />
           </div>
-          <div className="mb-6 relative">
+          <div className="mb-4 relative">
             <label
               className="block font-semibold ml-[-10px] text-black text-sm  mb-3"
               htmlFor="password"
@@ -119,19 +123,18 @@ const FormComponent = ({ isLogin }) => {
               Password
             </label>
             <input
-              className="shadow appearance-none  placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-4 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-              id="password"
+              className=" appearance-none placeholder:opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
               type={show ? "text" : "password"}
               placeholder="password"
             />
             {show ? (
               <FaEye
-                className="right-0 absolute w-[49px] bottom-[25px] cursor-pointer"
+                className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
                 onClick={showpass}
               />
             ) : (
               <FaEyeSlash
-                className="right-0 absolute w-[49px] bottom-[25px] cursor-pointer"
+                className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
                 onClick={showpass}
               />
             )}
@@ -151,27 +154,30 @@ const FormComponent = ({ isLogin }) => {
               placeholder="password"
             />
           </div> */}
-          <div className=" flex  justify-between mt-[-30px] mb-7">
+          <div className=" flex justify-between mt-[-5%] mb-7">
             <div className=" flex items-center gap-1">
               <input type="checkbox" name="Remember" id="remember" />
               <label
-                className="text-gray-600 text-[12px] hover:text-gray-900"
+                className="text-gray-600 text-[10px] hover:text-gray-900"
                 htmlFor="remember"
               >
-                Remember me !{" "}
+                Remember me!{" "}
               </label>
             </div>
-            <a href="#" className=" underline text-[12px]  text-cyan-600">
+            <a
+              className="  text-[10px]   cursor-pointer text-cyan-600"
+              onClick={haveaccount}
+            >
               {" "}
-              Have Account?
+              have Account?
             </a>
           </div>
-          <div className="flex justify-end">
+          <div className="flex  justify-center">
             <button
               className="bg-primary  w-[150px]  text-white font-semibold py-2 px-5 rounded-3xl outline-none focus:shadow-outline"
               type="submit"
             >
-              Register
+              Rgister
             </button>
           </div>
         </form>

@@ -2,13 +2,11 @@ import React from "react";
 
 const LoginRegisterSwitch = ({ isLogin, setIsLogin, toggleSwitch }) => {
   return (
-    <div className="relative flex items-center justify-center bg-primary rounded-full w-64 h-12 p-1 cursor-pointer">
+    <div className="relative flex items-center justify-center bg-primary rounded-full w-72 h-12 p-1 cursor-pointer">
       {/* Background bar */}
       <div
-        className={`absolute top-1 left-1 h-10 w-[48%] rounded-full transition-transform duration-300 ${
-          isLogin
-            ? "translate-x-0 bg-secondary"
-            : "translate-x-[100%] bg-secondary"
+        className={`absolute h-9 w-[45%] rounded-full transition-all duration-500 ease-in-out bg-secondary ${
+          isLogin ? "left-[5%]" : "right-[5%]"
         }`}
         onClick={toggleSwitch}
       />
@@ -26,7 +24,7 @@ const LoginRegisterSwitch = ({ isLogin, setIsLogin, toggleSwitch }) => {
       {/* Register Text */}
       <div
         onClick={() => setIsLogin(false)}
-        className={`z-10 w-1/2 text-center text-white  ${
+        className={`z-10 w-1/2 text-center text-white ${
           isLogin ? "opacity-90" : ""
         }`}
       >
