@@ -1,8 +1,9 @@
-import CourseShowCS from "@/app/(pages)/(home)/courseShowCS";
+// import CourseShowCS from "@/app/(pages)/(home)/courseShowCS";
 import HomeFirstSection from "@/app/(pages)/(home)/HomeFirstSection";
 import PostCSblogList from "@/app/(pages)/(home)/PostCS";
 import SliderCOM from "@/app/(pages)/(home)/SliderCS";
 import React from "react";
+import CoursesSec from "./courses-sec/coursesSec";
 
 export default function Page() {
   return (
@@ -10,7 +11,8 @@ export default function Page() {
       <HomeFirstSection />
       <SliderCOM />
       <PostCSblogList />
-      <CourseShowCS />
+      {/* <CourseShowCS /> */}
+      <CoursesSec />
     </div>
   );
 }
