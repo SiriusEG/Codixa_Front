@@ -4,7 +4,6 @@ import {
   FaGithub,
   FaDribbble,
   FaFacebook,
-  FaDribbbleSquare,
 } from "react-icons/fa";
 
 const Footer = () => {
