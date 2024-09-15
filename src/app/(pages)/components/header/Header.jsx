@@ -26,14 +26,14 @@ export default function Header() {
         {/* login and signup */}
         <div className="flex items-center gap-1 sm:gap-4">
           <Link
-            className=" rounded-md text-sm bg-gray-100 px-1.5 md:px-3 py-1.5  font-semibold text-primary transition hover:text-secondary "
+            className=" rounded-md text-sm bg-gray-100 px-1.5 md:px-3 py-1.5  font-semibold text-primary transition hover:text-hoverPrimary "
             href="/login"
           >
             Login
           </Link>
 
           <Link
-            className="block rounded-md text-sm bg-primary px-1.5 md:px-3 py-1.5  font-semibold text-white transition hover:bg-secondary"
+            className="block rounded-md text-sm bg-primary px-1.5 md:px-3 py-1.5  font-semibold text-white transition hover:bg-hoverPrimary"
             href="/register"
           >
             Create free account

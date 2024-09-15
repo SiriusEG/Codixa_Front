@@ -3,7 +3,7 @@ import React from "react";
 
 function HomeFirstSection() {
   return (
-    <section className="bg-primary/20 grid grid-cols-1 lg:grid-cols-2 rounded-lg text-center md:text-start gap-12 px-6 py-12 md:px-12 md:py-20">
+    <section className="bg-primaryBackground grid grid-cols-1 lg:grid-cols-2 rounded-lg text-center md:text-start gap-12 px-6 py-12 md:px-12 md:py-20">
       <div className="flex flex-col items-start justify-center gap-6">
         <h4 className="text-xl md:text-2xl text-gray-700">
           By Themadbrains in{" "}

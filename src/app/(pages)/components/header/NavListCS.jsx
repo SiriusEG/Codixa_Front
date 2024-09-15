@@ -15,7 +15,7 @@ function NavListCS() {
             href="/"
             className={`${
               pathname === "/" ? "text-primary" : "text-gray-500"
-            } transition hover:text-secondary font-semibold `}
+            } transition hover:text-hoverPrimary font-semibold `}
           >
             Home
           </Link>
@@ -26,7 +26,7 @@ function NavListCS() {
             href="/courses"
             className={`${
               pathname === "/courses" ? "text-primary" : "text-gray-500"
-            } transition hover:text-secondary font-semibold `}
+            } transition hover:text-hoverPrimary font-semibold `}
           >
             Courses
           </Link>
@@ -37,7 +37,7 @@ function NavListCS() {
             href="/aboutus"
             className={`${
               pathname === "/aboutus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-secondary font-semibold `}
+            } transition hover:text-hoverPrimary font-semibold `}
           >
             About us
           </Link>
@@ -48,7 +48,7 @@ function NavListCS() {
             href="/blog"
             className={`${
               pathname === "/blog" ? "text-primary" : "text-gray-500"
-            } transition hover:text-secondary font-semibold `}
+            } transition hover:text-hoverPrimary font-semibold `}
           >
             Blog
           </Link>
@@ -59,7 +59,7 @@ function NavListCS() {
             href="/contactus"
             className={`${
               pathname === "/contactus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-secondary font-semibold `}
+            } transition hover:text-hoverPrimary font-semibold `}
           >
             Contact us
           </Link>

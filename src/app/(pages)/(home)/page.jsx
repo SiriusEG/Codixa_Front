@@ -1,8 +1,7 @@
-
-import HomeFirstSection from "@/component/HomeFirstSection";
-import PostCSblogList from "@/component/PostCS";
-import SliderCOM from "@/component/SliderCS";
 import React from "react";
+import HomeFirstSection from "./components/HomeFirstSection";
+import SliderCOM from "./components/SliderCS";
+import PostCSblogList from "./components/PostCS";
 
 export default function page() {
   return (
