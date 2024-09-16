@@ -9,7 +9,8 @@
   @apply flex items-center gap-2;
 
   &::after {
+    @apply bg-white text-primary py-1 px-2 rounded-2xl text-xs font-medium;
     content: attr(data-badge) !important;
-    @apply bg-white text-primary-100 py-1 px-2 rounded-2xl text-xs font-medium;
+
   }
 }
