@@ -4,3 +4,12 @@
 /* Slick Carousel */
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
+
+.footer-badge {
+  @apply flex items-center gap-2;
+
+  &::after {
+    @apply bg-white text-primary py-1 px-2 rounded-2xl text-xs font-medium;
+    content: attr(data-badge) !important;
+  }
+}

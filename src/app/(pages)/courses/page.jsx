@@ -1,10 +1,10 @@
 import React from "react";
-import NextLesson from "./components/NextLesson";
-import TopCategory from "./components/TopCategory";
-import Recommended from "./components/Recommended";
-import OnlineCoaching from "./components/OnlineCoaching";
-import CoursesChoise from "./components/CoursesChoise";
-import MostViewing from "./components/MostViewing";
+import TopCategory from "./components/second-sec/TopCategory";
+import NextLesson from "./components/first-sec/NextLesson";
+import Recommended from "./components/third-sec/Recommended";
+import OnlineCoaching from "./components/fourth-sec/OnlineCoaching";
+import CoursesChoise from "./components/fifth-sec/CoursesChoise";
+import MostViewing from "./components/sixth-sec/MostViewing";
 
 function page() {
   return (

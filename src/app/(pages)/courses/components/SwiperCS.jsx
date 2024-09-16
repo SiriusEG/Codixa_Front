@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import "swiper/css";
-import UnCompletedCourseCard from "./UnCompletedCourseCard";
+import UnCompletedCourseCard from "./first-sec/UnCompletedCourseCard";
 
 //the object of cards type
 const cardsName = {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import SwiperCS from "./SwiperCS";
+import SwiperCS from "../SwiperCS";
 
 const dummyMyCourses = [
   {
