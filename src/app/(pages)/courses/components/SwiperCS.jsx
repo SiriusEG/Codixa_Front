@@ -5,13 +5,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import "swiper/css";
 import UnCompletedCourseCard from "./1-first-sec/UnCompletedCourseCard";
+import CourseCard from "./CourseCard";
 
 // Object for mapping component types
 const cardsName = {
   unCompletedCourse: UnCompletedCourseCard,
+  normalCourse: CourseCard,
 };
 
-function SwiperCS({ slides, componentName }) {
+function SwiperCS({ slides, componentName, hideBtns = false }) {
   const swiperRef = useRef(null); // Reference to control Swiper slides
   const [isBeginning, setIsBeginning] = useState(true); // Check if at beginning of slides
   const [isEnd, setIsEnd] = useState(false); // Check if at end of slides
@@ -54,13 +56,16 @@ function SwiperCS({ slides, componentName }) {
       </Swiper>
 
       {/* Control buttons below the slider */}
-      <div className="flex justify-end items-center gap-4 mt-4 me-4 md:me-10">
+      <div
+        style={{ display: hideBtns ? "none" : "flex" }}
+        className=" justify-end items-center gap-4 mt-4 me-4 md:me-10"
+      >
         <button
           onClick={() => swiperRef.current?.slidePrev()}
           className={`px-2 py-2  text-white rounded-[0.200rem] transition ${
             isBeginning
               ? "bg-gray-400 cursor-not-allowed"
-              : "hover:bg-hoverPrimary bg-primary"
+              : "hover:bg-primary-100 bg-primary"
           }`}
           disabled={isBeginning}
         >
@@ -71,7 +76,7 @@ function SwiperCS({ slides, componentName }) {
           className={`px-2 py-2  text-white rounded-[0.200rem] transition ${
             isEnd
               ? "bg-gray-400 cursor-not-allowed"
-              : "hover:bg-hoverPrimary bg-primary"
+              : "hover:bg-primary-100 bg-primary"
           }`}
           disabled={isEnd}
         >

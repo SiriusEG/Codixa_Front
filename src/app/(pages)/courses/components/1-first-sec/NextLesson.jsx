@@ -71,7 +71,7 @@ function NextLesson() {
 
         <Link
           href="/courseshistory"
-          className="text-primary hover:text-hoverPrimary"
+          className="text-primary hover:text-primary-100"
         >
           View history{" "}
         </Link>
