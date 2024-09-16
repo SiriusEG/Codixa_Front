@@ -34,20 +34,20 @@ const dummyData = [
 
 const PostCS = ({ post }) => {
   return (
-    <div className="bg-white shadow-xl rounded-lg overflow-hidden pb-4 pt-3 transition-transform transform hover:scale-102 hover:shadow-xl duration-500 w-[400px]">
-      <div className="relative w-full h-[250px]">
+    <div className="bg-white shadow-md rounded-lg overflow-hidden pb-4 pt-3 transition-trans form transform hover:scale-102 border-primary border-[1px] duration-500 w-[40rem]">
+      <div className="relative w-full h-[25rem]">
         <img
           src={post.image}
           alt={post.title}
-          className="absolute top-0 left-0 w-full h-full object-cover rounded-3xl p-2 mb-2 transition-all duration-300 ease-in-out hover:opacity-90"
-          style={{ borderRadius: "6rem" }}
+          className="absolute top-0 left-0 w-full h-full object-cover  p-5 mb-2"
+          style={{ borderRadius: "4rem" }}
         />
       </div>
 
       <div className="p-4">
         <h2 className="text-2xl font-bold mb-3 text-center">{post.title}</h2>
 
-        <div className="flex items-center space-x-3 mb-3 mt-3">
+        <div className="flex items-center space-x-3 mb-10 mt-3">
           <img
             src={post.publisherAvatar}
             alt={post.publisherName}
@@ -66,7 +66,7 @@ const PostCS = ({ post }) => {
         <div className="flex items-center justify-between text-gray-600 pt-3 pb-4">
           <a
             href={post.readMoreHref}
-            className="text-blue-500 hover:underline hover:text-blue-600 transition-colors duration-300"
+            className="text-blue-600   transition-colors hover:scale-[105%] duration-600 "
           >
             Read More
           </a>
@@ -82,7 +82,7 @@ const PostCS = ({ post }) => {
 
 const PostCSblogList = () => {
   return (
-    <div className="bg-[#f6f5f530] p-0 flex flex-row flex-wrap gap-4 justify-center items-center py-8">
+    <div className=" p-0 flex flex-row flex-wrap gap-4 justify-center items-center py-8">
       {dummyData.map((post) => (
         <PostCS key={post.id} post={post} />
       ))}

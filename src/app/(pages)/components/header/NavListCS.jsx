@@ -9,7 +9,7 @@ function NavListCS() {
 
   return (
     <nav aria-label="Global">
-      <ul className="flex items-center gap-6 text-sm flex-col lg:flex-row">
+      <ul className="flex items-center gap-6 text-md flex-col lg:flex-row">
         <li>
           <Link
             href="/"

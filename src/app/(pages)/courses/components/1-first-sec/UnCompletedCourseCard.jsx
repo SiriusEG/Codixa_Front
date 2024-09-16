@@ -3,8 +3,12 @@ import React from "react";
 
 function UnCompletedCourseCard({ element: course }) {
   return (
-    <div className="max-w-sm min-w-[300px] flex flex-col gap-4 p-6  rounded-xl shadow-xl bg-white ">
-      <img src={course.img} alt={`${course.name} image`} className="w-full" />
+    <div className="max-w-sm min-w-[444px] flex flex-col gap-4 p-6  rounded-xl shadow-xl bg-white ">
+      <img
+        src={course.img}
+        alt={`${course.name} image`}
+        className="w-[400px] h-[250px] rounded-2xl"
+      />
       <Link href="#">
         <h5 className="mb-2 text-sm font-bold tracking-tight text-gray-900 ">
           {course.name}

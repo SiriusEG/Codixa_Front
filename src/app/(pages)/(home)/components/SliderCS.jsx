@@ -3,14 +3,15 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Image from "next/image";
 
 const images = [
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+  "/imgs/study place.jpg",
+  "/imgs/im2.jpg",
+  "/imgs/im4.jpg",
+  "/imgs/im2.jpg",
+  "/imgs/im4.jpg",
+  "/imgs/study place.jpg",
 ];
 
 const text = ["UI", "React", "PHP", "JavaScript", "CSS", "PHP", "JavaScript"];
@@ -18,16 +19,16 @@ const text = ["UI", "React", "PHP", "JavaScript", "CSS", "PHP", "JavaScript"];
 const SliderCOM = () => {
   const settings = {
     infinite: true,
-    speed: 500,
+    speed: 900,
     slidesToShow: 3, // Show 3 images at a time
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     centerMode: true,
   };
 
   return (
-    <div className="relative max-w-6xl mx-auto p-3 rounded-lg">
+    <div className="relative w-[100%] p-3 rounded-lg">
       <h3 className="text-primary font-bold text-2xl p-3 ml-2 mb-3">
         Reading Blog List
       </h3>
@@ -35,14 +36,18 @@ const SliderCOM = () => {
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative px-2" // Adds horizontal padding between images
+            style={{ outline: "none" }}
+            className="relative flex w-[321.52px] flex-row justify-cente"
           >
-            <img
+            <Image
               src={image}
               alt={`Slide ${index}`}
-              className="w-full h-auto rounded-lg" // Apply border-radius
+              width={321.52}
+              height={327}
+              style={{ outline: "none", width: "321.52px", height: "327px" }}
+              className=" rounded-2xl mx-auto " // Apply border-radius
             />
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white p-2 rounded">
+            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white opacity-70  text-black py-3 px-[5rem] rounded-3xl">
               {text[index]}
             </div>
           </div>

@@ -6,7 +6,7 @@ const dummyMyCourses = [
   {
     id: 0,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/im2.jpg",
     owner: "vira",
     ownerImg:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
@@ -16,47 +16,43 @@ const dummyMyCourses = [
   {
     id: 1,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/im4.jpg",
     owner: "vira",
-    ownerImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    ownerImg: "/imgs/study place.jpg",
     totalLessons: 7,
     completedLessons: 5,
   },
   {
     id: 2,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/study place.jpg",
     owner: "vira",
-    ownerImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    ownerImg: "/imgs/study place.jpg",
     totalLessons: 7,
     completedLessons: 5,
   },
   {
     id: 3,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/im2.jpg",
     owner: "vira",
-    ownerImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    ownerImg: "/imgs/study place.jpg",
     totalLessons: 7,
     completedLessons: 5,
   },
   {
     id: 4,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/im4.jpg",
     owner: "vira",
-    ownerImg:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    ownerImg: "/imgs/study place.jpg",
     totalLessons: 7,
     completedLessons: 5,
   },
   {
     id: 5,
     name: "AWS certified solutions architect",
-    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
+    img: "/imgs/study place.jpg",
     owner: "vira",
     ownerImg:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNxwXzJPUqr_4HCGrEvuKYFCzvs6MVyThyzA&s",
@@ -67,9 +63,9 @@ const dummyMyCourses = [
 
 function NextLesson() {
   return (
-    <section className="bg-secondaryBackground flex flex-col gap-3 py-6">
+    <section className="bg-primary-background flex flex-col gap-3 py-6">
       <div className="flex justify-between px-2 md:px-6 lg:px-8">
-        <h2 className="text-md lg:text-xl font-semibold">
+        <h2 className="text-2xl lg:text-xl font-semibold">
           Welcome back, ready for your next lesson?
         </h2>
 
