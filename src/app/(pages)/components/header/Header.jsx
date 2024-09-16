@@ -15,7 +15,7 @@ export default function Header() {
           <Image src="/logo.gif" alt="logo" width={50} height={50} />
         </Link>
 
-        <div className="hidden lg:flex flex-1 justify-between items-center ">
+        <div className="hidden lg:flex flex-1 justify-around gap-4 items-center ">
           {/* search bar */}
           <Search />
 
@@ -26,14 +26,14 @@ export default function Header() {
         {/* login and signup */}
         <div className="flex items-center gap-1 sm:gap-4">
           <Link
-            className=" rounded-md text-sm bg-gray-100 px-1.5 md:px-3 py-1.5  font-semibold text-primary transition hover:text-hoverPrimary "
+            className=" rounded-md text-sm bg-gray-100 px-3  py-2.5  font-semibold text-primary transition hover:text-hoverPrimary "
             href="/registration"
           >
             Login
           </Link>
 
           <Link
-            className="block rounded-md text-sm bg-primary px-1.5 md:px-3 py-1.5  font-semibold text-white transition hover:bg-hoverPrimary"
+            className="block rounded-md text-base bg-primary px-3  py-2.5  font-semibold text-white transition hover:bg-hoverPrimary"
             href="/registration"
           >
             Create free account

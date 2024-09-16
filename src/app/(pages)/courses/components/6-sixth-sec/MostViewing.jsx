@@ -81,7 +81,7 @@ const dummyCourses = [
 
 function MostViewing() {
   return (
-    <section className="bg-primary-background flex flex-col gap-3 py-6 pb-16 mb-20">
+    <section className="bg-primary-background flex flex-col gap-3 py-6 ">
       <div className="flex justify-between px-2 md:px-6 lg:px-8">
         <h2 className="text-2xl lg:text-xl font-semibold">
           Student are viewing
