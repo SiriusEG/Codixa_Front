@@ -12,7 +12,7 @@ function CollapseCS() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="block rounded bg-gray-100 p-1.5 text-gray-600 hover:text-gray-600/75 lg:hidden"
+        className="block rounded bg-gray-100 p-3 text-gray-600 hover:text-gray-600/75 lg:hidden"
       >
         <FaX className={!isOpen && "hidden"} />
         <IoMenu className={isOpen && "hidden"} />
