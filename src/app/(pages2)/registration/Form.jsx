@@ -20,7 +20,7 @@ const FormComponent = ({ setIsLogin, isLogin }) => {
     <div className="w-full max-w-sm">
       {isLogin ? (
         // Login form
-        <form className="bg-white rounded px-8 pt-6 pb-8 mb-4">
+        <form className=" rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-3">
             <label
               className="block font-semibold ml-[-10px] text-black text-sm  mb-3"
