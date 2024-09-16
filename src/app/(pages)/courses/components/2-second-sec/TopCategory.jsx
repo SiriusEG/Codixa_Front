@@ -55,7 +55,10 @@ function TopCategory() {
       <h2 className="text-md lg:text-xl font-semibold self-start">
         Choose favourite course from top category
       </h2>
-      <div className="flex flex-wrap flex-row items-center justify-center py-6 gap-7">
+      <div
+        style={{ padding: "50px 100px" }}
+        className="flex flex-wrap flex-row items-center justify-center py-6 px-10 gap-7"
+      >
         {dummyCategories.map((category, i) => (
           <CategoryCard category={category} key={i} />
         ))}
