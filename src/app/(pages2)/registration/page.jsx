@@ -51,7 +51,10 @@ function Page() {
               isLogin={isLogin}
               toggleSwitch={toggleSwitch}
             />
-            <p className=" font-[300] text-left ml-[-2.5rem] mt-10 w-[80%]  text-sm text-secondary">
+            <p
+              style={{ marginLeft: "-15px" }}
+              className=" font-[300] text-left mt-10 w-[80%]  text-[11px] text-secondary"
+            >
               {" "}
               Continuous learning through micro-courses or certifications keeps
               skills relevant, driving talent development in rapidly evolving
