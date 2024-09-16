@@ -7,11 +7,16 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      primary: ["Poppins"],
+      sec: ["Roboto"],
+    },
     extend: {
       colors: {
         primary: {
           DEFAULT: "#20B486",
           100: "#01623c",
+          background: "#F0F6F5",
         },
         secondary: "#177658",
         gray: {
@@ -21,6 +26,7 @@ module.exports = {
           10: "#fdf2fa",
         },
       },
+
       transitionDuration: {
         DEFAULT: "200ms",
       },

@@ -6,27 +6,37 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import "swiper/css";
 import UnCompletedCourseCard from "./1-first-sec/UnCompletedCourseCard";
 
-//the object of cards type
+// Object for mapping component types
 const cardsName = {
   unCompletedCourse: UnCompletedCourseCard,
 };
 
 function SwiperCS({ slides, componentName }) {
-  const swiperRef = useRef(null); //catch the swiper to control the slide in buttons
-
-  const [isBeginning, setIsBeginning] = useState(true); //check if the slider in the begging to disable the button
-  const [isEnd, setIsEnd] = useState(false); //check if the slider in the end to disable the button
+  const swiperRef = useRef(null); // Reference to control Swiper slides
+  const [isBeginning, setIsBeginning] = useState(true); // Check if at beginning of slides
+  const [isEnd, setIsEnd] = useState(false); // Check if at end of slides
 
   const SelectedComponent = cardsName[componentName];
 
   return (
-    <div className="relative w-full  mx-auto">
+    <div className="relative w-full mx-auto">
       {/* Swiper slider */}
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        slidesPerView="auto"
+        slidesPerView={1} // Default for small screens
         spaceBetween={20}
         loop={false}
+        breakpoints={{
+          640: {
+            slidesPerView: 1,
+          },
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: 3,
+          },
+        }}
         onSlideChange={(swiper) => {
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);

@@ -4,7 +4,7 @@ import "./global.css";
 // import Footer from "@/app/(pages)/component/Footer";
 import Header from "@/app/(pages)/components/header/Header";
 import Footer from "./components/footer/Footer";
- 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,12 +16,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="overflow-x-hidden">
+      <body className="overflow-x-hidden font-primary">
         <Header />
         {children}
         <Footer />
       </body>
     </html>
   );
-
-};
+}
