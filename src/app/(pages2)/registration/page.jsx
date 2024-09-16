@@ -53,7 +53,7 @@ function Page() {
             />
             <p
               style={{ marginLeft: "-15px" }}
-              className=" font-[300] text-left mt-10 w-[80%]  text-[11px] text-secondary"
+              className=" font-[300] text-left mt-10 w-[80%]  text-[.7rem] text-secondary"
             >
               {" "}
               Continuous learning through micro-courses or certifications keeps
