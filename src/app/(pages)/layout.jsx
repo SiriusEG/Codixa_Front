@@ -3,6 +3,7 @@ import "./global.css";
 // import Footer from "@/app/(pages)/component/Footer";
 import Header from "@/app/(pages)/components/header/Header";
 import Footer from "./components/footer/Footer";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -21,4 +22,5 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+
+};
