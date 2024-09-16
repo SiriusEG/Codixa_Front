@@ -52,7 +52,7 @@ function Page() {
               toggleSwitch={toggleSwitch}
             />
             <p
-              style={{ marginLeft: "-15px" }}
+              style={{ marginLeft: "-15px" ,textAlign: 'justify',}}
               className=" font-[300] text-left mt-10 w-[80%]  text-[.7rem] text-secondary"
             >
               {" "}
