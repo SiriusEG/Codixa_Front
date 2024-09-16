@@ -1,21 +1,16 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { CiSearch } from "react-icons/ci";
 import NavListCS from "./NavListCS";
 import { IoMenu } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa";
 import CollapseCS from './CollapseCS';
+import Logo from "../logo";
 
 export default function Header() {
   return (
     <header className="bg-white">
       <div className="mx-auto flex h-24 w-screen items-center gap-6 px-4 sm:px-6 lg:px-8 ">
-        {/* logo */}
-        <Link className=" text-primary" href="/">
-          <span className="sr-only">Home</span>
-          <Image src="/logo.gif" alt="logo" width={50} height={50} />
-        </Link>
+        <Logo width={50} height={50} className="size-12" />
 
         {/* search bar */}
         <div className="relative">
