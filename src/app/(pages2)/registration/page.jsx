@@ -39,10 +39,10 @@ function Page() {
         </div>
         <div className=" flex flex-col items-center justify-center w-1/2 ">
           {/* upper area  */}
-          <div className="flex flex-col items-center">
-            <h4 className="text-2xl font-semibold text-center  mb-5">
+          <div className="flex w-96 flex-col items-center justify-center">
+            <h4 className="text-xl text-center  mb-5">
               Welcome to{" "}
-              <span className="text-3xl ml-2 font-bold text-center text-primary">
+              <span className="text-2xl font-bold text-center text-primary">
                 Codixa
               </span>
             </h4>
@@ -51,14 +51,14 @@ function Page() {
               isLogin={isLogin}
               toggleSwitch={toggleSwitch}
             />
-            <p className=" font-thin text-left mt-10 w-96 text-sm text-secondary">
+            <p className=" font-thin text-left ml-4 mt-10  text-sm text-secondary">
               {" "}
               Continuous learning through micro-courses or certifications keeps
               skills relevant, driving talent development in rapidly evolving
               industries.{" "}
             </p>
             {/* Form area */}
-            <FormComponent isLogin={isLogin} />
+            <FormComponent setIsLogin={setIsLogin} isLogin={isLogin} />
           </div>
         </div>
       </div>
