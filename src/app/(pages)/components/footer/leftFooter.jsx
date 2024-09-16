@@ -1,9 +1,9 @@
-import React from 'react';
-import FooterList from './footerList';
+import React from "react";
+import FooterList from "./footerList";
 
 export default function LeftFooter() {
   return (
-    <div className="flex items-start justify-around gap-8 w-2/5 m-lg:w-full flex-wrap ph:gap-y-12">
+    <div className="flex items-start justify-center gap-8 w-2/5 m-lg:w-full flex-wrap ph:gap-y-12">
       <FooterList
         title="product"
         list={[
@@ -43,4 +43,4 @@ export default function LeftFooter() {
       />
     </div>
   );
-};
+}
