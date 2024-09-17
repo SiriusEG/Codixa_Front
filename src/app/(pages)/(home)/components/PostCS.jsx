@@ -34,7 +34,7 @@ const dummyData = [
 
 const PostCS = ({ post }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg overflow-hidden pb-4 pt-3 transition-trans form transform hover:scale-102 border-primary border-[1px] duration-500 w-[40rem]">
+    <div className="bg-white shadow-md rounded-lg overflow-hidden pb-4 pt-3 transition-trans form transform hover:scale-102  border-[1px] duration-500 w-[40rem]">
       <div className="relative w-full h-[25rem]">
         <img
           src={post.image}
@@ -51,7 +51,7 @@ const PostCS = ({ post }) => {
           <img
             src={post.publisherAvatar}
             alt={post.publisherName}
-            className="w-12 h-12 rounded-full border-2 border-primary"
+            className="w-12 h-12 rounded-full border-2 border-white"
           />
           <div>
             <p className="text-lg font-semibold">{post.publisherName}</p>

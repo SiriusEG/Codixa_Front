@@ -81,9 +81,9 @@ const dummyCourses = [
 
 function CoursesChoise() {
   return (
-    <section className="bg-white flex flex-col gap-3 py-6">
+    <section className="bg-white flex flex-col gap-3 py-10">
       <div className="flex justify-between px-2 md:px-6 lg:px-8">
-        <h2 className="text-2xl lg:text-xl font-semibold">
+        <h2 className="text-3xl font-bold ml-5 self-center sm:self-start">
           Get choice of your course
         </h2>
 

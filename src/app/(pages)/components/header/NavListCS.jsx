@@ -7,59 +7,83 @@ import React from "react";
 function NavListCS() {
   const pathname = usePathname();
 
+  // Function to determine active class
+  const getActiveClass = (path) =>
+    pathname === path ? "text-primary bg-slate-200" : "text-gray-500";
+
   return (
-    <nav aria-label="Global">
-      <ul className="flex items-center gap-6 text-md flex-col lg:flex-row">
-        <li>
+    <nav aria-label="Global" className="w-full">
+      <ul className="flex w-full items-center gap-4 text-md flex-col justify-center lg:w-[40rem] lg:flex-row">
+        <li
+          className={`transition text-center hover:text-hoverPrimary rounded-lg py-2 px-1 font-normal w-[100%] ${getActiveClass(
+            "/"
+          )}`}
+        >
           <Link
             href="/"
-            className={`${
+            className={`transition  hover:text-hoverPrimary font-semibold py-2 px-1  w-[100%] ${
               pathname === "/" ? "text-primary" : "text-gray-500"
-            } transition hover:text-hoverPrimary font-semibold `}
+            }`}
           >
             Home
           </Link>
         </li>
 
-        <li>
+        <li
+          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
+            "/courses"
+          )}`}
+        >
           <Link
             href="/courses"
-            className={`${
+            className={`transition hover:text-hoverPrimary font-semibold ${
               pathname === "/courses" ? "text-primary" : "text-gray-500"
-            } transition hover:text-hoverPrimary font-semibold `}
+            }`}
           >
             Courses
           </Link>
         </li>
 
-        <li>
+        <li
+          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
+            "/aboutus"
+          )}`}
+        >
           <Link
             href="/aboutus"
-            className={`${
+            className={`transition lg:w-fit hover:text-hoverPrimary font-semibold ${
               pathname === "/aboutus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-hoverPrimary font-semibold `}
+            }`}
           >
             About us
           </Link>
         </li>
 
-        <li>
+        <li
+          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
+            "/blog"
+          )}`}
+        >
           <Link
             href="/blog"
-            className={`${
+            className={`transition hover:text-hoverPrimary font-semibold ${
               pathname === "/blog" ? "text-primary" : "text-gray-500"
-            } transition hover:text-hoverPrimary font-semibold `}
+            }`}
           >
             Blog
           </Link>
         </li>
 
-        <li>
+        <li
+          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
+            "/contactus"
+          )}`}
+        >
           <Link
             href="/contactus"
-            className={`${
+            className={`transition hover:text-hoverPrimary font-semibold ${
               pathname === "/contactus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-hoverPrimary font-semibold `}
+            }`}
           >
             Contact us
           </Link>
