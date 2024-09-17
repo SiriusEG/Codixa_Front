@@ -83,7 +83,7 @@ function Recommended() {
   return (
     <section className="bg-primary-background flex flex-col gap-3 py-6">
       <div className="flex justify-between px-2 md:px-6 lg:px-8">
-        <h2 className="text-2xl lg:text-xl font-semibold">
+        <h2 className="text-3xl font-bold ml-5 self-center sm:self-start">
           Recommended for you
         </h2>
 

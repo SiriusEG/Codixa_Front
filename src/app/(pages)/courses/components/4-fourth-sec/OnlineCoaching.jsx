@@ -3,7 +3,7 @@ import React from "react";
 function OnlineCoaching() {
   return (
     <section className="py-8  text-white text-center flex items-center justify-center">
-      <div className="px-6 md:px-10 lg:px-12 w-[80%] flex items-center flex-col justify-center gap-8 py-10 rounded-3xl bg-primary-100">
+      <div className="px-6 md:px-10 lg:px-12 w-[89%] flex items-center flex-col justify-center gap-8 py-[5rem] rounded-3xl bg-primary-100">
         <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold">
           Online coaching lessons for remote learning.
         </h3>
@@ -14,7 +14,7 @@ function OnlineCoaching() {
           sed do eiusmod tempor
         </p>
 
-        <button className="px-4 py-3 bg-primary hover:bg-secondary rounded-lg">
+        <button className="px-4 py-3 bg-primary rounded-lg">
           Start learning now
         </button>
       </div>

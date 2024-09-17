@@ -52,10 +52,10 @@ const dummyCategories = [
 function TopCategory() {
   return (
     <section className="bg-white flex flex-col gap-3 py-6 px-2 md:px-6 lg:px-8">
-      <h2 className="text-2xl lg:text-xl font-semibold self-center sm:self-start">
+      <h2 className="text-3xl font-bold ml-5 self-center sm:self-start">
         Choose favourite course from top category
       </h2>
-      <div className="flex flex-wrap flex-row items-center justify-center py-6  gap-x-[5%] xl:gap-x-[10%] px-4 ph:px-6 md:py-8 gap-y-10">
+      <div className="flex flex-wrap flex-row items-center justify-center py-6  gap-x-[5%] xl:gap-x-[7%] px-4 ph:px-6 md:py-8 gap-y-16">
         {dummyCategories.map((category, i) => (
           <CategoryCard category={category} key={i} />
         ))}

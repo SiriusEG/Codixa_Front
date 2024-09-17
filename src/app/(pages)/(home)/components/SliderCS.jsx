@@ -20,11 +20,27 @@ const SliderCOM = () => {
   const settings = {
     infinite: true,
     speed: 900,
-    slidesToShow: 3, // Show 3 images at a time
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
     centerMode: true,
+    responsive: [
+      {
+        breakpoint: 1024, // For tablet screens
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600, // For mobile screens
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
@@ -37,17 +53,17 @@ const SliderCOM = () => {
           <div
             key={index}
             style={{ outline: "none" }}
-            className="relative flex w-[321.52px] flex-row justify-cente"
+            className="relative flex w-[20rem] flex-row justify-center"
           >
             <Image
               src={image}
               alt={`Slide ${index}`}
               width={321.52}
               height={327}
-              style={{ outline: "none", width: "321.52px", height: "327px" }}
+              style={{ outline: "none", width: "20rem", height: "20rem" }}
               className=" rounded-2xl mx-auto " // Apply border-radius
             />
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-white opacity-70  text-black py-3 px-[5rem] rounded-3xl">
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white opacity-70  text-black py-3 px-[5rem] rounded-3xl">
               {text[index]}
             </div>
           </div>

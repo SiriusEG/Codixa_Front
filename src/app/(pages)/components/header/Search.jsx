@@ -10,7 +10,7 @@ function Search() {
         type="text"
         id="Search"
         placeholder="Want to learn?"
-        className="rounded-lg border-2 ps-7 w-64 xl:w-auto pe-28  py-1.5 hover:border-primary focus:border-primary outline-none"
+        className="rounded-lg border-2 ps-7 w-[100%] xl:w-auto pe-28  py-1.5 hover:border-primary focus:border-primary outline-none"
       />
 
       <div>

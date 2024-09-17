@@ -2,7 +2,7 @@ import React from "react";
 
 function CategoryCard({ category }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 py-4 px-6 max-w-xs text-center shadow-md rounded-xl ">
+    <div className="flex flex-col items-center justify-center gap-6 py-4 px-2 max-w-xs text-center shadow-md rounded-xl ">
       <div
         style={{
           color: category.color,
