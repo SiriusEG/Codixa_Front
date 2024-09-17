@@ -13,8 +13,8 @@ function Page() {
   };
   return (
     <div className="  w-full ">
-      <div className="flex flex-col sm:flex-row  items-center">
-        <div className="sm:w-1/2 w-full relative">
+      <div className="flex flex-col sm:flex-row h-screen justify-center  items-center">
+        <div className="sm:w-1/2 w-full relative hidden sm:block">
           {" "}
           <Image
             src="/learnmore.jpg"
@@ -37,7 +37,7 @@ function Page() {
             </p>
           </div>
         </div>
-        <div className=" flex flex-col items-center justify-center w-1/2 mt-[-100px] sm:mt-0 bg-white sm:bg-transparent px-4 py-3 sm:p-1 z-10 sm:z-0 rounded-3xl sm:rounded-none ">
+        <div className=" flex flex-col items-center justify-center w-1/2  mt-0 bg-white sm:bg-transparent px-4 py-3 sm:p-1 z-10 sm:z-0 rounded-3xl sm:rounded-none ">
           {/* upper area  */}
           <div className="flex w-96 flex-col items-center justify-center">
             <h4 className="text-xl text-center  mb-5">
@@ -52,7 +52,7 @@ function Page() {
               toggleSwitch={toggleSwitch}
             />
             <p
-              style={{ marginLeft: "-15px" ,textAlign: 'justify',}}
+              style={{ marginLeft: "-15px", textAlign: "justify" }}
               className=" font-[300] text-left mt-10 w-[80%]  text-[.7rem] text-secondary"
             >
               {" "}
