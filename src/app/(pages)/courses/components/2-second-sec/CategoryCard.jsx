@@ -16,12 +16,12 @@ function CategoryCard({ category }) {
             opacity: 0.3,
           }}
         ></div>
-        <category.icon className="relative z-10" />
+        <category.icon className="relative z-10 text-3xl font-black" />
       </div>
 
-      <h3 className="text-xl font-semibold">{category.name}</h3>
+      <h3 className="text-3xl font-semibold">{category.name}</h3>
 
-      <p className="text-gray-500">{category.desc}</p>
+      <p className="text-gray-500 text-lg font-normal">{category.desc}</p>
     </div>
   );
 }
