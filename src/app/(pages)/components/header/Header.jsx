@@ -7,8 +7,9 @@ import Search from "./Search";
 
 export default function Header() {
   return (
-    <header className="bg-white px-4 py-3 sm:px-14 sm:py-4">
-      <div className="flex h-auto w-full items-center justify-between sm:justify-around lg:justify-center gap-x-2 sm:gap-x-6 flex-wrap">
+
+    <header className="bg-white ">
+      <div className="flex h-auto w-full lg:max-w-fit items-center justify-between sm:justify-around lg:justify-center gap-x-2 sm:gap-x-6 flex-wrap mx-auto px-4 py-2 sm:px-6 lg:px-8">
         {/* logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="text-primary">
@@ -24,13 +25,13 @@ export default function Header() {
         </div>
 
         {/* search and nav */}
-        <div className="hidden lg:flex justify-center gap-5 items-center">
+        <div className="hidden lg:flex flex-1 justify-center gap-6 items-center ">
           <Search />
-          <NavListCS />
+          <NavListCS />         
         </div>
 
         {/* login and signup */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link
             className="rounded-md text-sm bg-gray-100 px-3 py-2 font-semibold text-primary transition hover:text-hoverPrimary"
             href="/registration"
