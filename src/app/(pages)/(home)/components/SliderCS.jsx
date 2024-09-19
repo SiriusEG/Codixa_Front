@@ -44,7 +44,7 @@ const SliderCOM = () => {
   };
 
   return (
-    <div className="relative w-[100%] p-3 rounded-lg">
+    <div className="relative w-full p-3 rounded-lg">
       <h3 className="text-primary font-bold text-2xl p-3 ml-2 mb-3">
         Reading Blog List
       </h3>

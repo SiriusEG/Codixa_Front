@@ -7,9 +7,10 @@ import Search from "./Search";
 
 export default function Header() {
   return (
-
     <header className="bg-white ">
-      <div className="flex h-auto w-full lg:max-w-fit items-center justify-between sm:justify-around lg:justify-center gap-x-2 sm:gap-x-6 flex-wrap mx-auto px-4 py-2 sm:px-6 lg:px-8">
+      <div className="flex h-auto w-full items-center justify-between sm:justify-around lg:justify-between sm:gap-4 gap-x-2 flex-wrap px-4 py-2 sm:px-6 lg:px-8">
+        {" "}
+        {/* lg:max-w-fit */}
         {/* logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="text-primary">
@@ -19,18 +20,18 @@ export default function Header() {
               alt="logo"
               width={70}
               height={70}
-              className="sm:w-[6rem] sm:h-[6rem]" // Adjust size for small screens
+              className="sm:w-20" // Adjust size for small screens
             />
           </Link>
         </div>
-
         {/* search and nav */}
-        <div className="hidden lg:flex flex-1 justify-center gap-6 items-center ">
+        <div className="hidden custom2:flex justify-center gap-6 items-center ">
+          {" "}
+          {/* flex-1 */}
           <Search />
-          <NavListCS />         
+          <NavListCS />
         </div>
-
-        {/* login and signup */}
+        {/* login and sign up */}
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             className="rounded-md text-sm bg-gray-100 px-3 py-2 font-semibold text-primary transition hover:text-hoverPrimary"
