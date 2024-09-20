@@ -1,96 +1,55 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-function NavListCS() {
+export default function NavListCS() {
   const pathname = usePathname();
 
-  // Function to determine active class
-  const getActiveClass = (path) =>
-    pathname === path ? "text-primary bg-slate-200" : "text-gray-500";
+  const navList = [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "Courses",
+      path: "/courses",
+    },
+    {
+      name: "About Us",
+      path: "/aboutus",
+    },
+    {
+      name: "Blog",
+      path: "/blog",
+    },
+    {
+      name: "Contact Us",
+      path: "/contactus",
+    },
+  ];
 
   return (
     <nav aria-label="Global" className="w-full">
-      <ul className="flex w-full items-center gap-4 text-md flex-col justify-center lg:w-[40rem] lg:flex-row">
-        <li
-          className={`transition text-center hover:text-hoverPrimary rounded-lg py-2 px-1 font-normal w-[100%] ${getActiveClass(
-            "/"
-          )}`}
-        >
-          <Link
-            href="/"
-            className={`transition  hover:text-hoverPrimary font-semibold py-2 px-1  w-[100%] ${
-              pathname === "/" ? "text-primary" : "text-gray-500"
-            } transition hover:text-primary-100 font-semibold `}
+      <ul className="flex w-full items-center gap-4 custom1:gap-2 text-md flex-col justify-center lg:flex-row">
+        {navList.map((item) => (
+          <li
+            key={item.path}
+            className={`transition text-center rounded-lg w-full hover:bg-slate-200 ${
+              pathname === item.path ? "bg-slate-200" : "text-gray-500"
+            }`}
           >
-            Home
-          </Link>
-        </li>
-
-        <li
-          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
-            "/courses"
-          )}`}
-        >
-          <Link
-            href="/courses"
-            className={`transition hover:text-hoverPrimary font-semibold ${
-              pathname === "/courses" ? "text-primary" : "text-gray-500"
-            } transition hover:text-primary-100 font-semibold `}
-          >
-            Courses
-          </Link>
-        </li>
-
-        <li
-          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
-            "/aboutus"
-          )}`}
-        >
-          <Link
-            href="/aboutus"
-            className={`transition lg:w-fit hover:text-hoverPrimary font-semibold ${
-              pathname === "/aboutus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-primary-100 font-semibold `}
-          >
-            About us
-          </Link>
-        </li>
-
-        <li
-          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
-            "/blog"
-          )}`}
-        >
-          <Link
-            href="/blog"
-            className={`transition hover:text-hoverPrimary font-semibold ${
-              pathname === "/blog" ? "text-primary" : "text-gray-500"
-            } transition hover:text-primary-100 font-semibold `}
-          >
-            Blog
-          </Link>
-        </li>
-
-        <li
-          className={`transition text-center hover:text-hoverPrimary rounded-lg  py-2 px-1 font-semibold w-[100%] ${getActiveClass(
-            "/contactus"
-          )}`}
-        >
-          <Link
-            href="/contactus"
-            className={`transition hover:text-hoverPrimary font-semibold ${
-              pathname === "/contactus" ? "text-primary" : "text-gray-500"
-            } transition hover:text-primary-100 font-semibold `}
-          >
-            Contact us
-          </Link>
-        </li>
+            <Link
+              href={item.path}
+              className={`transition font-semibold text-sm py-2 px-1 inline-block w-full hover:text-primary ${
+                pathname === item.path ? "text-primary" : "text-gray-500"
+              }`}
+            >
+              {item.name}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   );
 }
-
-export default NavListCS;

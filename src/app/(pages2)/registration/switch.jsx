@@ -6,12 +6,9 @@ const LoginRegisterSwitch = ({ isLogin, setIsLogin, toggleSwitch }) => {
       {/* Background bar that moves */}
       <div
         className={`absolute h-9 w-[45%] rounded-full transition-transform duration-500 ease-in-out bg-secondary ${
-          isLogin ? "translate-x-[50%]" : "translate-x-[100%]"
+          isLogin ? "-translate-x-1/2" : "translate-x-1/2"
         }`}
         onClick={toggleSwitch}
-        style={{
-          transform: isLogin ? "translateX(-50%)" : "translateX(50%)", // Move the background bar to match the state
-        }}
       />
 
       {/* Login Text */}

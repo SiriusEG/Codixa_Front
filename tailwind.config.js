@@ -18,7 +18,9 @@ module.exports = {
           100: "#01623c",
           background: "#F0F6F5",
         },
-        secondary: "#177658",
+        secondary: {
+          DEFAULT: "#177658",
+        },
         gray: {
           10: "#98a2b3",
         },
@@ -26,9 +28,15 @@ module.exports = {
           10: "#fdf2fa",
         },
       },
-
+      spacing: {
+        15: "3.75rem",
+        88: "22rem",
+      },
       transitionDuration: {
         DEFAULT: "200ms",
+      },
+      animation: {
+        "spin-slow": "spin 12s linear infinite alternate-reverse",
       },
       screens: {
         ph: { max: "420px" },
@@ -43,6 +51,8 @@ module.exports = {
         "m-xl": { max: "1280px" },
         "2xl": "1536px",
         "m-2xl": { max: "1536px" },
+        custom1: { max: "1185px" }, // made for the nav
+        custom2: "1123px", // made for the nav
       },
       container: {
         center: true,
@@ -68,6 +78,11 @@ module.exports = {
           whiteSpace: "nowrap",
           maxWidth: "100%",
         },
+        ".flex-center": {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        },
       });
     },
   ],
@@ -81,30 +96,6 @@ module.exports = {
     placeholderOpacity: false,
   },
 };
-
-/*
-            // DEFAULT: "#274B3A",
-            // 20: "#667085",
-// 10: "#eaecf0",
-            // 20: "#f2f4f7",
-        //   dark: {
-        //     10: "#101828",
-        //   },
-        // },
-        // flex: {
-        //   auto: "0 0 auto",
-        // },
-        // keyframes: {
-        //   pulse: {
-        //     "0%, 100%": {
-        //       opacity: 1,
-        //     },
-        //     "50%": {
-        //       opacity: 0.5,
-        //     },
-        //   },
-        // },
-*/
 
 //yasser used colors settings
 /*
