@@ -23,9 +23,7 @@ function CollapseCS() {
         <div
           className={`fixed top-0 left-0 w-full flex justify-center items-start z-50 transition-all duration-700 ${
             isOpen ? "max-h-screen" : "max-h-0"
-          } ${isOpen ? "opacity-100" : "opacity-0"} ${
-            isOpen ? "visible" : "invisible"
-          }`}
+          }  `}
         >
           <div
             className={`relative bg-white rounded-lg shadow-lg w-11/12 sm:w-3/4 lg:w-1/2 transform transition-all duration-700 overflow-hidden ${
