@@ -13,40 +13,45 @@ function CollapseCS() {
     <>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="block rounded bg-gray-100 transition-all delay-500 p-3 text-gray-600 hover:text-gray-600/75 lg:hidden"
+        className="block rounded bg-gray-100 transition-all delay-500 p-3 text-gray-600 hover:text-gray-600/75 custom2:hidden"
       >
         <FaX className={!isOpen ? "hidden" : ""} />
         <IoMenu className={isOpen ? "hidden" : ""} />
       </button>
 
-      {isOpen && (
+      {
         <div
-          className="fixed top-0 left-0 w-full h-full flex justify-center items-start z-50"
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.7)" }}
+          className={`fixed top-0 left-0 w-full flex justify-center items-start z-50 transition-all duration-700 ${
+            isOpen ? "max-h-screen" : "max-h-0"
+          }  `}
         >
           <div
-            className={`relative bg-white p-7 rounded-lg shadow-lg w-11/12 sm:w-3/4 lg:w-1/2 transform transition-transform duration-500 ${
-              isOpen
-                ? "translate-y-0 opacity-100"
-                : "translate-y-full opacity-0"
+            className={`relative bg-white rounded-lg shadow-lg w-11/12 sm:w-3/4 lg:w-1/2 transform transition-all duration-700 overflow-hidden ${
+              isOpen ? "max-h-96 p-7" : "max-h-0 p-0"
             }`}
           >
             {/* Close Icon */}
             <button
               onClick={() => setIsOpen(false)}
-              className="absolute top-2 right-2 text-xl text-white bg-red-800 p-2 rounded-full"
+              className={`absolute top-2 right-2 text-xl ${
+                isOpen ? "block" : "hidden"
+              } text-white bg-red-800 p-2 rounded-full`}
             >
               <FaX />
             </button>
 
             {/* Modal Content */}
-            <div className="flex flex-col gap-4 items-center">
+            <div
+              className={`flex flex-col gap-4 items-center transition-opacity duration-500 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}
+            >
               <Search />
               <NavListCS />
             </div>
           </div>
         </div>
-      )}
+      }
     </>
   );
 }

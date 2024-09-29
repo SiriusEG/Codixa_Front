@@ -2,13 +2,11 @@ import React from "react";
 import LeftSec from "./components/LeftSec";
 import RightSec from "./components/RightSec";
 
-function page() {
+export default function page() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-center gap-6 min-h-screen">
+    <div className="grid grid-cols-1 lg:grid-cols-2 items-center justify-center gap-6 lg:min-h-screen m-lg2:my-8">
       <LeftSec />
       <RightSec />
     </div>
   );
 }
-
-export default page;

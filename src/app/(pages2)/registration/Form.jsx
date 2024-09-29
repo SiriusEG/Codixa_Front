@@ -68,13 +68,13 @@ const FormComponent = ({ setIsLogin, isLogin }) => {
               <div className="flex items-center gap-1">
                 <input type="checkbox" name="Remember" id="remember" />
                 <label
-                  className="text-gray-600 text-[10px] hover:text-gray-900"
+                  className="text-gray-600 text-[.8rem] hover:text-gray-900"
                   htmlFor="remember"
                 >
                   Remember me!
                 </label>
               </div>
-              <a href="#" className="text-[10px] text-cyan-600">
+              <a href="/ForgetPassword" className="text-[.8rem] text-cyan-600">
                 Forget Password?
               </a>
             </div>
@@ -154,14 +154,14 @@ const FormComponent = ({ setIsLogin, isLogin }) => {
               <div className="flex items-center gap-1">
                 <input type="checkbox" name="Remember" id="remember" />
                 <label
-                  className="text-gray-600 text-[10px] hover:text-gray-900"
+                  className="text-gray-600 text-[.8rem] hover:text-gray-900"
                   htmlFor="remember"
                 >
                   Remember me!
                 </label>
               </div>
               <a
-                className="text-[10px] cursor-pointer text-cyan-600"
+                className="text-[.8rem] cursor-pointer text-cyan-600"
                 onClick={haveAccount}
               >
                 Have an account?
