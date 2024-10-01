@@ -1,5 +1,5 @@
 import React from "react";
-import Switch from "./Switch";
+import Switch from "./switch";
 import { FaArrowLeft } from "react-icons/fa";
 import Link from "next/link";
 

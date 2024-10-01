@@ -24,7 +24,7 @@ export default function NavListCS() {
       path: "/blog",
     },
     {
-      name: "Contact Us",
+      name: "Contact",
       path: "/contactus",
     },
   ];
