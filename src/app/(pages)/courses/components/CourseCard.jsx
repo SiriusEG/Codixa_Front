@@ -31,7 +31,7 @@ function CourseCard({ element: course }) {
         </p>
       </div>
 
-      <Link href="#">
+      <Link href={"/coursesDetails"+ course.id}>
         <h5 className="mb-2 text-2xl font-medium  tracking-tight text-gray-900 ">
           {course.name}
         </h5>

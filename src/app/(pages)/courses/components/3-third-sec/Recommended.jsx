@@ -88,7 +88,7 @@ function Recommended() {
         </h2>
 
         <Link
-          href="/recommended"
+          href="recommended"
           className="text-primary hover:text-primary-100"
         >
           See all{" "}
