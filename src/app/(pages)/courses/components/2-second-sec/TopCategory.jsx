@@ -57,7 +57,7 @@ function TopCategory() {
       </h2>
       <div className="flex flex-wrap flex-row items-center justify-center py-6  gap-x-[5%] xl:gap-x-[7%] px-4 ph:px-6 md:py-8 gap-y-16">
         {dummyCategories.map((category, i) => (
-          <CategoryCard category={category} key={i} />
+          <CategoryCard category={category} key={i}/>
         ))}
       </div>
     </section>

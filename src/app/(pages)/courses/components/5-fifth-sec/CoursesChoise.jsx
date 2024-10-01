@@ -87,7 +87,7 @@ function CoursesChoise() {
           Get choice of your course
         </h2>
 
-        <Link href="/seeall" className="text-primary hover:text-primary-100">
+        <Link href={"/seeall"} className="text-primary hover:text-primary-100">
           See all{" "}
         </Link>
       </div>

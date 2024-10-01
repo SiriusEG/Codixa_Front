@@ -75,7 +75,9 @@ const page = () => {
           />
         </div>
         {errors.userName && (
-          <span className="text-red-500 my-2">{errors.userName.message}</span>
+          <p className="text-red-500  justify-center">
+            {errors.userName.message}
+          </p>
         )}
         <div className="mb-3 relative">
           <label
