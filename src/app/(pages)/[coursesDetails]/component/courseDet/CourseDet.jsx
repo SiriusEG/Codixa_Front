@@ -11,18 +11,17 @@ import Comment from '../comment/Comment'
 import Raiting from '../raiting/Raiting';
 
 
-export default function CourseDet({ element: course }) {
+export default function CourseDet() {
   const [activeTab, setActiveTab] = useState('Overview');
   return <>
   <section className='container flex xl:flex-nowrap md:flex-nowrap flex-wrap gap-[3rem] justify-evenly items-center relative pb-20'>
   <div className='w-full md:w-[43.75rem] xl:w-[59.375rem] h-[47.75rem]'>
-  <div className='flex justify-between mb-10'>
+  <div className='flex gap-4 mb-10'>
   <Link href="#" scroll={false} className={`py-2 px-4 rounded-lg ${activeTab === 'Overview' ? 'bg-primary text-white' : 'bg-gray-300'}`} onClick={() => setActiveTab('Overview')}>Overview</Link>
   <Link href="#" scroll={false} className={`py-2 px-4 rounded-lg ${activeTab === 'Comments' ? 'bg-primary text-white' : 'bg-gray-300'}`}  onClick={() => setActiveTab('Comments')}>comments</Link>
-  <Link href="#" scroll={false} className=' py-2 px-4 rounded-lg bg-gray-300'>comments</Link>
-  <Link href="#" scroll={false} className=' py-2 px-4 rounded-lg bg-gray-300'>comments</Link>
+ 
 </div>
-  <div className=' bg-[rgba(157,204,255,0.3)] p-8 rounded-3xl min-h-[47.8125rem] mb-20'>
+  <div className=' bg-[rgba(157,204,255,0.3)] p-8 rounded-3xl  mb-20'>
   {activeTab === 'Overview' && (
           <>
             <Raiting />

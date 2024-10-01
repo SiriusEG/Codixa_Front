@@ -1,5 +1,6 @@
 import React from 'react'
 import { RiStarSFill } from "react-icons/ri";
+import ProgressBar from '../progressbar/Progressbar';
 
 export default function Raiting() {
   return <>
@@ -15,12 +16,21 @@ export default function Raiting() {
         </div>
         <p className='text-[rgba(0,0,0,0.5)]'>Top raiting</p>
     </div>
-    <div className='text-[rgba(0,0,0,0.5)]'>
-        <p>5 stars </p>
-        <p>4 stars </p>
-        <p>3 stars </p>
-        <p>2 stars </p>
-        <p>1 stars </p>
+    <div className='text-[rgba(0,0,0,0.5)] flex flex-col justify-center items-center'>
+        <p className='text-nowrap'>5 stars</p>
+        <p className='text-nowrap'>4 stars</p>
+        <p className='text-nowrap'>3 stars</p>
+        <p className='text-nowrap'>2 stars</p>
+        <p className='text-nowrap'>1 stars</p>
+    </div>
+
+
+    <div className='flex flex-col justify-center items-center xl:w-[34.25rem] 2xl:w-[28.25rem] w-[20rem] gap-4'>
+    <ProgressBar/>
+    <ProgressBar/>
+    <ProgressBar/>
+    <ProgressBar/>
+    <ProgressBar/>
     </div>
   </section>
   </>

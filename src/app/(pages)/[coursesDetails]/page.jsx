@@ -6,11 +6,11 @@ import CourseDet from './component/courseDet/CourseDet'
 
 
 
-export default function coursesDetails({ element: course }) {
+export default function coursesDetails() {
   return <>
  <section className='relative'>
  <Headersec/>
- <CourseDet element={course}/>
+ <CourseDet />
  </section>
   </>
 }
