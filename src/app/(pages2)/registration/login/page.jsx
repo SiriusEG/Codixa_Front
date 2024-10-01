@@ -9,7 +9,6 @@ import { PuffLoader } from "react-spinners";
 import { logInAction } from "../../../../../lib/reducers/auth/logInSlice";
 import { useAppDispatch, useAppSelector } from "../../../../../lib/hooks";
 import { decodeToken } from "../../../../../lib/reducers/user/userSlice";
-import { axios } from "axios";
 
 const page = () => {
   const pathname = usePathname();
@@ -122,7 +121,7 @@ const page = () => {
               Remember me!
             </label>
           </div>
-          <Link href="/ForgetPassword" className="text-[.8rem] text-cyan-600">
+          <Link href="/forgetpassword" className="text-[.8rem] text-cyan-600">
             Forget Password?
           </Link>
         </div>
