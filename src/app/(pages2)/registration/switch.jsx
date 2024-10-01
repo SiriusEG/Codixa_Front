@@ -1,37 +1,53 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import React from "react";
 
-const LoginRegisterSwitch = ({ isLogin, setIsLogin, toggleSwitch }) => {
+const Switch = () => {
+  const pathname = usePathname();
+  // const router = useRouter();
+  const toggleSwitch = () => {
+    // if (pathname === "registration/signup") {
+    //   return router.push("registration/login");
+    // }
+    // router.push("registration/signup");
+  };
+
   return (
     <div className="relative flex items-center justify-center bg-primary rounded-full w-72 h-12 p-1 cursor-pointer">
       {/* Background bar that moves */}
       <div
         className={`absolute h-9 w-[45%] rounded-full transition-transform duration-500 ease-in-out bg-secondary ${
-          isLogin ? "-translate-x-1/2" : "translate-x-1/2"
+          pathname === "/registration/login"
+            ? "-translate-x-1/2"
+            : "translate-x-1/2"
         }`}
         onClick={toggleSwitch}
       />
 
       {/* Login Text */}
-      <div
-        onClick={() => setIsLogin(true)}
+      <Link
+        href={"login"}
         className={`z-10 w-1/2 text-center text-white ${
-          isLogin ? "" : "opacity-70"
+          pathname === "/registration/login" ? "" : "opacity-70"
         }`}
       >
         Login
-      </div>
+      </Link>
 
       {/* Register Text */}
-      <div
-        onClick={() => setIsLogin(false)}
+      <Link
+        href={"signup"}
         className={`z-10 w-1/2 text-center text-white ${
-          isLogin ? "opacity-70" : ""
+          pathname === "/registration/login" ? "opacity-70" : ""
         }`}
       >
         Register
-      </div>
+      </Link>
     </div>
   );
 };
 
-export default LoginRegisterSwitch;
+export default Switch;

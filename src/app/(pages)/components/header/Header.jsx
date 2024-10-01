@@ -4,6 +4,7 @@ import React from "react";
 import NavListCS from "./NavListCS";
 import CollapseCS from "./CollapseCS";
 import Search from "./Search";
+import UserLogMenuCS from "./UserLogMenuCS";
 
 export default function Header() {
   return (
@@ -33,18 +34,7 @@ export default function Header() {
         </div>
         {/* login and sign up */}
         <div className="flex items-center gap-2 sm:gap-4">
-          <Link
-            className="rounded-md text-sm bg-gray-100 px-3 py-2 font-semibold text-primary transition hover:text-hoverPrimary"
-            href="/registration"
-          >
-            Login
-          </Link>
-          <Link
-            className="block rounded-md text-base bg-primary px-3 py-2 font-semibold text-white transition hover:bg-hoverPrimary"
-            href="/registration"
-          >
-            Create free account
-          </Link>
+          <UserLogMenuCS />
           <CollapseCS />
         </div>
       </div>
