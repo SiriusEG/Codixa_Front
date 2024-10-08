@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../lib/hooks";
-import { decodeToken } from "../../../../lib/reducers/user/userSlice";
-import { logout } from "../../../../lib/reducers/auth/logInSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../lib/hooks";
+import { decodeToken } from "../../../../../lib/reducers/user/userSlice";
+import { logout } from "../../../../../lib/reducers/auth/logInSlice";
 
 const AuthCheckCS = () => {
   const dispatch = useAppDispatch();

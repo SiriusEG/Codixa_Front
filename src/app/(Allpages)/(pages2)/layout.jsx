@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 import "./global.css";
-import StoreProvider from "../StoreProvider";
+import StoreProvider from "../../StoreProvider";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import Image from "next/image";
 
