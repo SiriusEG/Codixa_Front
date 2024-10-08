@@ -6,8 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { PuffLoader } from "react-spinners";
-import { useAppDispatch, useAppSelector } from "../../../../../../lib/hooks";
-import { logInAction } from "../../../../../../lib/reducers/auth/logInSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../../../lib/hooks";
+import { logInAction } from "../../../../../../../lib/reducers/auth/logInSlice";
 
 const LoginForm = () => {
   const router = useRouter();
