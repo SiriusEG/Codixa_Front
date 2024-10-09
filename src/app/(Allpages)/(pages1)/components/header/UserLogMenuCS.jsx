@@ -2,17 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { useAppSelector } from "../../../../../lib/hooks";
-import { MoonLoader } from "react-spinners";
+import { useAppSelector } from "../../../../../../lib/hooks";
 
 const UserLogMenuCS = () => {
-  const { userInfo, tokenChecking } = useAppSelector((state) => state.user);
+  const { userInfo } = useAppSelector((state) => state.user);
 
   return (
     <>
-      {tokenChecking ? (
-        <MoonLoader color="#20B486" size={15} />
-      ) : userInfo ? (
+      {userInfo ? (
         <div>welcome {userInfo.name}</div>
       ) : (
         <>

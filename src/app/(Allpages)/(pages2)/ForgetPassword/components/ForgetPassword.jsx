@@ -16,8 +16,8 @@ const ForgetPassword = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-1/2 sm:mt-0 bg-white sm:bg-transparent px-4 py-3 sm:p-1 z-10 sm:z-0 rounded-3xl sm:rounded-none box-content">
-      <div className="flex w-96 flex-col items-left justify-center">
+    <div className=" flex justify-center  ">
+      <div className="flex w-96 flex-col items-left ">
         <div className="flex flex-col justify-start">
           <h4 className="text-2xl text-left text-primary mb-10">
             Reset Your Password

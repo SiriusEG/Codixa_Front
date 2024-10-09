@@ -1,11 +1,9 @@
-
 // import CourseShowCS from "@/app/(pages)/(home)/courseShowCS";
-import HomeFirstSection from "@/app/(pages)/(home)/components/HomeFirstSection";
-import PostCSblogList from "@/app/(pages)/(home)/components/PostCS";
-import SliderCOM from "@/app/(pages)/(home)/components/SliderCS";
 import React from "react";
 import CoursesSec from "./components/courses-sec/coursesSec";
-
+import HomeFirstSection from "./components/HomeFirstSection";
+import SliderCOM from "./components/SliderCS";
+import PostCSblogList from "./components/PostCS";
 
 export default function Page() {
   return (

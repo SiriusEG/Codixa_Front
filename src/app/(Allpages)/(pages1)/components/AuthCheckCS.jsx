@@ -1,16 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAppDispatch } from "../../../../lib/hooks";
-import {
-  decodeToken,
-  endTokenChecking,
-} from "../../../../lib/reducers/user/userSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../lib/hooks";
+import { decodeToken } from "../../../../../lib/reducers/user/userSlice";
+import { logout } from "../../../../../lib/reducers/auth/logInSlice";
 
 const AuthCheckCS = () => {
   const dispatch = useAppDispatch();
+  const { userInfo } = useAppSelector((state) => state.user);
 
-  const checkToken = async () => {
+  useEffect(() => {
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
 
@@ -23,12 +22,6 @@ const AuthCheckCS = () => {
         sessionStorage.removeItem("token");
       }
     }
-
-    dispatch(endTokenChecking());
-  };
-
-  useEffect(() => {
-    checkToken();
   }, [dispatch]);
   return <></>;
 };

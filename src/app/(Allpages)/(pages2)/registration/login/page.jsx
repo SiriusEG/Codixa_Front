@@ -1,4 +1,5 @@
-import React from "react";
+// page.jsx (Server Component)
+
 import LoginForm from "./components/LoginForm";
 
 const page = () => {

@@ -10,12 +10,13 @@ const SignupForm = () => {
   const pathname = usePathname();
 
   const showPass = () => setShow(!show);
+
   return (
     <div
       className={`${
         pathname == "/registration/signup"
           ? "opacity-100 translate-y-0"
-          : "opacity-0 "
+          : "opacity-0"
       } transition-all duration-300 ease-in-out`}
     >
       <form className="rounded px-8 pt-6 pb-8 mb-4">
