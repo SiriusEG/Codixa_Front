@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
-const ForgetPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState("");
 
   const handleEmailChange = (e) => {
@@ -75,4 +75,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ForgotPassword;

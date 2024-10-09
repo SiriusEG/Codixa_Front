@@ -32,6 +32,7 @@ const UserLogMenuCS = () => {
           <motion.div animate={open ? "open" : "closed"} className="relative">
             <button
               onClick={() => setOpen((pv) => !pv)}
+              onBlur={() => setOpen(false)}
               className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-300 transition-colors"
             >
               <motion.span variants={iconVariants}>
