@@ -2,18 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
 import React from "react";
 
 const Switch = () => {
   const pathname = usePathname();
-  // const router = useRouter();
-  const toggleSwitch = () => {
-    // if (pathname === "registration/signup") {
-    //   return router.push("registration/login");
-    // }
-    // router.push("registration/signup");
-  };
 
   return (
     <div className="relative flex items-center justify-center bg-primary rounded-full w-72 h-12 p-1 cursor-pointer">
@@ -24,7 +16,6 @@ const Switch = () => {
             ? "-translate-x-1/2"
             : "translate-x-1/2"
         }`}
-        onClick={toggleSwitch}
       />
 
       {/* Login Text */}

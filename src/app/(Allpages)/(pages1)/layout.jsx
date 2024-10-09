@@ -3,7 +3,6 @@ import "./global.css";
 
 // import Footer from "@/app/(pages)/component/Footer";
 import Footer from "./components/footer/Footer";
-import StoreProvider from "../../StoreProvider";
 import Header from "./components/header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -16,14 +15,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="overflow-x-hidden font-primary">
-        <StoreProvider>
-          <Header />
-          {children}
-          <Footer />
-        </StoreProvider>
-      </body>
-    </html>
+    <div>
+      <Header />
+      {children}
+      <Footer />
+    </div>
   );
 }
