@@ -123,8 +123,8 @@ const LoginForm = () => {
               Remember me!
             </label>
           </div>
-          <Link href="/forgetpassword" className="text-[.8rem] text-cyan-600">
-            Forget Password?
+          <Link href="/forgotpassword" className="text-[.8rem] text-cyan-600">
+            Forgot Password?
           </Link>
         </div>
         {errors.root && (
