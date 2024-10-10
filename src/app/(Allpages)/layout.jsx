@@ -1,4 +1,5 @@
 import StoreProvider from "../StoreProvider";
+import "./global.css";
 
 export const metadata = {
   title: "E-learningSiriusEg",
@@ -8,7 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className=" box-border p-0 m-0 ">
       <body className="overflow-x-hidden font-primary">
         <StoreProvider>{children}</StoreProvider>
       </body>
