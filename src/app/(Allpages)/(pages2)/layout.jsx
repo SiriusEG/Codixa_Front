@@ -12,7 +12,10 @@ export default function RootLayout({ children }) {
   return (
     <div className="w-full">
       <div className="flex h-screen items-center sm:flex-row">
-        {/* image side */}
+        {/* image side "box" */}
+        <div>
+          
+        </div>
         <div className="sm:w-1/2 w-full relative hidden sm:block">
           <Image
             src="/learnmore.jpg"
