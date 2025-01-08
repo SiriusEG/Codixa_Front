@@ -52,7 +52,7 @@ const LoginForm = () => {
   return (
     <div
       className={`${
-        pathname == "/registration/login" ? "opacity-100 " : "opacity-0 "
+        pathname == "/user/login" ? "opacity-100 " : "opacity-0 "
       } transition-all duration-300 ease-in-out`}
     >
       <form

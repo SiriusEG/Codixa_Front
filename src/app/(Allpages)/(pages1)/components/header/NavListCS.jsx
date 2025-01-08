@@ -20,8 +20,8 @@ export default function NavListCS() {
       path: "/aboutus",
     },
     {
-      name: "Blog",
-      path: "/blog",
+      name: "posts",
+      path: "/posts",
     },
     {
       name: "Contact",

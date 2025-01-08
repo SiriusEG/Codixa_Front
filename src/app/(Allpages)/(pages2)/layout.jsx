@@ -1,6 +1,7 @@
 import "./global.css";
 import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import Image from "next/image";
+import DropdownMenu from "./user/Dropdown";
 
 export const metadata = {
   title: "E-learningSiriusEg",
@@ -11,11 +12,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <div className="w-full">
-      <div className="flex h-screen items-center sm:flex-row">
-        {/* image side "box" */}
-        <div>
-          
-        </div>
+      <div className="flex h-screen items-center sm:flex-row relative">
+        {/* Image side */}
         <div className="sm:w-1/2 w-full relative hidden sm:block">
           <Image
             src="/learnmore.jpg"
@@ -38,8 +36,14 @@ export default function RootLayout({ children }) {
             </p>
           </div>
         </div>
-        {/* children side */}
-        <div className="sm:w-1/2 w-full flex items-center justify-center">
+
+        {/* Children side */}
+        <div className="relative sm:w-1/2 w-full flex items-center justify-center">
+          {/* Dropdown Menu */}
+          <div className="absolute top-5 left-[8rem]">
+            <DropdownMenu className="flex items-center gap-2 cursor-pointer" />
+          </div>
+
           {children}
         </div>
       </div>

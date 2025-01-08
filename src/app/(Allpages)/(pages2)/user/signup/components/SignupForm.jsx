@@ -14,9 +14,7 @@ const SignupForm = () => {
   return (
     <div
       className={`${
-        pathname == "/registration/signup"
-          ? "opacity-100 translate-y-0"
-          : "opacity-0"
+        pathname == "/user/signup" ? "opacity-100 translate-y-0" : "opacity-0"
       } transition-all duration-300 ease-in-out`}
     >
       <form className="rounded px-8 pt-6 pb-8 mb-4">
@@ -83,7 +81,7 @@ const SignupForm = () => {
             </label>
           </div>
           <Link
-            href="/registration/login"
+            href="/user/login"
             className="text-[.8rem] cursor-pointer text-cyan-600"
           >
             Have an account?

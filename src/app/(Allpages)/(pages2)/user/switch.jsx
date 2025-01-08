@@ -12,9 +12,7 @@ const Switch = () => {
       {/* Background bar that moves */}
       <div
         className={`absolute h-9 w-[45%] rounded-full transition-transform duration-500 ease-in-out bg-secondary ${
-          pathname === "/registration/login"
-            ? "-translate-x-1/2"
-            : "translate-x-1/2"
+          pathname === "/user/login" ? "-translate-x-1/2" : "translate-x-1/2"
         }`}
       />
 
@@ -22,7 +20,7 @@ const Switch = () => {
       <Link
         href={"login"}
         className={`z-10 w-1/2 text-center text-white ${
-          pathname === "/registration/login" ? "" : "opacity-70"
+          pathname === "/user/login" ? "" : "opacity-70"
         }`}
       >
         Login
@@ -32,7 +30,7 @@ const Switch = () => {
       <Link
         href={"signup"}
         className={`z-10 w-1/2 text-center text-white ${
-          pathname === "/registration/login" ? "opacity-70" : ""
+          pathname === "/user/login" ? "opacity-70" : ""
         }`}
       >
         Register

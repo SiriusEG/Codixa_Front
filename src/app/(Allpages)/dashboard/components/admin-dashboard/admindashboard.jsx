@@ -57,7 +57,7 @@ const AdminDashboard = () => {
         animate={{ x: 0 }} // Animate into view
         transition={{ type: "spring", stiffness: 100 }}
       >
-        <div className="min-h-screen">
+        <div className="min-h-screen border-none outline-none">
           {" "}
           <div className="mb-8 flex-center flex-col pr-5">
             <img
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
             <p className="text-sm">alex.johnson@gmail.com</p>
           </div>
           {/* Menu Items */}
-          <ul className="space-y-4">
+          <ul className="space-y-4 pr-[-1rem] border-none outline-none">
             {[
               { name: "Statics", id: "statics", icon: <TbStatusChange /> },
               {
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
             ].map((item) => (
               <li
                 key={item.id}
-                className={`font-semibold cursor-pointer p-3 rounded-l-2xl flex items-center space-x-3 transition-all .3s ${
+                className={`font-semibold cursor-pointer p-3 rounded-l-xl border-none outline-none flex items-center space-x-4  transition-all .3s ${
                   activeMenu === item.id
                     ? "bg-primary-background text-black "
                     : ""
@@ -101,13 +101,13 @@ const AdminDashboard = () => {
                 onClick={() => setActiveMenu(item.id)}
               >
                 {item.icon}
-                <span>{item.name}</span>
+                <span className={`border-none outline-none`}>{item.name}</span>
               </li>
             ))}
 
             {/* Navigate Home */}
             <li
-              className="font-semibold cursor-pointer p-3 rounded-l-2xl flex items-center space-x-3 transition-all .3s"
+              className="font-semibold cursor-pointer  p-3 rounded-l-2xl flex items-center space-x-3 transition-all .3s"
               onClick={() => router.push("/")}
             >
               <AiOutlineHome />

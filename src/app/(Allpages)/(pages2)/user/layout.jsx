@@ -1,7 +1,5 @@
 import React from "react";
 import Switch from "./switch";
-import { FaArrowLeft } from "react-icons/fa";
-import Link from "next/link";
 
 const layout = ({ children }) => {
   return (
@@ -15,15 +13,6 @@ const layout = ({ children }) => {
               Codixa
             </span>
           </h4>
-          <Link
-            href="/"
-            type="button"
-            className="flex absolute left-4 sm:left-[-6rem] md:left-[-10rem] top-[-3%] items-center gap-2 self-start mx-4 text-base font-medium transition duration-300 hover:text-primary hover:bg-primary/25 py-2 px-4 rounded-2xl"
-          >
-            <FaArrowLeft />
-            Back To Home
-          </Link>
-
           <Switch />
           <p
             style={{ marginLeft: "-15px", textAlign: "justify" }}
