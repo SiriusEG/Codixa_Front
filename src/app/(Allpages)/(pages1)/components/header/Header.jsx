@@ -3,16 +3,13 @@ import Link from "next/link";
 import React from "react";
 import NavListCS from "./NavListCS";
 import CollapseCS from "./CollapseCS";
-import Search from "./Search";
 import UserLogMenuCS from "./UserLogMenuCS";
 
 export default function Header() {
   return (
-    <header className="bg-white ">
-      <div className="flex h-auto w-full items-center justify-between sm:justify-around lg:justify-between sm:gap-4 gap-x-2 flex-wrap px-4 py-2 sm:px-6 lg:px-8">
-        {" "}
-        {/* lg:max-w-fit */}
-        {/* logo */}
+    <header className=" bg-white">
+      <div className="flex h-auto w-full items-center justify-between flex-wrap px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
         <div className="flex-shrink-0">
           <Link href="/" className="text-primary">
             <span className="sr-only">Home</span>
@@ -25,17 +22,23 @@ export default function Header() {
             />
           </Link>
         </div>
-        {/* search and nav */}
-        <div className="hidden custom2:flex justify-center gap-6 items-center ">
+
+        {/* Navigation Links (Hidden on Small Screens) */}
+        <div className="hidden sm:flex justify-center gap-6 items-center ">
           {" "}
           {/* flex-1 */}
-          <Search />
           <NavListCS />
         </div>
-        {/* login and sign up */}
+
+        {/* User Menu & Hamburger Menu for Small Screens */}
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* User Log Menu */}
           <UserLogMenuCS />
-          <CollapseCS />
+
+          {/* Hamburger Menu (Visible on Small Screens) */}
+          <div className=" sm:hidden">
+            <CollapseCS />
+          </div>
         </div>
       </div>
     </header>

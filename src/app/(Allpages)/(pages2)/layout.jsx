@@ -38,11 +38,11 @@ export default function RootLayout({ children }) {
         </div>
 
         {/* Children side */}
+        <div className="absolute top-5 right-5">
+          <DropdownMenu className="flex items-center gap-2 cursor-pointer" />
+        </div>
         <div className="relative sm:w-1/2 w-full flex items-center justify-center">
           {/* Dropdown Menu */}
-          <div className="absolute top-5 left-[8rem]">
-            <DropdownMenu className="flex items-center gap-2 cursor-pointer" />
-          </div>
 
           {children}
         </div>

@@ -31,12 +31,12 @@ export default function NavListCS() {
 
   return (
     <nav aria-label="Global" className="w-full">
-      <ul className="flex w-full items-center gap-4 custom1:gap-2 text-md flex-col justify-center lg:flex-row">
+      <ul className="flex w-full items-center gap-4 text-md flex-col justify-center sm:flex-row">
         {navList.map((item) => (
           <li
             key={item.path}
-            className={`transition text-center rounded-lg w-full hover:bg-slate-200 ${
-              pathname === item.path ? "bg-slate-200" : "text-gray-500"
+            className={`transition text-center rounded-lg w-full sm:w-[6rem] hover:bg-slate-200 ${
+              pathname === item.path ? "bg-slate-200" : "text-gray-400"
             }`}
           >
             <Link

@@ -84,7 +84,7 @@ function MostViewing() {
     <section className="bg-primary-background flex flex-col gap-3 py-6 ">
       <div className="flex justify-between px-2 md:px-6 lg:px-8">
         <h2 className="text-3xl font-bold ml-5 self-center sm:self-start">
-          Student are viewing
+          Most viewed
         </h2>
 
         <Link href="/mostview" className="text-primary hover:text-primary-100">

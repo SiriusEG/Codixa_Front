@@ -65,7 +65,7 @@ const ForgotPassword = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <Link href="/registration/login" className="text-sm text-cyan-600">
+            <Link href="/user/login" className="text-sm text-cyan-600">
               Back to Login
             </Link>
           </div>
