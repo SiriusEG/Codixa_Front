@@ -6,7 +6,7 @@ function Page() {
   return (
     <div className="bg-background min-h-screen flex flex-col">
       {/* Top Section */}
-      <div className="flex flex-grow bg-primary-background ">
+      <div className="flex flex-col sm:flex-row flex-grow bg-primary-background ">
         {/* Left Side: Categories & Query */}
         <Filters />
         {/* Right Side: Query Results */}
