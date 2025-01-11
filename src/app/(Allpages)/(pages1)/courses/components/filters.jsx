@@ -32,13 +32,13 @@ const Filters = () => {
   ];
 
   return (
-    <div className=" sm:w-1/4 p-6 my-4 rounded">
+    <div className="w-full sm:w-1/4 p-6 my-4 rounded">
       <div className="space-y-6">
         {sections.map((section) => (
           <div key={section.title}>
             {/* Label with Dropdown Icon */}
             <div
-              className="flex flex-row sm:flex-col justify-between items-center p-4  rounded cursor-pointer"
+              className="flex justify-between items-center p-4  rounded cursor-pointer"
               onClick={() => toggleSection(section.title)}
             >
               <span className="font-bold text-lg text-gray-800">
