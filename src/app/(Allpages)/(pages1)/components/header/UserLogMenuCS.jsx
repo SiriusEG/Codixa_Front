@@ -35,6 +35,10 @@ const UserLogMenuCS = () => {
               onBlur={() => setOpen(false)}
               className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-300 transition-colors"
             >
+              <span className="text-sm font-medium text-gray-700">
+                {userInfo.role}
+              </span>{" "}
+              {/* Added role here */}
               <motion.span variants={iconVariants}>
                 <FiChevronDown />
               </motion.span>
@@ -96,7 +100,7 @@ const Option = ({ text, Icon, setOpen, route, isLogout = false }) => {
     <motion.li
       variants={itemVariants}
       onClick={optionClick}
-      className={`flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md  text-slate-700 ${
+      className={`flex items-center gap-2 w-full p-2 text-xs font-medium whitespace-nowrap rounded-md text-slate-700 ${
         isLogout
           ? "hover:text-red-600 hover:bg-red-300"
           : "hover:text-primary hover:bg-primary-background"

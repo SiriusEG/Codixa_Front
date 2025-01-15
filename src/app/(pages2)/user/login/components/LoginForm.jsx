@@ -6,9 +6,9 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { PuffLoader } from "react-spinners";
-import { useAppDispatch, useAppSelector } from "../../../../../../../lib/hooks";
-import { logInAction } from "../../../../../../../lib/reducers/auth/logInSlice";
-import { decodeToken } from "../../../../../../../lib/reducers/user/userSlice";
+import { useAppDispatch, useAppSelector } from "../../../../../../lib/hooks";
+import { logInAction } from "../../../../../../lib/reducers/auth/logInSlice";
+import { decodeToken } from "../../../../../../lib/reducers/user/userSlice";
 
 const LoginForm = () => {
   const pathname = usePathname();
@@ -27,14 +27,11 @@ const LoginForm = () => {
   const { error } = useAppSelector((state) => state.login);
 
   const onSubmit = async (data) => {
-    const form = JSON.stringify({
-      userName: data.userName,
-      password: data.password,
-    });
-
-    const result = await dispatch(
-      logInAction({ remmberMe: data.remmberMe, form })
-    );
+    const form = {
+      UserName: data.userName,
+      Password: data.password,
+    };
+    const result = await dispatch(logInAction({ form }));
 
     if (logInAction.fulfilled.match(result)) {
       const token = result.payload;
@@ -109,20 +106,6 @@ const LoginForm = () => {
           <span className="text-red-500 my-2">{errors.password.message}</span>
         )}
         <div className="flex justify-between mt-[-5%] mb-7">
-          <div className="flex items-center gap-1">
-            <input
-              type="checkbox"
-              name="Remember"
-              id="remember"
-              {...register("remmberMe")}
-            />
-            <label
-              className="text-gray-600 text-[.8rem] hover:text-gray-900"
-              htmlFor="remember"
-            >
-              Remember me!
-            </label>
-          </div>
           <Link href="/forgotpassword" className="text-[.8rem] text-cyan-600">
             Forgot Password?
           </Link>

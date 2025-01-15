@@ -1,4 +1,5 @@
 import StoreProvider from "../StoreProvider";
+import TokenRefreshHandler from "./TokenRefreshHandler"; // Import the new component
 import "./global.css";
 
 export const metadata = {
@@ -9,9 +10,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className=" box-border p-0 m-0 ">
+    <html lang="en" className="box-border p-0 m-0">
       <body className="overflow-x-hidden font-primary">
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <TokenRefreshHandler /> {/* Render the client-side logic */}
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );
