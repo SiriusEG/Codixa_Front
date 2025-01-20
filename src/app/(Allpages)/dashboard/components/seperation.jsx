@@ -4,6 +4,8 @@ import { useAppSelector } from "../../../../../lib/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import AdminDashboard from "./admin-dashboard/admindashboard";
+import StudentDashboard from "./student-dash/StudentDash";
+import InstructorDashboard from "./Instructor-dash/InstructorDash";
 
 function Seperation() {
   const { userInfo, tokenChecking } = useAppSelector((state) => state.user);
@@ -31,10 +33,24 @@ function Seperation() {
   }
 
   // Render based on user role
-  if (userInfo && userInfo.role === "admin") {
+  if (userInfo && userInfo.role === "Admin") {
     return (
       <div>
         <AdminDashboard />
+      </div>
+    );
+  }
+  if (userInfo && userInfo.role === "Student") {
+    return (
+      <div>
+        <StudentDashboard />
+      </div>
+    );
+  }
+  if (userInfo && userInfo.role === "Instructor") {
+    return (
+      <div>
+        <InstructorDashboard />
       </div>
     );
   }
