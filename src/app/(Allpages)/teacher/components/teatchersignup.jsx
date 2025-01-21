@@ -7,211 +7,205 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 
 const SignupTeacherForm = () => {
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const pathname = usePathname();
-
-  const showPass = () => setShow(!show);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
-    const data = {
-      username: formData.get("username"),
+
+    const teacherData = {
+      fullName: formData.get("fullName"),
       email: formData.get("email"),
       password: formData.get("password"),
       age: formData.get("age"),
       specialty: formData.get("specialty"),
+      experience: formData.get("experience"),
       cv: formData.get("cv"),
       courses: formData.get("courses"),
     };
 
-    // Send the data to the admin's API for approval
-    fetch("/api/admin/approve-teacher", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (response.ok) {
-          alert("Your application has been submitted for approval.");
-        } else {
-          alert("Failed to submit application.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error submitting application:", error);
-      });
+    console.log(teacherData);
   };
 
   return (
     <div
       className={`${
-        pathname === "/teacher" ? "opacity-100 translate-y-0" : "opacity-0"
-      } transition-all duration-300 ease-in-out p-6`}
+        pathname === "/teacher" ? "opacity-100" : "opacity-0"
+      } h-screen overflow-hidden flex`}
     >
-      {/* Return to Home Button */}
-      <Link href="/">
-        <div className="flex items-center text-primary font-semibold text-lg cursor-pointer hover:text-cyan-600 mb-6">
+      {/* Image Section */}
+      <div className="hidden lg:block w-1/2 h-full relative">
+        <img
+          src="https://i.pinimg.com/736x/2c/aa/4f/2caa4ff3f1616fe5ff03b01a05e81cb3.jpg"
+          alt="Teaching Inspiration"
+          className="w-full h-full object-cover shadow-[0_25px_50px_-12px_rgba(0,0,0,0.4)]"
+        />
+      </div>
+
+      {/* Form Section */}
+      <div className="w-full lg:w-1/2 h-full bg-gray-50 p-8 flex flex-col justify-center">
+        <Link
+          href="/"
+          className="inline-flex items-center text-primary hover:text-primary-100 "
+        >
           <IoArrowBack className="mr-2" />
-          Return to Home
-        </div>
-      </Link>
+          Return Home
+        </Link>
 
-      <form
-        className="rounded-lg shadow-lg p-8 bg-white max-w-xl mx-auto border border-gray-300"
-        onSubmit={handleSubmit}
-      >
-        <h2 className="text-2xl font-bold text-center text-primary mb-6">
-          welcome Teacher!
-        </h2>
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-2xl mx-auto flex flex-col justify-center h-full"
+        >
+          <h1 className="text-3xl font-bold text-primary mb-8 text-center">
+            Educator Registration
+          </h1>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="username"
-          >
-            Teacher Name
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="username"
-            name="username"
-            type="text"
-            placeholder="Enter your Name"
-            required
-          />
-        </div>
+          <div className="space-y-6">
+            {/* Personal Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="Dr. Ahmed"
+                  required
+                />
+              </div>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="ahmed@university.edu"
+                  required
+                />
+              </div>
+            </div>
 
-        <div className="mb-4 relative">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="password"
-            name="password"
-            type={show ? "text" : "password"}
-            placeholder="Password"
-            required
-          />
-          {show ? (
-            <FaEye
-              className="absolute right-4 top-[2.9rem] text-gray-500 cursor-pointer"
-              onClick={showPass}
-            />
-          ) : (
-            <FaEyeSlash
-              className="absolute right-4 top-[2.9rem] text-gray-500 cursor-pointer"
-              onClick={showPass}
-            />
-          )}
-        </div>
+            {/* Security Fields */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Set a Password *
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-4 text-gray-400 hover:text-primary"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+              </div>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="age"
-          >
-            Age
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="age"
-            name="age"
-            type="number"
-            placeholder="Enter your age"
-            required
-          />
-        </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Years of Experience *
+                </label>
+                <input
+                  type="number"
+                  name="experience"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="5"
+                  min="1"
+                  required
+                />
+              </div>
+            </div>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="specialty"
-          >
-            Specialty
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="specialty"
-            name="specialty"
-            type="text"
-            placeholder="Enter your specialty"
-            required
-          />
-        </div>
+            {/* Professional Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Age *
+                </label>
+                <input
+                  type="number"
+                  name="age"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="35"
+                  min="21"
+                  required
+                />
+              </div>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="cv"
-          >
-            Upload CV
-          </label>
-          <input
-            className="appearance-none border border-gray-300 rounded-full w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="cv"
-            name="cv"
-            type="file"
-            required
-          />
-        </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Specialty Field *
+                </label>
+                <input
+                  type="text"
+                  name="specialty"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="Computer Science"
+                  required
+                />
+              </div>
+            </div>
 
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-gray-700 text-sm mb-3"
-            htmlFor="courses"
-          >
-            Courses
-          </label>
-          <textarea
-            className="appearance-none border border-gray-300 rounded-lg w-full px-4 py-3 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            id="courses"
-            name="courses"
-            placeholder="List the courses you can teach"
-            rows="4"
-            required
-          />
-        </div>
+            {/* Documents */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Upload CV (PDF only) *
+              </label>
+              <input
+                type="file"
+                name="cv"
+                accept=".pdf"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
+                required
+              />
+            </div>
 
-        <div className="flex justify-center items-center flex-col space-y-4 mt-6">
-          <button
-            className="bg-primary hover:bg-primary-100 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300"
-            type="submit"
-          >
-            Send Request
-          </button>
-          <Link
-            href="/user/login"
-            className="text-[1rem] font-semibold cursor-pointer text-primary hover:underline"
-          >
-            Have an account?
-          </Link>
-        </div>
-      </form>
+            {/* Teaching Information */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Courses You Can Teach *
+              </label>
+              <textarea
+                name="courses"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                rows="3"
+                placeholder="List courses separated by commas (e.g., Mathematics, Physics)"
+                required
+              ></textarea>
+              <p className="text-center text-sm text-gray-600 mt-2">
+                Already have an account?{" "}
+                <Link
+                  href="/user/login"
+                  className="text-primary hover:text-primary-100 font-semibold"
+                >
+                  Sign In
+                </Link>
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-primary hover:bg-primary-100 mb-2 text-white py-3 rounded-lg font-semibold transition-colors"
+            >
+              Join Educator Network
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
