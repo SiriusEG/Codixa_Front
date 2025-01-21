@@ -2,16 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { FaPenFancy } from "react-icons/fa";
+import { FaPenFancy, FaArrowRight } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import Link from "next/link";
 
 function SearchResultCard() {
-  // Dummy data with 6 results
   const [results, setResults] = useState([]);
 
   useEffect(() => {
-    // Dummy data for now
+    // Dummy data array
     const dummyData = [
       {
         id: 1,
@@ -95,68 +94,79 @@ function SearchResultCard() {
 
     // Set dummy data to results
     setResults(dummyData);
-  }, []);
+  }, []); // Empty dependency array means this runs once on mount
 
   return (
-    <div className="w-[100%]  p-3 border-l-[1.5px] border-l-[#F2EED7] rounded-md">
-      <h2 className="font-bold text-lg mb-2">Query Results</h2>
-      <div className="grid grid-cols-3  gap-1">
-        {/* Example Result Items */}
+    <div className="w-full p-6 bg-gray-50 min-h-screen">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Search Results</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {results.length === 0 ? (
-          <p>Loading results...</p>
+          <p className="text-gray-600">Loading results...</p>
         ) : (
           results.map((item) => (
-            <div key={item.id} className="p-2 border rounded-md">
-              <div className="flex flex-col gap-4 p-2 bg-white rounded-xl shadow-xl">
+            <div
+              key={item.id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="relative h-48 w-full">
                 <Image
-                  width={1500}
-                  height={1000}
                   src={item.img}
                   alt={`${item.name} image`}
-                  className="w-[334px] h-[236px] rounded-2xl"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-t-xl"
                 />
+                <div className="absolute top-2 right-2 bg-primary/90 text-white px-3 py-1 rounded-full text-sm">
+                  {item.category}
+                </div>
+              </div>
 
-                <div className="flex items-center justify-between text-gray-500">
-                  <p className="text-sm">
-                    <FaPenFancy className="inline" /> {item.category}
-                  </p>
-                  <p className="text-sm">
-                    <CiTimer className="inline" /> {item.time}
-                  </p>
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-2">
+                    <img
+                      src={item.ownerImg}
+                      alt={item.owner}
+                      className="w-8 h-8 rounded-full border-2 border-white shadow-sm"
+                    />
+                    <span className="text-gray-600 text-sm">{item.owner}</span>
+                  </div>
+                  <div className="flex items-center text-gray-500 text-sm">
+                    <CiTimer className="mr-1 text-lg" />
+                    {item.time}
+                  </div>
                 </div>
 
-                <Link href={`/resultDetails/${item.id}`}>
-                  <h5 className="mb-2 text-2xl font-medium text-gray-900">
+                <Link href={`/courses/${item.id}`}>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-3 hover:text-primary transition-colors">
                     {item.name}
-                  </h5>
+                  </h3>
                 </Link>
 
-                <p className="mb-2 text-lg font-normal text-gray-900">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                   {item.desc}
                 </p>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <img
-                      src={item.ownerImg}
-                      alt={item.owner}
-                      className="w-5 h-5 rounded-full"
-                    />
-                    <p>{item.owner}</p>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <del className="text-base font-light italic text-gray-500">
-                      ${item.price}
+                  <div className="flex flex-col">
+                    <del className="text-gray-400 text-sm">
+                      ${item.price.toFixed(2)}
                     </del>
-                    <p className="text-2xl font-bold text-primary">
+                    <span className="text-2xl font-bold text-primary">
                       $
                       {calculateDiscountedPrice(
                         item.price,
                         item.discountPercentage
-                      )}
-                    </p>
+                      ).toFixed(2)}
+                    </span>
                   </div>
+                  <Link
+                    href={`/courses/${item.id}`}
+                    className="flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors"
+                  >
+                    <span className="mr-2">View Course</span>
+                    <FaArrowRight className="text-sm" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -168,9 +178,7 @@ function SearchResultCard() {
 }
 
 function calculateDiscountedPrice(originalPrice, discountPercentage) {
-  const discount = discountPercentage / 100;
-  const finalPrice = originalPrice * (1 - discount);
-  return finalPrice;
+  return originalPrice * (1 - discountPercentage / 100);
 }
 
 export default SearchResultCard;
