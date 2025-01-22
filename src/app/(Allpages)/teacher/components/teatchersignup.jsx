@@ -15,14 +15,16 @@ const SignupTeacherForm = () => {
     const formData = new FormData(e.target);
 
     const teacherData = {
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-      age: formData.get("age"),
-      specialty: formData.get("specialty"),
-      experience: formData.get("experience"),
-      cv: formData.get("cv"),
-      courses: formData.get("courses"),
+      UserName: formData.get("UserName"),
+      FullName: formData.get("FullName"),
+      Password: formData.get("Password"),
+      ConfirmPassword: formData.get("ConfirmPassword"),
+      Email: formData.get("Email"),
+      Specialty: formData.get("Specialty"),
+      Cv: formData.get("Cv"),
+      PhoneNumber: formData.get("PhoneNumber"),
+      DateOfBirth: formData.get("DateOfBirth"),
+      Gender: formData.get("Gender"),
     };
 
     console.log(teacherData);
@@ -47,7 +49,7 @@ const SignupTeacherForm = () => {
       <div className="w-full lg:w-1/2 h-full bg-gray-50 p-8 flex flex-col justify-center">
         <Link
           href="/"
-          className="inline-flex items-center text-primary hover:text-primary-100 "
+          className="inline-flex items-center text-primary hover:text-primary-100"
         >
           <IoArrowBack className="mr-2" />
           Return Home
@@ -62,147 +64,169 @@ const SignupTeacherForm = () => {
           </h1>
 
           <div className="space-y-6">
-            {/* Personal Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  UserName *
+                </label>
+                <input
+                  type="text"
+                  name="UserName"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder=" user name for sign in"
+                  required
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name *
                 </label>
                 <input
                   type="text"
-                  name="fullName"
+                  name="FullName"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="Dr. Ahmed"
+                  placeholder=" full name"
                   required
                 />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="relative">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Password *
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="Password"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
+                  placeholder="password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3  top-11 text-[1.2rem] text-gray-400 hover:text-primary"
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </button>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
+                  Confirm Password *
+                </label>
+                <input
+                  type="password"
+                  name="ConfirmPassword"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="password confirm"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email *
                 </label>
                 <input
                   type="email"
-                  name="email"
+                  name="Email"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="ahmed@university.edu"
+                  placeholder="ex@mail.com"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  name="PhoneNumber"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  placeholder="+123456"
                   required
                 />
               </div>
             </div>
 
-            {/* Security Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Set a Password *
+                  Date of Birth *
                 </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
-                    placeholder="••••••••"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-4 text-gray-400 hover:text-primary"
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </button>
-                </div>
+                <input
+                  type="date"
+                  name="DateOfBirth"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  required
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Years of Experience *
+                  Gender *
                 </label>
-                <input
-                  type="number"
-                  name="experience"
+                <select
+                  name="Gender"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="5"
-                  min="1"
                   required
-                />
+                >
+                  <option value="true">Male</option>
+                  <option value="false">Female</option>
+                </select>
               </div>
             </div>
 
-            {/* Professional Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Age *
-                </label>
-                <input
-                  type="number"
-                  name="age"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="35"
-                  min="21"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Specialty Field *
+                  Specialty *
                 </label>
                 <input
                   type="text"
-                  name="specialty"
+                  name="Specialty"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="Computer Science"
+                  placeholder="it"
                   required
                 />
               </div>
-            </div>
 
-            {/* Documents */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Upload CV (PDF only) *
-              </label>
-              <input
-                type="file"
-                name="cv"
-                accept=".pdf"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
-                required
-              />
-            </div>
-
-            {/* Teaching Information */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Courses You Can Teach *
-              </label>
-              <textarea
-                name="courses"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                rows="3"
-                placeholder="List courses separated by commas (e.g., Mathematics, Physics)"
-                required
-              ></textarea>
-              <p className="text-center text-sm text-gray-600 mt-2">
-                Already have an account?{" "}
-                <Link
-                  href="/user/login"
-                  className="text-primary hover:text-primary-100 font-semibold"
-                >
-                  Sign In
-                </Link>
-              </p>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Upload CV (PDF only) *
+                </label>
+                <input
+                  type="file"
+                  name="Cv"
+                  accept=".pdf"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30"
+                  required
+                />
+              </div>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-100 mb-2 text-white py-3 rounded-lg font-semibold transition-colors"
+              className="w-full bg-primary hover:bg-primary-100 text-white py-3 rounded-lg font-semibold transition-colors"
             >
               Join Educator Network
             </button>
+
+            <p className="text-center text-sm text-gray-600 mt-2">
+              Already have an account?{" "}
+              <Link
+                href="/user/login"
+                className="text-primary hover:text-primary-100 font-semibold"
+              >
+                Sign In
+              </Link>
+            </p>
           </div>
         </form>
       </div>

@@ -49,82 +49,85 @@ const LoginForm = () => {
   return (
     <div
       className={`${
-        pathname == "/user/login" ? "opacity-100 " : "opacity-0 "
-      } transition-all duration-300 ease-in-out`}
+        pathname == "/user/login" ? "opacity-100" : "opacity-0"
+      } transition-all duration-300 ease-in-out p-8`}
     >
-      <form
-        className="rounded px-8 pt-6 pb-8 mb-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="mb-3">
-          <label
-            className="block font-semibold text-black text-sm mb-3"
-            htmlFor="username"
-          >
-            Username
-          </label>
-          <input
-            className="appearance-none placeholder-opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-            id="username"
-            type="text"
-            placeholder="Username"
-            {...register("userName", { required: "userName is required" })}
-          />
-        </div>
-        {errors.userName && (
-          <p className="text-red-500  justify-center">
-            {errors.userName.message}
-          </p>
-        )}
-        <div className="mb-3 relative">
-          <label
-            className="block font-semibold text-black text-sm mb-3"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            {...register("password", { required: "password is required" })}
-            className="appearance-none placeholder-opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-            id="password"
-            type={show ? "text" : "password"}
-            placeholder="Password"
-          />
-          {show ? (
-            <FaEye
-              className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
-              onClick={showPass}
+      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Username
+            </label>
+            <input
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+              id="username"
+              type="text"
+              placeholder="Enter your username"
+              {...register("userName", { required: "Username is required" })}
             />
-          ) : (
-            <FaEyeSlash
-              className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
-              onClick={showPass}
+            {errors.userName && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.userName.message}
+              </p>
+            )}
+          </div>
+
+          <div className="relative">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Password
+            </label>
+            <input
+              {...register("password", { required: "Password is required" })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
+              type={show ? "text" : "password"}
+              placeholder="Enter your password"
             />
-          )}
+            <button
+              type="button"
+              onClick={showPass}
+              className="absolute right-3 top-11 text-[1.2rem] text-gray-400 hover:text-primary"
+            >
+              {show ? <FaEye /> : <FaEyeSlash />}
+            </button>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
         </div>
-        {errors.password && (
-          <span className="text-red-500 my-2">{errors.password.message}</span>
-        )}
-        <div className="flex justify-between mt-[-5%] mb-7">
-          <Link href="/forgotpassword" className="text-[.8rem] text-cyan-600">
+
+        <div className="flex justify-end">
+          <Link
+            href="/forgotpassword"
+            className="text-sm text-primary hover:text-primary-100"
+          >
             Forgot Password?
           </Link>
         </div>
+
         {errors.root && (
-          <span className="text-red-500">{errors.root.message}</span>
+          <p className="text-red-500 text-sm text-center">
+            {errors.root.message}
+          </p>
         )}
-        <div className="flex justify-center">
-          <button
-            disabled={isSubmitting}
-            className={`bg-primary w-[150px] text-white font-semibold py-2 px-5 rounded-3xl outline-none focus:shadow-outline flex gap-2 items-center justify-center ${
-              isSubmitting && "bg-primary-100 cursor-not-allowed"
-            }`}
-            type="submit"
-          >
-            {isSubmitting ? "loggingIn " : "Login"}{" "}
-            {isSubmitting && <PuffLoader color="white" size={15} />}
-          </button>
-        </div>
+
+        <button
+          disabled={isSubmitting}
+          className={`w-full bg-primary hover:bg-primary-100 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2 ${
+            isSubmitting && "cursor-not-allowed"
+          }`}
+          type="submit"
+        >
+          {isSubmitting ? (
+            <>
+              Logging In
+              <PuffLoader color="white" size={20} />
+            </>
+          ) : (
+            "Login"
+          )}
+        </button>
       </form>
     </div>
   );

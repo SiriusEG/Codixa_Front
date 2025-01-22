@@ -8,29 +8,29 @@ const Switch = () => {
   const pathname = usePathname();
 
   return (
-    <div className="relative flex items-center justify-center bg-primary rounded-full w-72 h-12 p-1 cursor-pointer">
-      {/* Background bar that moves */}
+    <div className="relative flex items-center justify-between bg-primary rounded-[14px] w-[24rem] h-15 p-2 cursor-pointer">
+      {/* Moving background */}
       <div
-        className={`absolute h-9 w-[45%] rounded-full transition-transform duration-500 ease-in-out bg-secondary ${
-          pathname === "/user/login" ? "-translate-x-1/2" : "translate-x-1/2"
+        className={`absolute h-12 w-[calc(50%-0.5rem)] rounded-[12px] transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] bg-primary-100 ${
+          pathname === "/user/login" ? "translate-x-0" : "translate-x-full"
         }`}
       />
 
-      {/* Login Text */}
+      {/* Login Link */}
       <Link
-        href={"login"}
-        className={`z-10 w-1/2 text-center text-white ${
-          pathname === "/user/login" ? "" : "opacity-70"
+        href="/user/login"
+        className={`z-10 flex-1 text-center text-base font-semibold transition-colors py-3 ${
+          pathname === "/user/login" ? "text-white" : "text-white/80"
         }`}
       >
         Login
       </Link>
 
-      {/* Register Text */}
+      {/* Register Link */}
       <Link
-        href={"signup"}
-        className={`z-10 w-1/2 text-center text-white ${
-          pathname === "/user/login" ? "opacity-70" : ""
+        href="/user/signup"
+        className={`z-10 flex-1 text-center text-base font-semibold transition-colors py-3 ${
+          pathname === "/user/login" ? "text-white/80" : "text-white"
         }`}
       >
         Register

@@ -22,7 +22,7 @@ const DropdownMenu = () => {
 
       {/* Dropdown Menu */}
       {isDropdownVisible && (
-        <div className="absolute top-[2.5rem] left-[-10rem] bg-white shadow-lg rounded-lg py-2 w-64 z-50">
+        <div className="absolute top-[2.5rem]  right-4 bg-white shadow-lg rounded-lg py-2 w-64 z-50">
           <Link
             href="/"
             className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-primary/25 hover:text-primary transition rounded-t-lg"

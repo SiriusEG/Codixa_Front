@@ -14,87 +14,83 @@ const SignupForm = () => {
   return (
     <div
       className={`${
-        pathname == "/user/signup" ? "opacity-100 translate-y-0" : "opacity-0"
-      } transition-all duration-300 ease-in-out`}
+        pathname == "/user/signup" ? "opacity-100" : "opacity-0"
+      } transition-all duration-300 ease-in-out p-8`}
     >
-      <form className="rounded px-8 pt-6 pb-8 mb-4">
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-black text-sm mb-3"
-            htmlFor="username"
-          >
-            Username
-          </label>
-          <input
-            className="appearance-none placeholder-opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block font-semibold text-black text-sm mb-3"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            className="appearance-none placeholder-opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-          />
-        </div>
-        <div className="mb-4 relative">
-          <label
-            className="block font-semibold text-black text-sm mb-3"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="appearance-none placeholder-opacity-50 border border-primary py-3 rounded-3xl w-full px-3 mb-3 text-gray-900 leading-tight outline-none focus:shadow-outline"
-            type={show ? "text" : "password"}
-            placeholder="Password"
-          />
-          {show ? (
-            <FaEye
-              className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
-              onClick={showPass}
+      <form className="space-y-6">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Username
+            </label>
+            <input
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+              id="username"
+              type="text"
+              placeholder="Enter your username"
             />
-          ) : (
-            <FaEyeSlash
-              className="right-[1%] absolute w-[49px] bottom-[31%] cursor-pointer"
-              onClick={showPass}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Email
+            </label>
+            <input
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+              id="email"
+              type="email"
+              placeholder="Enter your email"
             />
-          )}
+          </div>
+
+          <div className="relative">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Password
+            </label>
+            <input
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
+              type={show ? "text" : "password"}
+              placeholder="Create password"
+            />
+            <button
+              type="button"
+              onClick={showPass}
+              className="absolute right-3 top-11 text-[1.2rem] text-gray-400 hover:text-primary"
+            >
+              {show ? <FaEye /> : <FaEyeSlash />}
+            </button>
+          </div>
         </div>
-        <div className="flex justify-between mt-[-5%] mb-7">
-          <div className="flex items-center gap-1">
-            <input type="checkbox" name="Remember" id="remember" />
+
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="Remember"
+              id="remember"
+              className="w-4 h-4 border-gray-300 rounded focus:ring-primary"
+            />
             <label
-              className="text-gray-600 text-[.8rem] hover:text-gray-900"
+              className="text-sm text-gray-600 hover:text-gray-900"
               htmlFor="remember"
             >
-              Remember me!
+              Remember me
             </label>
           </div>
           <Link
             href="/user/login"
-            className="text-[.8rem] cursor-pointer text-cyan-600"
+            className="text-sm text-primary hover:text-primary-100"
           >
             Have an account?
           </Link>
         </div>
-        <div className="flex justify-center">
-          <button
-            className="bg-primary w-[150px] text-white font-semibold py-2 px-5 rounded-3xl outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Register
-          </button>
-        </div>
+
+        <button
+          className="w-full bg-primary hover:bg-primary-100 text-white py-3 rounded-lg font-semibold transition-colors"
+          type="submit"
+        >
+          Register
+        </button>
       </form>
     </div>
   );
