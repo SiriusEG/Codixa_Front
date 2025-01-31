@@ -12,56 +12,49 @@ function CourseCard({ element: course }) {
   }
 
   return (
-    <div className=" w-[374px] flex flex-col gap-8 p-6  rounded-xl shadow-xl bg-white ">
-      <Image
-        width={1500}
-        height={1000}
-        src={course.img}
-        alt={`${course.name} image`}
-        className="w-[334px] h-[236px] rounded-2xl"
-      />
+    <Link href={`coursedetail/${course.id}`}>
+      <div className=" w-[374px] flex flex-col gap-8 p-6  rounded-xl shadow-xl bg-white ">
+        <Image
+          width={1500}
+          height={1000}
+          src={course.img}
+          alt={`${course.name} image`}
+          className="w-[334px] h-[236px] rounded-2xl"
+        />
 
-      <div className="flex items-center justify-between text-gray-500">
-        <p className="text-sm">
-          <FaPenFancy className="inline" /> {course.category}
-        </p>
+        <div className="flex items-center justify-between text-gray-500">
+          <p className="text-sm">
+            <FaPenFancy className="inline" /> {course.category}
+          </p>
 
-        <p className="text-sm">
-          <CiTimer className="inline" /> {course.time}
-        </p>
-      </div>
-
-      <Link href={"/coursesDetails"+ course.id}>
-        <h5 className="mb-2 text-2xl font-medium  tracking-tight text-gray-900 ">
-          {course.name}
-        </h5>
-      </Link>
-
-      <p className="mb-2 text-lg font-normal  tracking-tight text-gray-900 ">
-        {course.desc}
-      </p>
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <img
-            src={course.ownerImg}
-            alt={course.owner}
-            className="w-5 h-5 rounded-full"
-          />
-
-          <p>{course.owner}</p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <del className="text-base font-light italic text-gray-500">
-            ${course.price}
-          </del>
-          <p className="text-2xl font-bold  text-primary">
-            ${calculateDiscountedPrice(course.price, course.discountPercentage)}
+          <p className="text-sm">
+            <CiTimer className="inline" /> {course.time}
           </p>
         </div>
+
+        <Link href={"/coursesDetails" + course.id}>
+          <h5 className="mb-2 text-2xl font-medium  tracking-tight text-gray-900 ">
+            {course.name}
+          </h5>
+        </Link>
+
+        <p className="mb-2 text-lg font-normal  tracking-tight text-gray-900 ">
+          {course.desc}
+        </p>
+
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <img
+              src={course.ownerImg}
+              alt={course.owner}
+              className="w-5 h-5 rounded-full"
+            />
+
+            <p>{course.owner}</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }
 

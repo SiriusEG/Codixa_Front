@@ -66,7 +66,7 @@ export default function AnalyticsTab() {
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-white p-6 rounded-xl shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -105,20 +105,6 @@ export default function AnalyticsTab() {
             </div>
             <div className="bg-purple-100 p-3 rounded-lg">
               <FaClock className="text-primary-100 text-xl" />
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-500">Total Earnings</p>
-              <p className="text-3xl font-bold mt-2">
-                ${mockData.totalEarnings.toLocaleString()}
-              </p>
-            </div>
-            <div className="bg-purple-100 p-3 rounded-lg">
-              <FaDollarSign className="text-primary-100 text-xl" />
             </div>
           </div>
         </div>

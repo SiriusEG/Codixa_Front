@@ -75,25 +75,14 @@ export default function CourseDet() {
                 alt=""
                 className="w-[27.0625rem] "
               />
-              <div className="flex justify-between items-center text-xl font-bold">
-                <p>$66</p>
-                <p className="line-through text-[rgba(0,0,0,0.5)]">$66</p>
-                <p className="text-[rgba(0,0,0,0.5)]">50% off</p>
-              </div>
-              <p className="py-2 text-primary">11 hour left at this price</p>
+              <div className="flex justify-between items-center text-xl font-bold"></div>
               <button className="w-full h-[3.125rem] bg-primary text-white rounded-lg">
-                Buy Now
+                Send a request now
               </button>
             </div>
 
             <div className="border-y-2 my-4 b- ">
               <p className="text-2xl font-bold py-4">this course included</p>
-              <p>
-                <span className="mr-2">
-                  <GiCircularSawblade className="inline text-primary" />
-                </span>
-                money back guarantee
-              </p>
               <p className="">
                 {" "}
                 <span className="mr-2">

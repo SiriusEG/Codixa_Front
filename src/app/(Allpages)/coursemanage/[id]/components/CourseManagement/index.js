@@ -5,7 +5,6 @@ import { useState } from "react";
 import Header from "./Header";
 import SidebarNavigation from "./SidebarNavigation";
 import CurriculumTab from "./CurriculumTab";
-import PricingTab from "./PricingTab";
 import AnalyticsTab from "./analytics";
 
 export default function CourseManagement() {
@@ -23,7 +22,6 @@ export default function CourseManagement() {
           {activeTab === "curriculum" && (
             <CurriculumTab sections={sections} setSections={setSections} />
           )}
-          {activeTab === "pricing" && <PricingTab />}
           {activeTab === "analytics" && <AnalyticsTab />}
         </main>
       </div>

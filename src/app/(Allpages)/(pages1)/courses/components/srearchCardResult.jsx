@@ -22,7 +22,6 @@ function SearchResultCard() {
         category: "Design",
         time: "3 months",
         desc: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus perferendis molestias quibusdam. Harum, reprehenderit. Exercitationem!",
-        price: 100,
         discountPercentage: 20,
       },
       {
@@ -35,7 +34,6 @@ function SearchResultCard() {
         category: "Technology",
         time: "4 months",
         desc: "This course introduces you to data science concepts and tools. It covers everything from basic statistics to machine learning.",
-        price: 120,
         discountPercentage: 15,
       },
       {
@@ -48,7 +46,6 @@ function SearchResultCard() {
         category: "Programming",
         time: "6 months",
         desc: "Master both front-end and back-end technologies. Learn JavaScript, React, Node.js, and more!",
-        price: 150,
         discountPercentage: 10,
       },
       {
@@ -61,7 +58,6 @@ function SearchResultCard() {
         category: "AI & ML",
         time: "3 months",
         desc: "An introductory course to machine learning concepts, tools, and algorithms for beginners.",
-        price: 110,
         discountPercentage: 25,
       },
       {
@@ -74,7 +70,6 @@ function SearchResultCard() {
         category: "Security",
         time: "5 months",
         desc: "Learn the fundamentals of cybersecurity and protect yourself and your data online.",
-        price: 130,
         discountPercentage: 18,
       },
       {
@@ -87,7 +82,6 @@ function SearchResultCard() {
         category: "Marketing",
         time: "2 months",
         desc: "Become an expert in digital marketing strategies including SEO, content marketing, and paid ads.",
-        price: 90,
         discountPercentage: 30,
       },
     ];
@@ -148,20 +142,8 @@ function SearchResultCard() {
                 </p>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <del className="text-gray-400 text-sm">
-                      ${item.price.toFixed(2)}
-                    </del>
-                    <span className="text-2xl font-bold text-primary">
-                      $
-                      {calculateDiscountedPrice(
-                        item.price,
-                        item.discountPercentage
-                      ).toFixed(2)}
-                    </span>
-                  </div>
                   <Link
-                    href={`/courses/${item.id}`}
+                    href={`/coursedetail/${item.id}`}
                     className="flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors"
                   >
                     <span className="mr-2">View Course</span>

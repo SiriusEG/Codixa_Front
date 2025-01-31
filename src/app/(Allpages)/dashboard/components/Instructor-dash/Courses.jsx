@@ -92,19 +92,6 @@ function Courses() {
               </p>
               <p className="text-sm text-gray-600">Total Courses</p>
             </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-gray-800">
-                $
-                {courses
-                  .reduce(
-                    (acc, course) =>
-                      acc + parseFloat(course.earnings.replace(/[^0-9.]/g, "")),
-                    0
-                  )
-                  .toLocaleString()}
-              </p>
-              <p className="text-sm text-gray-600">Total Earnings</p>
-            </div>
           </div>
         </div>
       </div>
@@ -141,12 +128,6 @@ function Courses() {
                   <p className="text-sm text-gray-600 mt-1">
                     {course.students} students enrolled
                   </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-primary-100">
-                    {course.earnings}
-                  </p>
-                  <p className="text-xs text-gray-500">Total earnings</p>
                 </div>
               </div>
 

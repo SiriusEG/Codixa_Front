@@ -123,13 +123,15 @@ const InstructorDashboard = () => {
           </li>
 
           {/* Logout */}
-          <li
-            className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
-            onClick={handleLogout}
-          >
-            <AiOutlineLogout className="text-2xl" />
-            {isSidebarExpanded && <span className="font-medium">Logout</span>}
-          </li>
+          <div onClick={() => router.push("/")}>
+            <li
+              className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
+              onClick={handleLogout}
+            >
+              <AiOutlineLogout className="text-2xl" />
+              {isSidebarExpanded && <span className="font-medium">Logout</span>}
+            </li>
+          </div>
         </ul>
       </div>
 

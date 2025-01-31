@@ -23,14 +23,9 @@ export default function SidebarNavigation({ activeTab, setActiveTab }) {
       label: "Curriculum",
     },
     {
-      id: "pricing",
-      icon: <FaDollarSign />,
-      label: "Pricing",
-    },
-    {
-      id: "promotions",
-      icon: <FaTag />,
-      label: "Promotions",
+      id: "students",
+      icon: <FaUsers />,
+      label: "Students",
     },
     {
       id: "analytics",
@@ -42,11 +37,7 @@ export default function SidebarNavigation({ activeTab, setActiveTab }) {
       icon: <FaFileAlt />,
       label: "Resources",
     },
-    {
-      id: "students",
-      icon: <FaUsers />,
-      label: "Students",
-    },
+
     {
       id: "certificates",
       icon: <FaCertificate />,

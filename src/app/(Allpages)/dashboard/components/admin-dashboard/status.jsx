@@ -1,155 +1,153 @@
 "use client";
-import React from "react";
-import { Line, Bar, Doughnut } from "react-chartjs-2";
+
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
   Tooltip,
-  Legend,
-} from "chart.js";
-import { motion } from "framer-motion";
+  ResponsiveContainer,
+} from "recharts";
+import { FaUsers, FaClock, FaChartLine, FaDollarSign } from "react-icons/fa";
 
-// Register necessary chart elements with ChartJS
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-// Example chart data for various metrics
-const courseHoursData = {
-  labels: ["January", "February", "March", "April", "May", "June"],
-  datasets: [
+const mockData = {
+  totalStudents: 1452,
+  engagementRate: 68,
+  completionRate: 42,
+  totalEarnings: 25480,
+  progressData: [
+    { day: "Mon", students: 400 },
+    { day: "Tue", students: 600 },
+    { day: "Wed", students: 800 },
+    { day: "Thu", students: 550 },
+    { day: "Fri", students: 900 },
+    { day: "Sat", students: 750 },
+    { day: "Sun", students: 300 },
+  ],
+  courseRatings: [
+    { name: "Content", value: 4.8 },
+    { name: "Teaching", value: 4.7 },
+    { name: "Support", value: 4.5 },
+    { name: "Value", value: 4.6 },
+  ],
+  recentStudents: [
     {
-      label: "Hours of Courses Watched",
-      data: [50, 80, 100, 150, 200, 300],
-      borderColor: "#4F46E5", // Indigo color
-      backgroundColor: "#6366F1", // Indigo background for line points
-      fill: true,
+      name: "Sarah Johnson",
+      email: "sarah@example.com",
+      progress: 65,
+      joined: "2024-03-15",
+    },
+    {
+      name: "Mike Chen",
+      email: "mike@example.com",
+      progress: 42,
+      joined: "2024-03-14",
+    },
+    {
+      name: "Emma Wilson",
+      email: "emma@example.com",
+      progress: 88,
+      joined: "2024-03-13",
+    },
+    {
+      name: "David Kim",
+      email: "david@example.com",
+      progress: 35,
+      joined: "2024-03-12",
     },
   ],
 };
 
-const studentsEnrolledData = {
-  labels: ["January", "February", "March", "April", "May", "June"],
-  datasets: [
-    {
-      label: "Number of Students Enrolled",
-      data: [200, 250, 300, 350, 400, 500],
-      backgroundColor: "#F472B6", // Pink background for bar
-    },
-  ],
-};
-
-const revenueGeneratedData = {
-  labels: ["January", "February", "March", "April", "May", "June"],
-  datasets: [
-    {
-      label: "Revenue Generated",
-      data: [1000, 2000, 3000, 4000, 4500, 5000],
-      backgroundColor: "#10B981", // Green background for bar
-    },
-  ],
-};
-
-const courseCompletionData = {
-  labels: ["Course A", "Course B", "Course C"],
-  datasets: [
-    {
-      label: "Completion Rate",
-      data: [85, 70, 90],
-      backgroundColor: ["#4F46E5", "#F472B6", "#10B981"], // Different colors for each course
-    },
-  ],
-};
-
-// Framer Motion animations
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.8 },
-  },
-};
-
-function Status() {
-  // Calculate total revenue
-  const totalRevenue = revenueGeneratedData.datasets[0].data.reduce(
-    (a, b) => a + b,
-    0
-  );
-
+export default function Status() {
   return (
-    <motion.div
-      className="p-8 bg-gray-100 min-h-screen flex flex-col gap-10"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-    >
-      {/* Total Profit Section */}
-      <div className="bg-white p-5 rounded-lg shadow-md text-center">
-        <h2 className="text-2xl font-bold mb-2">Total Profit</h2>
-        <p className="text-4xl text-green-600">${totalRevenue}</p>
+    <div className="space-y-8">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">Total Students</p>
+              <p className="text-3xl font-bold mt-2">
+                {mockData.totalStudents}
+              </p>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-lg">
+              <FaUsers className="text-primary-100 text-xl" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">Engagement Rate</p>
+              <p className="text-3xl font-bold mt-2">
+                {mockData.engagementRate}%
+              </p>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-lg">
+              <FaChartLine className="text-primary-100 text-xl" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-500">Completion Rate</p>
+              <p className="text-3xl font-bold mt-2">
+                {mockData.completionRate}%
+              </p>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-lg">
+              <FaClock className="text-primary-100 text-xl" />
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Grid layout for charts */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Hours of Courses Watched Chart */}
-        <motion.div
-          className="bg-white p-5 rounded-lg shadow-md"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-semibold mb-4">
-            Hours of Courses Watched
-          </h2>
-          <Line data={courseHoursData} />
-        </motion.div>
+      {/* Charts */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Student Progress</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={mockData.progressData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="day" />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="students"
+                  stroke="#01623c"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-        {/* Number of Students Enrolled Chart */}
-        <motion.div
-          className="bg-white p-5 rounded-lg shadow-md"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-semibold mb-4">
-            Number of Students Enrolled
-          </h2>
-          <Bar data={studentsEnrolledData} />
-        </motion.div>
-
-        {/* Revenue Generated Chart */}
-        <motion.div
-          className="bg-white p-5 rounded-lg shadow-md"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-semibold mb-4">Revenue Generated</h2>
-          <Bar data={revenueGeneratedData} />
-        </motion.div>
-
-        {/* Course Completion Rates Chart */}
-        <motion.div
-          className="bg-white p-5 rounded-lg shadow-md"
-          whileHover={{ scale: 1.05 }}
-        >
-          <h2 className="text-xl font-semibold mb-4">
-            Course Completion Rates
-          </h2>
-          <Doughnut data={courseCompletionData} />
-        </motion.div>
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4">Course Ratings</h3>
+          <div className="h-64">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={mockData.courseRatings}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis domain={[0, 5]} />
+                <Tooltip />
+                <Bar dataKey="value" fill="#01623c" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
-    </motion.div>
+
+      {/* Recent Students Table */}
+    </div>
   );
 }
-
-export default Status;

@@ -18,6 +18,7 @@ import {
 } from "react-icons/ai";
 import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Status from "./status";
+import InstructorRequests from "./InstructorRequests";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
@@ -40,8 +41,13 @@ const AdminDashboard = () => {
             <Status />
           </div>
         );
+
       case "teachercontrol":
-        return <div>Teacher Control Content</div>;
+        return (
+          <div>
+            <InstructorRequests />;
+          </div>
+        );
       case "reports":
         return <div>Reports Content</div>;
       case "admincontrol":
@@ -135,21 +141,20 @@ const AdminDashboard = () => {
           </li>
 
           {/* Logout */}
-          <li
-            className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
-            onClick={handleLogout}
-          >
-            <AiOutlineLogout className="text-2xl" />
-            {isSidebarExpanded && <span className="font-medium">Logout</span>}
-          </li>
+          <div onClick={() => router.push("/")}>
+            <li
+              className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
+              onClick={handleLogout}
+            >
+              <AiOutlineLogout className="text-2xl" />
+              {isSidebarExpanded && <span className="font-medium">Logout</span>}
+            </li>
+          </div>
         </ul>
       </div>
 
       {/* Main Content */}
       <div className="flex-1 p-10 bg-gray-100 min-h-screen">
-        <h1 className="text-2xl font-bold mb-5">
-          {activeMenu.charAt(0).toUpperCase() + activeMenu.slice(1)}
-        </h1>
         <div>{renderContent()}</div>
       </div>
     </div>

@@ -1,33 +1,75 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
+import axios from "axios";
 
 const SignupTeacherForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const pathname = usePathname();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
     const formData = new FormData(e.target);
 
-    const teacherData = {
-      UserName: formData.get("UserName"),
-      FullName: formData.get("FullName"),
-      Password: formData.get("Password"),
-      ConfirmPassword: formData.get("ConfirmPassword"),
-      Email: formData.get("Email"),
-      Specialty: formData.get("Specialty"),
-      Cv: formData.get("Cv"),
-      PhoneNumber: formData.get("PhoneNumber"),
-      DateOfBirth: formData.get("DateOfBirth"),
-      Gender: formData.get("Gender"),
-    };
+    console.log(formData);
 
-    console.log(teacherData);
+    // Client-side validation
+    if (formData.get("Password") !== formData.get("ConfirmPassword")) {
+      alert("Passwords do not match!");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const cvFile = formData.get("Cv");
+    if (cvFile.type !== "application/pdf") {
+      alert("Please upload a PDF file for your CV");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Create ordered FormData with correct field sequence
+      const orderedFormData = new FormData();
+      orderedFormData.append("UserName", formData.get("UserName"));
+      orderedFormData.append("FullName", formData.get("FullName"));
+      orderedFormData.append("Password", formData.get("Password"));
+      orderedFormData.append(
+        "ConfirmPassword",
+        formData.get("ConfirmPassword")
+      );
+      orderedFormData.append("Email", formData.get("Email"));
+      orderedFormData.append("Specialty", formData.get("Specialty"));
+      orderedFormData.append("Cv", cvFile);
+      orderedFormData.append("PhoneNumber", formData.get("PhoneNumber"));
+      orderedFormData.append("DateOfBirth", formData.get("DateOfBirth"));
+      orderedFormData.append("Gender", formData.get("Gender"));
+      console.log(orderedFormData);
+
+      const response = await axios.post(
+        "/api/register-instructor",
+        orderedFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      alert("Registration successful!");
+      e.target.reset();
+    } catch (error) {
+      console.error("Registration error:", error);
+      const errorMessage = error.response?.data?.message || error.message;
+      alert(`Registration failed: ${errorMessage}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -57,6 +99,7 @@ const SignupTeacherForm = () => {
 
         <form
           onSubmit={handleSubmit}
+          encType="multipart/form-data"
           className="max-w-2xl mx-auto flex flex-col justify-center h-full"
         >
           <h1 className="text-3xl font-bold text-primary mb-8 text-center">
@@ -73,11 +116,10 @@ const SignupTeacherForm = () => {
                   type="text"
                   name="UserName"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder=" user name for sign in"
+                  placeholder="username"
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name *
@@ -86,7 +128,7 @@ const SignupTeacherForm = () => {
                   type="text"
                   name="FullName"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder=" full name"
+                  placeholder="Full Name"
                   required
                 />
               </div>
@@ -101,18 +143,22 @@ const SignupTeacherForm = () => {
                   type={showPassword ? "text" : "password"}
                   name="Password"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
-                  placeholder="password"
+                  placeholder="Password"
                   required
+                  minLength="8"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3  top-11 text-[1.2rem] text-gray-400 hover:text-primary"
+                  className="absolute right-3 top-11 text-gray-400 hover:text-primary"
                 >
-                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                  {showPassword ? (
+                    <FaEyeSlash size={20} />
+                  ) : (
+                    <FaEye size={20} />
+                  )}
                 </button>
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Confirm Password *
@@ -121,7 +167,7 @@ const SignupTeacherForm = () => {
                   type="password"
                   name="ConfirmPassword"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="password confirm"
+                  placeholder="Confirm Password"
                   required
                 />
               </div>
@@ -140,7 +186,6 @@ const SignupTeacherForm = () => {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Phone Number *
@@ -148,8 +193,9 @@ const SignupTeacherForm = () => {
                 <input
                   type="tel"
                   name="PhoneNumber"
+                  pattern="\+[0-9]{11,15}"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="+123456"
+                  placeholder="+201234567890"
                   required
                 />
               </div>
@@ -167,7 +213,6 @@ const SignupTeacherForm = () => {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Gender *
@@ -192,11 +237,10 @@ const SignupTeacherForm = () => {
                   type="text"
                   name="Specialty"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
-                  placeholder="it"
+                  placeholder="IT"
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Upload CV (PDF only) *
@@ -213,9 +257,10 @@ const SignupTeacherForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary-100 text-white py-3 rounded-lg font-semibold transition-colors"
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary-100 text-white py-3 rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Join Educator Network
+              {isSubmitting ? "Submitting..." : "Join Educator Network"}
             </button>
 
             <p className="text-center text-sm text-gray-600 mt-2">

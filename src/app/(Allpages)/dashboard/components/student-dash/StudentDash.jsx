@@ -23,9 +23,9 @@ const StudentDashboard = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
+    router.push("/");
     await dispatch(logout());
     window.location.reload();
-    router.push("/");
   };
 
   const renderContent = () => {
@@ -62,12 +62,12 @@ const StudentDashboard = () => {
       <div
         className={`${
           isSidebarExpanded ? "w-72" : "w-20"
-        } bg-blue-600 text-white py-8 pl-4 min-h-screen transition-all duration-300 relative`}
+        } bg-primary-100  text-white py-8 pl-4 min-h-screen transition-all duration-300 relative`}
       >
         {/* Toggle Button */}
         <button
           onClick={() => setSidebarExpanded(!isSidebarExpanded)}
-          className="absolute top-2 border-white border-2 right-[-1rem] bg-blue-600 rounded-full p-1 text-xl text-white focus:outline-none"
+          className="absolute top-2 border-white border-2 right-[-1rem] bg-primary-100  rounded-full p-1 text-xl text-white focus:outline-none"
         >
           {isSidebarExpanded ? <LuShrink /> : <LuExpand />}
         </button>
@@ -127,13 +127,15 @@ const StudentDashboard = () => {
           </li>
 
           {/* Logout */}
-          <li
-            className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
-            onClick={handleLogout}
-          >
-            <AiOutlineLogout className="text-2xl" />
-            {isSidebarExpanded && <span className="font-medium">Logout</span>}
-          </li>
+          <div onClick={() => router.push("/")}>
+            <li
+              className="flex items-center space-x-4 p-3 rounded-l-md cursor-pointer hover:bg-red-600 hover:text-white transition-all duration-300"
+              onClick={handleLogout}
+            >
+              <AiOutlineLogout className="text-2xl" />
+              {isSidebarExpanded && <span className="font-medium">Logout</span>}
+            </li>
+          </div>
         </ul>
       </div>
 
