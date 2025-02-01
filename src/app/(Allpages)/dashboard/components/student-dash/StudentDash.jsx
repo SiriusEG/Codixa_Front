@@ -17,7 +17,7 @@ import { LuExpand, LuShrink } from "react-icons/lu";
 
 const StudentDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("overview");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false);
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();

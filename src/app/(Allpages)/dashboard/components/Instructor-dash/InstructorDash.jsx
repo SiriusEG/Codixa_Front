@@ -19,7 +19,7 @@ import Courses from "./Courses";
 
 const InstructorDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false); // Toggle state
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true); // Toggle state
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();

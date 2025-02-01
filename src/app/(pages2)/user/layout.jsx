@@ -6,7 +6,7 @@ const layout = ({ children }) => {
     <div className="relative">
       <div className="  flex flex-col overflow-hidden items-center justify-center  mt-0 bg-white sm:bg-transparent px-4 py-3 sm:p-1 z-10 sm:z-0 rounded-3xl sm:rounded-none ">
         {/* upper area  */}
-        <div className="  flex w-full sm:w-96 flex-col items-center justify-center gap-6">
+        <div className="  flex w-full  flex-col items-center justify-center gap-6">
           <h4 className="text-[2rem] text-center">
             Welcome to{" "}
             <span className="text-[2.5rem] font-bold text-center text-primary">
@@ -24,7 +24,7 @@ const layout = ({ children }) => {
             industries.{" "}
           </p>
           {/* Form area */}
-          <div className="w-full max-w-sm transition-all duration-700 ease-out transform">
+          <div className="w-full transition-all duration-700 ease-out transform">
             {children}
           </div>
         </div>

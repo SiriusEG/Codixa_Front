@@ -22,7 +22,7 @@ import InstructorRequests from "./InstructorRequests";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(false); // Toggle state
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true); // Toggle state
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();
