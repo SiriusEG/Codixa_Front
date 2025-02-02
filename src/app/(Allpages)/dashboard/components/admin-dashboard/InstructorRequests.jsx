@@ -79,20 +79,18 @@ const InstructorRequests = () => {
           <tbody className="divide-y divide-gray-200">
             {requests.map((request) => (
               <tr key={request.requestId} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {request.fullName}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">{request.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 ">{request.fullName}</td>
+                <td className="px-3 py-4 whitespace-nowrap">{request.email}</td>
+                <td className="px-3 py-4 whitespace-nowrap">
                   {request.phoneNumber}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   {request.specialty}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   {request.gender}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                     ${
@@ -106,7 +104,7 @@ const InstructorRequests = () => {
                     {request.status || "Pending"}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-3 py-4 whitespace-nowrap">
                   <button
                     onClick={() => handleViewPDF(request.filePath)}
                     className="text-blue-600 hover:text-blue-900 flex items-center"
@@ -114,7 +112,7 @@ const InstructorRequests = () => {
                     <FaEye className="mr-1" /> View CV
                   </button>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                <td className="px-3 py-4 whitespace-nowrap space-x-2">
                   <button
                     onClick={() =>
                       handleStatusUpdate(request.requestId, "Approved")

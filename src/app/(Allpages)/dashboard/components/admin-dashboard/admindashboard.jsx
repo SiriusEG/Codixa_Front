@@ -13,12 +13,11 @@ import {
   AiOutlineSetting,
   AiOutlineLogout,
   AiOutlineHome,
-  AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
 } from "react-icons/ai";
 import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Status from "./status";
 import InstructorRequests from "./InstructorRequests";
+import AdminControl from "./AdminControl";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
@@ -51,7 +50,11 @@ const AdminDashboard = () => {
       case "reports":
         return <div>Reports Content</div>;
       case "admincontrol":
-        return <div>Admin Control Content</div>;
+        return (
+          <div>
+            <AdminControl />
+          </div>
+        );
       case "courses":
         return <div>Courses Content</div>;
       case "settings":
@@ -154,7 +157,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10 bg-gray-100 min-h-screen">
+      <div className="flex-1 p-10 bg-gray-100 min-h-screen max-w-full overflow-x-hidden">
         <div>{renderContent()}</div>
       </div>
     </div>
