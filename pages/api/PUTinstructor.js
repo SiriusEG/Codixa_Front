@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     try {
       const response = await fetch(
-        "https://codixa.runasp.net/api/admin/Instructor-Status",
+        "https://codixa.runasp.net/api/admin/ChangeInstructorStatus",
         {
           method: "PUT",
           headers: {

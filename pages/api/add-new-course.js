@@ -71,7 +71,8 @@ export default async function handler(req, res) {
         formData.append(
           "CourseCardPhoto",
           new Blob([fileData]),
-          file.originalFilename || `course-image-${Date.now()}${path.extname(file.newFilename)}`
+          file.originalFilename ||
+            `course-image-${Date.now()}${path.extname(file.newFilename)}`
         );
       } catch (error) {
         console.error("File read error:", error);
@@ -83,13 +84,16 @@ export default async function handler(req, res) {
     }
 
     // Send to external API
-    const response = await fetch("https://codixa.runasp.net/api/Courses/add-new-course", {
-      method: "POST",
-      body: formData,
-      headers: {
-        Authorization: authHeader,
-      },
-    });
+    const response = await fetch(
+      "https://codixa.runasp.net/api/Courses/AddNewCourse",
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: authHeader,
+        },
+      }
+    );
 
     // Handle response
     const contentType = response.headers.get("content-type");
@@ -100,7 +104,10 @@ export default async function handler(req, res) {
     if (!response.ok) {
       console.error("External API error:", responseData);
       return res.status(response.status).json({
-        error: typeof responseData === "object" ? responseData : { message: responseData },
+        error:
+          typeof responseData === "object"
+            ? responseData
+            : { message: responseData },
       });
     }
 

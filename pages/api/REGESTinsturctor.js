@@ -79,7 +79,7 @@ export default async function handler(req, res) {
     });
 
     const response = await axios.post(
-      "https://codixa.runasp.net/api/account/Register-Instructor",
+      "https://codixa.runasp.net/api/account/RegisterNewInstructor",
       externalFormData,
       {
         headers: { "Content-Type": "multipart/form-data" },

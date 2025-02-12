@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     // Forward the entire request body (including confirmPassword) to the external API
     const externalResponse = await fetch(
-      "https://codixa.runasp.net/api/account/Register-Student",
+      "https://codixa.runasp.net/api/account/RegisterNewStudent",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

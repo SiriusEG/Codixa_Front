@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     try {
       // Call the external API to fetch instructor requests
       const response = await axios.get(
-        `https://codixa.runasp.net/api/admin/Instructors-Requests`
+        `https://codixa.runasp.net/api/admin/GetInstructorsRequests`
       );
 
       // Return the fetched data as the response

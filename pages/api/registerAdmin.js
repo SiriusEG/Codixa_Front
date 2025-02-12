@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     try {
       // Forward the POST data to the external API
       const response = await axios.post(
-        "https://codixa.runasp.net/api/admin/registerAdmin",
+        "https://codixa.runasp.net/api/admin/RegisterAdmin",
         req.body,
         {
           headers: {

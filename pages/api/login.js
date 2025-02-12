@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/account/login`,
+        `${API_BASE_URL}/account/Login`,
         { UserName, Password },
         {
           headers: {

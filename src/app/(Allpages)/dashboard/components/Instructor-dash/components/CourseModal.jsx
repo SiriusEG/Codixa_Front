@@ -1,7 +1,9 @@
+"use client"
+
 import { useState, useEffect } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 
-const CourseModal = ({ isOpen, onClose, onCourseAdded }) => {
+const CourseModal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -68,7 +70,6 @@ const CourseModal = ({ isOpen, onClose, onCourseAdded }) => {
       if (!response.ok)
         throw new Error(data.error || "Failed to create course");
 
-      onCourseAdded(data.data);
       onClose();
       setFormData({ title: "", description: "", categoryId: "", image: null });
     } catch (err) {
