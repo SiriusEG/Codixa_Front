@@ -8,7 +8,7 @@ import Header from "./components/header/Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "E-learningSiriusEg",
+  title: "Codixa SiriusEg",
   description: "Full E-learning website built by Sirius team ",
   icons: { icon: "./2.png" },
 };
