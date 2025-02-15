@@ -1,151 +1,190 @@
-// components/CourseManagement/DraggableSection.js
 "use client";
-
 import { Draggable } from "react-beautiful-dnd";
 import {
-  FaRegTrashAlt,
+  FaEdit,
+  FaSave,
+  FaTrash,
+  FaPlus,
   FaGripVertical,
-  FaPlusCircle,
   FaVideo,
   FaFileAlt,
-  FaQuestionCircle,
 } from "react-icons/fa";
+import { useState } from "react";
+import { useToast } from "../context/ToastContext";
+import ConfirmationModal from "./ConfirmationModal";
 
 export default function DraggableSection({
   section,
   index,
-  setSections,
+  refreshSections,
   onAddLectureClick,
 }) {
-  const handleDeleteSection = () => {
-    setSections((prev) => prev.filter((s) => s.id !== section.id));
+  const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [sectionName, setSectionName] = useState(section.sectionName);
+  const { addToast } = useToast();
+
+  const handleDelete = async () => {
+    setShowDeleteModal(false);
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("/api/sections/Delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ sectionId: section.sectionId }),
+      });
+
+      const data = await response.json();
+      if (!response.ok)
+        throw new Error(data.message || "Failed to delete section");
+
+      addToast("Section deleted successfully 🗑️");
+      await refreshSections();
+    } catch (error) {
+      addToast(error.message, "error");
+    }
   };
 
-  const handleLectureChange = (lectureId, newData) => {
-    setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === section.id) {
-          return {
-            ...s,
-            lectures: s.lectures.map((l) =>
-              l.id === lectureId ? { ...l, ...newData } : l
-            ),
-          };
-        }
-        return s;
-      })
-    );
-  };
+  const handleSave = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("/api/sections/UpdateSectionsLessons", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify([
+          {
+            SectionId: section.sectionId,
+            SectionOrder: section.sectionOrder,
+            SectionName: sectionName,
+            Lessons:
+              section.sectionContent?.map((lesson) => ({
+                LessonId: lesson.lessonId,
+                LessonOrder: lesson.lessonOrder,
+                LessonName: lesson.lessonName,
+              })) || [],
+          },
+        ]),
+      });
 
-  const handleDeleteLecture = (lectureId) => {
-    setSections((prev) =>
-      prev.map((s) => {
-        if (s.id === section.id) {
-          return {
-            ...s,
-            lectures: s.lectures.filter((l) => l.id !== lectureId),
-          };
-        }
-        return s;
-      })
-    );
-  };
-
-  const getLectureIcon = (type) => {
-    switch (type) {
-      case "video":
-        return <FaVideo className="text-primary-100" />;
-      case "article":
-        return <FaFileAlt className="text-green-600" />;
-      case "quiz":
-        return <FaQuestionCircle className="text-red-600" />;
-      default:
-        return <FaVideo className="text-primary-100" />;
+      if (!response.ok) throw new Error("Failed to save changes");
+      setIsEditing(false);
+      addToast("Changes saved successfully 💾");
+      await refreshSections();
+    } catch (error) {
+      addToast(error.message, "error");
     }
   };
 
   return (
-    <Draggable draggableId={section.id} index={index}>
-      {(provided) => (
+    <Draggable draggableId={String(section.sectionId)} index={index}>
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className="mb-6 border rounded-lg bg-white hover:shadow-md transition-shadow"
+          className={`bg-gray-50 rounded-lg p-4 mb-4 shadow-sm transition-all ${
+            snapshot.isDragging ? "bg-blue-50 ring-2 ring-primary-100" : ""
+          }`}
         >
-          <div className="bg-gray-50 px-4 py-3 border-b flex justify-between items-center">
-            <div className="flex items-center">
-              <span
-                {...provided.dragHandleProps}
-                className="text-gray-400 mr-2 cursor-move hover:text-primary-100"
-              >
-                <FaGripVertical className="text-lg" />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2 flex-1">
+              <span {...provided.dragHandleProps}>
+                <FaGripVertical className="text-gray-400 hover:text-primary-100 cursor-move transition-colors" />
               </span>
-              <input
-                type="text"
-                value={section.title}
-                onChange={(e) => {
-                  setSections((prev) =>
-                    prev.map((s) =>
-                      s.id === section.id ? { ...s, title: e.target.value } : s
-                    )
-                  );
-                }}
-                className="bg-transparent font-medium focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 py-1 rounded"
-              />
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={sectionName}
+                  onChange={(e) => setSectionName(e.target.value)}
+                  className="font-semibold bg-white px-3 py-1 rounded border w-full focus:ring-2 focus:ring-primary-100"
+                  autoFocus
+                />
+              ) : (
+                <h3 className="font-semibold text-gray-800">
+                  {section.sectionName}
+                </h3>
+              )}
             </div>
-            <button
-              onClick={handleDeleteSection}
-              className="text-red-500 hover:text-red-600 p-1 rounded-full hover:bg-red-50"
-            >
-              <FaRegTrashAlt className="text-lg" />
-            </button>
+
+            <div className="flex items-center gap-3">
+              {isEditing ? (
+                <button
+                  onClick={handleSave}
+                  className="text-green-500 hover:text-green-600 transition-colors"
+                >
+                  <FaSave size={18} />
+                </button>
+              ) : (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="text-blue-500 hover:text-blue-600 transition-colors"
+                >
+                  <FaEdit size={18} />
+                </button>
+              )}
+              <button
+                onClick={() => setShowDeleteModal(true)}
+                className="text-red-500 hover:text-red-600 transition-colors"
+              >
+                <FaTrash size={18} />
+              </button>
+              <button
+                onClick={() => onAddLectureClick(section.sectionId)}
+                className="text-primary-100 hover:text-primary-110 transition-colors"
+              >
+                <FaPlus size={18} />
+              </button>
+            </div>
           </div>
 
-          <div className="p-4">
-            {section.lectures.map((lecture) => (
+          <div className="ml-8 space-y-2">
+            {section.sectionContent?.map((lesson) => (
               <div
-                key={lecture.id}
-                className="flex items-center mb-3 last:mb-0 group hover:bg-gray-50 p-2 rounded"
+                key={lesson.lessonId}
+                className="flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <span className="w-8 flex justify-center">
-                  {getLectureIcon(lecture.type)}
+                <div className="flex items-center gap-3 flex-1">
+                  {lesson.isVideo ? (
+                    <FaVideo className="text-blue-500" />
+                  ) : (
+                    <FaFileAlt className="text-green-500" />
+                  )}
+                  <p className="text-sm font-medium text-gray-700">
+                    {lesson.lessonName}
+                  </p>
+                  {lesson.isVideo && lesson.videoLink && (
+                    <a
+                      href={`https://codixa.runasp.net/${lesson.videoLink.replace(
+                        /\\/g,
+                        "/"
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-primary-100 hover:underline ml-2"
+                    >
+                      (Preview)
+                    </a>
+                  )}
+                </div>
+                <span className="text-xs text-gray-500">
+                  Order: {lesson.lessonOrder}
                 </span>
-                <input
-                  type="text"
-                  value={lecture.title}
-                  onChange={(e) =>
-                    handleLectureChange(lecture.id, { title: e.target.value })
-                  }
-                  className="flex-1 mx-4 bg-transparent focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 py-1 rounded"
-                  placeholder="Lecture title"
-                />
-                <input
-                  type="text"
-                  value={lecture.duration}
-                  onChange={(e) =>
-                    handleLectureChange(lecture.id, {
-                      duration: e.target.value,
-                    })
-                  }
-                  className="w-20 text-sm text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 px-2 py-1 rounded"
-                  placeholder="0:00"
-                />
-                <button
-                  onClick={() => handleDeleteLecture(lecture.id)}
-                  className="ml-2 text-red-400 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:text-red-600"
-                >
-                  <FaRegTrashAlt className="text-sm" />
-                </button>
               </div>
             ))}
-            <button
-              onClick={() => onAddLectureClick(section.id)}
-              className="text-primary-100 hover:text-purple-700 flex items-center mt-4 px-2 py-1 rounded hover:bg-purple-50 w-fit"
-            >
-              <FaPlusCircle className="mr-2" />
-              Add Lecture
-            </button>
           </div>
+
+          <ConfirmationModal
+            isOpen={showDeleteModal}
+            onClose={() => setShowDeleteModal(false)}
+            onConfirm={handleDelete}
+            title="Delete Section"
+            message="Are you sure you want to delete this section? All lessons in this section will be permanently removed."
+          />
         </div>
       )}
     </Draggable>

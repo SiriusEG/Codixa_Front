@@ -1,14 +1,14 @@
-// components/CourseManagement/Header.js
 "use client";
-
-export default function Header() {
+export default function Header({ courseName }) {
   return (
     <header className="bg-white shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Managing:{" "}
-          <span className="text-primary-100">FarLand Frontend Course</span>
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <h1 className="text-xl font-semibold text-gray-800">
+          {courseName || "Course Management"}
         </h1>
+        <div className="flex items-center gap-4">
+          {/* Add any header buttons or controls here */}
+        </div>
       </div>
     </header>
   );

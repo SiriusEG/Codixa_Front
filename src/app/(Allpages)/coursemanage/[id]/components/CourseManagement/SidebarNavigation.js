@@ -10,13 +10,18 @@ import {
   FaUsers,
   FaCertificate,
   FaArrowLeft,
+  FaInfo,
 } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 export default function SidebarNavigation({ activeTab, setActiveTab }) {
   const router = useRouter();
   const tabs = [
-    // Keep original tabs array unchanged
+    {
+      id: "course info",
+      icon: <FaInfo />,
+      label: "course info",
+    },
     {
       id: "curriculum",
       icon: <FaChalkboardTeacher />,

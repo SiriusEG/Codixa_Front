@@ -9,22 +9,27 @@ function Courses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState(null);
 
   useEffect(() => {
     fetchCourses();
-  }, []);
+  }, [currentPage]);
 
   const fetchCourses = async () => {
     setLoading(true);
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/courses", {
+      const response = await fetch(`/api/courses?page=${currentPage}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) throw new Error("Failed to fetch courses");
       const data = await response.json();
-      setCourses(data);
+      setCourses(data.courses);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching courses:", error);
       alert(error.message);
@@ -33,32 +38,35 @@ function Courses() {
     }
   };
 
-  const handleDelete = async (courseId) => {
-    console.log(courseId);
+  const handleDeleteConfirmation = (courseId) => {
+    setCourseToDelete(courseId);
+    setShowDeleteModal(true);
+  };
 
-    if (window.confirm("Are you sure you want to delete this course?")) {
-      try {
-        const token = sessionStorage.getItem("token");
-        const response = await fetch("/api/delete", {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            courseId: courseId,
-          },
-        });
+  const handleDelete = async () => {
+    setShowDeleteModal(false);
+    if (!courseToDelete) return;
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to delete course");
-        }
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("/api/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ courseId: courseToDelete }),
+      });
 
-        await fetchCourses(); // Refresh course list
-        alert("Course deleted successfully");
-      } catch (error) {
-        console.error("Error deleting course:", error);
-        alert(error.message);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete course");
       }
+
+      await fetchCourses();
+    } catch (error) {
+      console.error("Error deleting course:", error);
+      alert(error.message);
     }
   };
 
@@ -77,6 +85,23 @@ function Courses() {
           <FaPlusCircle className="mr-2" />
           Create New Course
         </button>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center my-6 gap-2">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            onClick={() => setCurrentPage(page)}
+            className={`px-4 py-2 rounded ${
+              currentPage === page
+                ? "bg-primary-100 text-white"
+                : "bg-gray-200 hover:bg-gray-300"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
       </div>
 
       {/* Loading State */}
@@ -127,7 +152,7 @@ function Courses() {
                       Manage
                     </Link>
                     <button
-                      onClick={() => handleDelete(course.courseId)}
+                      onClick={() => handleDeleteConfirmation(course.courseId)}
                       className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
                     >
                       <FaTrash className="mr-2" />
@@ -148,7 +173,34 @@ function Courses() {
         </div>
       )}
 
-      {/* Course Modal */}
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full">
+            <h3 className="text-lg font-semibold mb-4">Delete Course</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this course? This action cannot be
+              undone.
+            </p>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Course Creation/Edit Modal */}
       {isModalOpen && (
         <CourseModal
           isOpen={isModalOpen}

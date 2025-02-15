@@ -6,15 +6,18 @@ export default async function handler(req, res) {
   const { courseId } = req.body;
   const authHeader = req.headers.authorization;
 
+  if (!courseId) {
+    return res.status(400).json({ message: "Course ID is required" });
+  }
+
   try {
     const response = await fetch(
-      "https://codixa.runasp.net/api/Courses/Delete",
+      `https://codixa.runasp.net/api/Courses/delete/${courseId}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: authHeader,
-          courseId: courseId,
         },
       }
     );
