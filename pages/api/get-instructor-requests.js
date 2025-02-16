@@ -1,15 +1,20 @@
 import axios from "axios";
-const API_BASE_URL = process.env.API_BASE_URL;
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      // Call the external API to fetch instructor requests
+      const page = req.query.page || 1;
+      const token = req.headers.authorization;
+
       const response = await axios.get(
-        `https://codixa.runasp.net/api/admin/GetInstructorsRequests`
+        `https://codixa.runasp.net/api/admin/GetInstructorsRequests/${page}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
-      // Return the fetched data as the response
       res.status(200).json(response.data);
     } catch (error) {
       console.error("Error fetching instructor requests:", error);
