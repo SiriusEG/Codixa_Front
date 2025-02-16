@@ -1,3 +1,4 @@
+// Frontend: components/CourseInfo.js
 "use client";
 import { useState, useEffect } from "react";
 import { useToast } from "../context/ToastContext";
@@ -5,22 +6,22 @@ import { useToast } from "../context/ToastContext";
 export default function CourseInfo({ courseData, refreshData }) {
   const { addToast } = useToast();
   const [formData, setFormData] = useState({
-    courseName: "",
-    courseDescription: "",
-    categoryId: 0,
-    isPublished: false,
-    courseCardPhotoPath: null,
+    CourseName: "",
+    CourseDescription: "",
+    IsPublished: false,
+    CourseCardPhoto: null,
   });
+  const [originalData, setOriginalData] = useState({});
   const [imagePreview, setImagePreview] = useState("");
 
   useEffect(() => {
     if (courseData) {
+      setOriginalData(courseData);
       setFormData({
-        courseName: courseData.courseName,
-        courseDescription: courseData.courseDescription,
-        categoryId: courseData.categoryId,
-        isPublished: courseData.isPublished,
-        courseCardPhotoPath: courseData.courseCardPhotoPath,
+        CourseName: courseData.courseName,
+        CourseDescription: courseData.courseDescription,
+        IsPublished: courseData.isPublished,
+        CourseCardPhoto: null,
       });
       setImagePreview(
         courseData.courseCardPhotoPath
@@ -35,59 +36,70 @@ export default function CourseInfo({ courseData, refreshData }) {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file) {
-      setImagePreview("");
-      setFormData((prev) => ({ ...prev, courseCardPhotoPath: null }));
-      return;
-    }
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
-      setFormData((prev) => ({ ...prev, courseCardPhotoPath: file }));
+      setFormData((prev) => ({ ...prev, CourseCardPhoto: file }));
     };
     reader.readAsDataURL(file);
-  };
-
-  const handleRemoveImage = () => {
-    setImagePreview("");
-    setFormData((prev) => ({ ...prev, courseCardPhotoPath: null }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem("token");
-      const formPayload = new FormData();
-
-      // Append all fields
-      formPayload.append("id", courseData.courseId);
-      formPayload.append("courseName", formData.courseName);
-      formPayload.append("courseDescription", formData.courseDescription);
-      formPayload.append("categoryId", formData.categoryId);
-      formPayload.append("isPublished", formData.isPublished);
-
-      // Handle image
-      if (formData.courseCardPhotoPath instanceof File) {
-        formPayload.append("image", formData.courseCardPhotoPath);
-      } else if (formData.courseCardPhotoPath === null) {
-        formPayload.append("courseCardPhotoPath", "null");
+      if (!token) {
+        addToast("Authentication required", "error");
+        return;
       }
 
-      const response = await fetch("/api/updateinfo", {
+      const formPayload = new FormData();
+      formPayload.append("id", courseData.courseId);
+
+      if (formData.CourseName !== originalData.courseName) {
+        formPayload.append("CourseName", formData.CourseName);
+      }
+      if (formData.CourseDescription !== originalData.courseDescription) {
+        formPayload.append("CourseDescription", formData.CourseDescription);
+      }
+      if (formData.IsPublished !== originalData.isPublished) {
+        formPayload.append("IsPublished", formData.IsPublished.toString());
+      }
+      formPayload.append("CategoryId", originalData.categoryId.toString());
+
+      if (formData.CourseCardPhoto instanceof File) {
+        formPayload.append("CourseCardPhoto", formData.CourseCardPhoto);
+      }
+
+      const response = await fetch("/api/update", {
         method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formPayload,
       });
 
-      if (!response.ok) throw new Error("Update failed");
+      const contentType = response.headers.get("content-type");
+      let data;
 
-      addToast("Course updated successfully!");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = { message: text };
+        }
+      }
+
+      if (!response.ok) throw new Error(data.message || "Update failed");
+
+      addToast(data.message || "Course updated successfully!");
       await refreshData();
     } catch (error) {
       addToast(error.message, "error");
+      console.error("Update error:", error);
     }
   };
 
@@ -95,45 +107,43 @@ export default function CourseInfo({ courseData, refreshData }) {
     <div className="bg-white rounded-xl shadow-sm p-6">
       <h2 className="text-2xl font-semibold mb-6">Course Information</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Image Upload Section */}
+        {/* Current Image - Fixed Line */}
         <div>
-          <label className="block text-sm font-medium mb-2">Course Image</label>
+          <label className="block text-sm font-medium mb-2">
+            Current Image
+          </label>
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Course preview"
+              className="w-48 h-48 object-cover rounded-lg border-2 border-gray-200"
+            />
+          )}
+        </div>
+
+        {/* Image Upload */}
+        <div>
+          <label className="block text-sm font-medium mb-2">Update Image</label>
           <div className="flex items-center gap-4">
-            {imagePreview && (
-              <div className="relative">
-                <img
-                  src={imagePreview}
-                  alt="Course preview"
-                  className="w-32 h-32 object-cover rounded-lg"
-                />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full hover:bg-red-600"
-                >
-                  ×
-                </button>
-              </div>
-            )}
             <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary-100 file:text-white hover:file:bg-primary-110"
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark"
             />
           </div>
         </div>
 
-        {/* Other Form Fields */}
+        {/* Form Fields */}
         <div>
           <label className="block text-sm font-medium mb-2">Course Name</label>
           <input
             type="text"
-            value={formData.courseName}
+            value={formData.CourseName}
             onChange={(e) =>
-              setFormData((prev) => ({ ...prev, courseName: e.target.value }))
+              setFormData((prev) => ({ ...prev, CourseName: e.target.value }))
             }
-            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
+            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             required
           />
         </div>
@@ -141,35 +151,35 @@ export default function CourseInfo({ courseData, refreshData }) {
         <div>
           <label className="block text-sm font-medium mb-2">Description</label>
           <textarea
-            value={formData.courseDescription}
+            value={formData.CourseDescription}
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                courseDescription: e.target.value,
+                CourseDescription: e.target.value,
               }))
             }
-            className="w-full px-4 py-2 border rounded-lg h-32 focus:ring-2 focus:ring-primary-100"
+            className="w-full px-4 py-2 border rounded-lg h-32 focus:ring-2 focus:ring-primary focus:border-primary"
           />
         </div>
 
         <div className="flex items-center gap-3">
           <input
             type="checkbox"
-            checked={formData.isPublished}
+            checked={formData.IsPublished}
             onChange={(e) =>
               setFormData((prev) => ({
                 ...prev,
-                isPublished: e.target.checked,
+                IsPublished: e.target.checked,
               }))
             }
-            className="w-5 h-5 text-primary-100 rounded focus:ring-primary-100"
+            className="w-5 h-5 text-primary rounded focus:ring-primary"
           />
           <label className="text-sm font-medium">Publish Course</label>
         </div>
 
         <button
           type="submit"
-          className="px-6 py-2 bg-primary-100 text-white rounded-lg hover:bg-primary-110 transition-colors"
+          className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
         >
           Save Changes
         </button>

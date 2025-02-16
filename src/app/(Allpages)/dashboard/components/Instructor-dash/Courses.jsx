@@ -73,7 +73,7 @@ function Courses() {
   return (
     <div className="container mx-auto p-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start  md:items-center mb-8">
         <div className="mb-4 md:mb-0">
           <h1 className="text-3xl font-bold text-gray-800">Your Courses</h1>
           <p className="text-gray-600 mt-2">Manage and track your courses</p>
@@ -87,23 +87,6 @@ function Courses() {
         </button>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center my-6 gap-2">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={`px-4 py-2 rounded ${
-              currentPage === page
-                ? "bg-primary-100 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-            {page}
-          </button>
-        ))}
-      </div>
-
       {/* Loading State */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -111,7 +94,7 @@ function Courses() {
         </div>
       ) : (
         /* Courses Grid */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
           {courses.map((course) => (
             <div
               key={course.courseId}
@@ -163,6 +146,22 @@ function Courses() {
               </div>
             </div>
           ))}
+          {/* Pagination Controls */}
+          <div className="col-span-full flex justify-center gap-2 my-6">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-4 py-2 rounded transition-colors ${
+                  currentPage === page
+                    ? "bg-primary-100 text-white"
+                    : "bg-gray-200 hover:bg-gray-300"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
