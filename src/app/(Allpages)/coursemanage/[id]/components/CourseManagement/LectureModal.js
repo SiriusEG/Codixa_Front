@@ -9,12 +9,12 @@ export default function LectureModal({
   refreshSections,
 }) {
   const [formData, setFormData] = useState({
-    lessonName: "",
-    isVideo: true,
-    videoLink: "",
-    lessonText: "",
-    lessonOrder: 1,
-    isForPreview: false,
+    LessonName: "",
+    IsVideo: "true",
+    Video: "",
+    LessonText: "",
+    LessonOrder: "1",
+    IsForpreview: "false",
   });
   const { addToast } = useToast();
 
@@ -23,19 +23,19 @@ export default function LectureModal({
     try {
       const token = sessionStorage.getItem("token");
       const payload = {
-        sectionId,
+        SectionId: sectionId.toString(),
         ...formData,
-        lessonOrder: Number(formData.lessonOrder),
+        LessonOrder: formData.LessonOrder, // Keep as string if backend expects string
       };
 
-      if (formData.isVideo && formData.videoLink) {
-        payload.videoLink = formData.videoLink.replace(
+      if (formData.IsVideo === "true" && formData.Video) {
+        payload.Video = formData.Video.replace(
           "https://codixa.runasp.net/",
           ""
         );
       }
 
-      const response = await fetch("/api/sections/AddNewLesson", {
+      const response = await fetch("/api/lessonadd", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,12 +50,12 @@ export default function LectureModal({
       onClose();
       addToast("Lecture added successfully 🎉");
       setFormData({
-        lessonName: "",
-        isVideo: true,
-        videoLink: "",
-        lessonText: "",
-        lessonOrder: 1,
-        isForPreview: false,
+        LessonName: "",
+        IsVideo: "true",
+        Video: "",
+        LessonText: "",
+        LessonOrder: "1",
+        IsForpreview: "false",
       });
     } catch (error) {
       addToast(error.message, "error");
@@ -78,9 +78,9 @@ export default function LectureModal({
             <input
               type="text"
               required
-              value={formData.lessonName}
+              value={formData.LessonName}
               onChange={(e) =>
-                setFormData({ ...formData, lessonName: e.target.value })
+                setFormData({ ...formData, LessonName: e.target.value })
               }
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100 focus:border-transparent"
             />
@@ -91,11 +91,11 @@ export default function LectureModal({
               Content Type
             </label>
             <select
-              value={formData.isVideo ? "video" : "text"}
+              value={formData.IsVideo === "true" ? "video" : "text"}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  isVideo: e.target.value === "video",
+                  IsVideo: e.target.value === "video" ? "true" : "false",
                 })
               }
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
@@ -105,7 +105,7 @@ export default function LectureModal({
             </select>
           </div>
 
-          {formData.isVideo ? (
+          {formData.IsVideo === "true" ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Video Path
@@ -116,9 +116,9 @@ export default function LectureModal({
                 </span>
                 <input
                   type="text"
-                  value={formData.videoLink}
+                  value={formData.Video}
                   onChange={(e) =>
-                    setFormData({ ...formData, videoLink: e.target.value })
+                    setFormData({ ...formData, Video: e.target.value })
                   }
                   className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
                   placeholder="uploads/path/to/video.mp4"
@@ -131,15 +131,46 @@ export default function LectureModal({
                 Lesson Content
               </label>
               <textarea
-                value={formData.lessonText}
+                value={formData.LessonText}
                 onChange={(e) =>
-                  setFormData({ ...formData, lessonText: e.target.value })
+                  setFormData({ ...formData, LessonText: e.target.value })
                 }
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
                 rows="4"
               />
             </div>
           )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Lesson Order
+            </label>
+            <input
+              type="number"
+              value={formData.LessonOrder}
+              onChange={(e) =>
+                setFormData({ ...formData, LessonOrder: e.target.value })
+              }
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={formData.IsForpreview === "true"}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  IsForpreview: e.target.checked ? "true" : "false",
+                })
+              }
+              className="h-4 w-4 rounded border-gray-300 text-primary-100 focus:ring-primary-100"
+            />
+            <label className="text-sm font-medium text-gray-700">
+              Available for Preview
+            </label>
+          </div>
 
           <div className="flex justify-end gap-4 mt-6">
             <button

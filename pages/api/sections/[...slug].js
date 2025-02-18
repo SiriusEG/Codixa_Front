@@ -14,14 +14,17 @@ export default async function handler(req, res) {
         return res.status(response.status).json(await response.json());
 
       case "POST":
-        const addResponse = await fetch(`${baseUrl}/AddNewSection`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(req.body),
-        });
+        const addResponse = await fetch(
+          `https://codixa.runasp.net/api/Lesson/AddNewLesson`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(req.body),
+          }
+        );
         return res.status(addResponse.status).json(await addResponse.json());
 
       case "DELETE":

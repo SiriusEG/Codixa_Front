@@ -2,13 +2,16 @@ export default async function handler(req, res) {
   if (req.method === "PUT") {
     const { requestId, newStatus } = req.body;
 
+    // Fixing the status assignment
+    let statusio = newStatus === "Approved" ? 1 : 0;
+
     try {
       const response = await fetch(
         "https://codixa.runasp.net/api/admin/ChangeInstructorStatus",
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ requestId, newStatus }),
+          body: JSON.stringify({ requestId, newStatus: statusio }),
         }
       );
 

@@ -24,13 +24,15 @@ export default function CourseInfo({ courseData, refreshData }) {
         CourseCardPhoto: null,
       });
       setImagePreview(
-        courseData.courseCardPhotoPath
-          ? `https://codixa.runasp.net/${courseData.courseCardPhotoPath.replace(
+        courseData.courseCardPhotoFilePath
+          ? `https://codixa.runasp.net/${courseData.courseCardPhotoFilePath.replace(
               /\\/g,
               "/"
             )}`
           : ""
       );
+      console.log("Image URL:", courseData.CourseCardPhoto);
+      console.log(imagePreview);
     }
   }, [courseData]);
 

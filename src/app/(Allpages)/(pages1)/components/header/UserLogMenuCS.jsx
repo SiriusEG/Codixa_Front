@@ -11,23 +11,28 @@ import { useState } from "react";
 import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import { useRouter } from "next/navigation";
 import { clearUserInfo } from "../../../../../../lib/reducers/user/userSlice";
-
-const menuOptions = [
-  { icon: MdDashboard, text: "dashBoard", route: "/dashboard" },
-  { icon: CiLogout, text: "logOut", route: "/", isLogout: true },
-];
+import { FaUser } from "react-icons/fa"; // Import profile icon
 
 const UserLogMenuCS = () => {
   const [open, setOpen] = useState(false);
-
   const { userInfo, tokenChecking } = useAppSelector((state) => state.user);
+
+  // Dynamically set menu options based on role
+  const menuOptions = [
+    {
+      icon: userInfo?.role === "Student" ? FaUser : MdDashboard,
+      text: userInfo?.role === "Student" ? "Profile" : "Dashboard",
+      route: userInfo?.role === "Student" ? "/dashboard" : "/dashboard",
+    },
+    { icon: CiLogout, text: "Log Out", route: "/", isLogout: true },
+  ];
 
   return (
     <>
       {tokenChecking ? (
         <MoonLoader color="#20B486" size={15} />
       ) : userInfo ? (
-        // drop menu
+        // Drop menu
         <div className="p-8 flex items-center justify-center bg-white">
           <motion.div animate={open ? "open" : "closed"} className="relative">
             <button
@@ -37,8 +42,7 @@ const UserLogMenuCS = () => {
             >
               <span className="text-sm font-medium text-gray-700">
                 {userInfo.role}
-              </span>{" "}
-              {/* Added role here */}
+              </span>
               <motion.span variants={iconVariants}>
                 <FiChevronDown />
               </motion.span>
@@ -116,20 +120,15 @@ const Option = ({ text, Icon, setOpen, route, isLogout = false }) => {
 
 export default UserLogMenuCS;
 
+// Animation Variants
 const wrapperVariants = {
   open: {
     scaleY: 1,
-    transition: {
-      when: "beforeChildren",
-      staggerChildren: 0.1,
-    },
+    transition: { when: "beforeChildren", staggerChildren: 0.1 },
   },
   closed: {
     scaleY: 0,
-    transition: {
-      when: "afterChildren",
-      staggerChildren: 0.1,
-    },
+    transition: { when: "afterChildren", staggerChildren: 0.1 },
   },
 };
 
@@ -139,20 +138,8 @@ const iconVariants = {
 };
 
 const itemVariants = {
-  open: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      when: "beforeChildren",
-    },
-  },
-  closed: {
-    opacity: 0,
-    y: -15,
-    transition: {
-      when: "afterChildren",
-    },
-  },
+  open: { opacity: 1, y: 0, transition: { when: "beforeChildren" } },
+  closed: { opacity: 0, y: -15, transition: { when: "afterChildren" } },
 };
 
 const actionIconVariants = {
