@@ -11,37 +11,38 @@ export default function LectureModal({
   const [formData, setFormData] = useState({
     LessonName: "",
     IsVideo: "true",
-    Video: "",
+    Video: null, // File input
     LessonText: "",
     LessonOrder: "1",
     IsForpreview: "false",
   });
+
   const { addToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const token = sessionStorage.getItem("token");
-      const payload = {
-        SectionId: sectionId.toString(),
-        ...formData,
-        LessonOrder: formData.LessonOrder, // Keep as string if backend expects string
-      };
+
+      const formPayload = new FormData();
+      formPayload.append("SectionId", sectionId.toString());
+      formPayload.append("LessonName", formData.LessonName);
+      formPayload.append("IsVideo", formData.IsVideo);
+      formPayload.append("LessonOrder", formData.LessonOrder);
+      formPayload.append("IsForpreview", formData.IsForpreview);
 
       if (formData.IsVideo === "true" && formData.Video) {
-        payload.Video = formData.Video.replace(
-          "https://codixa.runasp.net/",
-          ""
-        );
+        formPayload.append("Video", formData.Video); // Attach file
+      } else {
+        formPayload.append("LessonText", formData.LessonText);
       }
 
-      const response = await fetch("/api/lessonadd", {
+      const response = await fetch("/api/sec/+lec", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
+        body: formPayload, // Send as multipart/form-data
       });
 
       if (!response.ok) throw new Error("Failed to add lesson");
@@ -49,10 +50,11 @@ export default function LectureModal({
       await refreshSections();
       onClose();
       addToast("Lecture added successfully 🎉");
+
       setFormData({
         LessonName: "",
         IsVideo: "true",
-        Video: "",
+        Video: null,
         LessonText: "",
         LessonOrder: "1",
         IsForpreview: "false",
@@ -65,7 +67,7 @@ export default function LectureModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[999]">
+    <div className="fixed inset-0 bg-[#00000051] bg-opacity-50 flex items-center justify-center p-4 z-[999]">
       <div className="bg-white rounded-xl p-6 w-full max-w-md">
         <h3 className="text-2xl font-bold text-gray-800 mb-6">
           Add New Lecture
@@ -108,22 +110,16 @@ export default function LectureModal({
           {formData.IsVideo === "true" ? (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Video Path
+                Video File
               </label>
-              <div className="flex items-center gap-2">
-                <span className="text-gray-500 whitespace-nowrap">
-                  codixa.runasp.net/
-                </span>
-                <input
-                  type="text"
-                  value={formData.Video}
-                  onChange={(e) =>
-                    setFormData({ ...formData, Video: e.target.value })
-                  }
-                  className="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
-                  placeholder="uploads/path/to/video.mp4"
-                />
-              </div>
+              <input
+                type="file"
+                accept="video/*"
+                onChange={(e) =>
+                  setFormData({ ...formData, Video: e.target.files[0] })
+                }
+                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary-100"
+              />
             </div>
           ) : (
             <div>

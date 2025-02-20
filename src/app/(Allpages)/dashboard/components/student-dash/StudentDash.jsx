@@ -23,9 +23,11 @@ const StudentDashboard = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    router.push("/");
     await dispatch(logout());
-    window.location.reload();
+    router.replace("/");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
   };
 
   const renderContent = () => {

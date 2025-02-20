@@ -28,8 +28,10 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     await dispatch(logout());
-    window.location.reload();
-    router.push("/");
+    router.replace("/");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
   };
 
   const renderContent = () => {
@@ -157,7 +159,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-10 bg-gray-100 min-h-screen max-w-full overflow-x-hidden">
+      <div className="flex-1 p-2 bg-gray-50 min-h-screen max-w-full overflow-x-hidden">
         <div>{renderContent()}</div>
       </div>
     </div>

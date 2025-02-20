@@ -1,12 +1,12 @@
-'use client';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import DraggableSection from './DraggableSection';
-import LectureModal from './LectureModal';
-import { useState, useEffect } from 'react';
-import { FaPlusCircle, FaSave } from 'react-icons/fa';
-import { useToast } from '../context/ToastContext';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+"use client";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import DraggableSection from "./DraggableSection";
+import LectureModal from "./LectureModal";
+import { useState, useEffect } from "react";
+import { FaPlusCircle, FaSave } from "react-icons/fa";
+import { useToast } from "../context/ToastContext";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function CurriculumTab({ courseId }) {
   const [sections, setSections] = useState([]);
@@ -23,17 +23,19 @@ export default function CurriculumTab({ courseId }) {
   const fetchSections = async () => {
     try {
       setLoading(true);
-      const token = sessionStorage.getItem('token');
-      const response = await fetch(`/api/sections/GetAllSections/${courseId}`, {
+      const token = sessionStorage.getItem("token");
+
+      const response = await fetch(`/api/sec/getAllSections/${courseId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (!response.ok) throw new Error('Failed to fetch sections');
+      if (!response.ok) throw new Error("Failed to fetch sections");
+
       const data = await response.json();
       setSections(data);
       setHasOrderChanged(false);
     } catch (error) {
-      addToast(error.message, 'error');
+      addToast(error.message, "error");
     } finally {
       setLoading(false);
     }
@@ -57,11 +59,11 @@ export default function CurriculumTab({ courseId }) {
 
   const handleSaveOrder = async () => {
     try {
-      const token = sessionStorage.getItem('token');
-      const response = await fetch('/api/sections/UpdateSectionsLessons', {
-        method: 'PUT',
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("/api/sec/updateSectionsLessons", {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(
@@ -80,21 +82,21 @@ export default function CurriculumTab({ courseId }) {
         ),
       });
 
-      if (!response.ok) throw new Error('Failed to save order');
-      addToast('Order saved successfully 💾');
+      if (!response.ok) throw new Error("Failed to save order");
+      addToast("Order saved successfully 💾");
       setHasOrderChanged(false);
     } catch (error) {
-      addToast(error.message, 'error');
+      addToast(error.message, "error");
     }
   };
 
   const handleAddSection = async () => {
     try {
-      const token = sessionStorage.getItem('token');
-      const response = await fetch('/api/sections/AddNewSection', {
-        method: 'POST',
+      const token = sessionStorage.getItem("token");
+      const response = await fetch("/api/sec/+sec", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
@@ -104,11 +106,11 @@ export default function CurriculumTab({ courseId }) {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to add section');
+      if (!response.ok) throw new Error("Failed to add section");
       await fetchSections();
-      addToast('Section added successfully 🎉');
+      addToast("Section added successfully 🎉");
     } catch (error) {
-      addToast(error.message, 'error');
+      addToast(error.message, "error");
     }
   };
 

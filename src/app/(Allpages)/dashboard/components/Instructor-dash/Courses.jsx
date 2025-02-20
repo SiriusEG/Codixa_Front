@@ -4,6 +4,7 @@ import { FaPlusCircle, FaEdit, FaTrash } from "react-icons/fa";
 import Link from "next/link";
 import { ClipLoader } from "react-spinners";
 import CourseModal from "./components/CourseModal";
+import { motion } from "framer-motion";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -22,7 +23,7 @@ function Courses() {
     setLoading(true);
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`/api/courses?page=${currentPage}`, {
+      const response = await fetch(`/api/crs/gtcrs?page=${currentPage}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -49,7 +50,7 @@ function Courses() {
 
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/delete", {
+      const response = await fetch("/api/crs/delcrs", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -63,10 +64,11 @@ function Courses() {
         throw new Error(errorData.message || "Failed to delete course");
       }
 
+      console.log("Course deleted successfully:", courseToDelete);
       await fetchCourses();
     } catch (error) {
       console.error("Error deleting course:", error);
-      alert(error.message);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -96,11 +98,15 @@ function Courses() {
         /* Courses Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
           {courses.map((course) => (
-            <div
+            <motion.div
               key={course.courseId}
-              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 flex flex-col"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <div className="relative">
+              <div className="relative min-h-[25rem] flex flex-col">
+                {/* Image */}
                 <img
                   src={
                     course.courseCardPhotoPath
@@ -113,20 +119,28 @@ function Courses() {
                   alt={course.courseName}
                   className="w-full h-48 object-cover rounded-t-xl"
                 />
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg">{course.courseName}</h3>
+
+                {/* Content */}
+                <div className="p-4 flex-1 flex flex-col">
+                  <div className="flex flex-row justify-between items-center">
+                    <h3 className="font-semibold text-lg">
+                      {course.courseName}
+                    </h3>
+                    <p
+                      className={` text-sm font-semibold ${
+                        course.isPublished ? "text-green-500" : "text-red-500"
+                      }`}
+                    >
+                      {course.isPublished ? "Published" : "Unpublished"}
+                    </p>
+                  </div>
                   <p className="text-sm text-gray-600">{course.categoryName}</p>
                   <p className="text-gray-700 text-sm mt-2 line-clamp-3">
                     {course.courseDescription}
                   </p>
-                  <p
-                    className={`mt-2 text-sm font-semibold ${
-                      course.isPublished ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    {course.isPublished ? "Published" : "Unpublished"}
-                  </p>
-                  <div className="flex justify-between items-center border-t pt-4 mt-4 gap-2">
+
+                  {/* Actions */}
+                  <div className="flex justify-between items-center border-t pt-4 mt-auto gap-2">
                     <Link
                       href={`/coursemanage/${course.courseId}`}
                       className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
@@ -144,7 +158,7 @@ function Courses() {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
           {/* Pagination Controls */}
           <div className="col-span-full flex justify-center gap-2 my-6">
@@ -174,7 +188,7 @@ function Courses() {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-[#00000051] bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full">
             <h3 className="text-lg font-semibold mb-4">Delete Course</h3>
             <p className="text-gray-600 mb-6">

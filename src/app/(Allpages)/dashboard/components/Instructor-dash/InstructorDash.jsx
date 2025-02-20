@@ -19,15 +19,16 @@ import Courses from "./Courses";
 
 const InstructorDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true); // Toggle state
+  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();
-
   const handleLogout = async () => {
     await dispatch(logout());
-    window.location.reload();
-    router.push("/");
+    router.replace("/");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 100);
   };
 
   const renderContent = () => {

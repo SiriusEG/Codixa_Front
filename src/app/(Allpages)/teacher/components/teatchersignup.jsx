@@ -66,9 +66,13 @@ const SignupTeacherForm = () => {
     formData.append("Gender", e.target.Gender.value);
 
     try {
-      const response = await axios.post("/api/REGESTinsturctor", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+        "/api/auth/REGESTinsturctor",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
       if (response.data?.success) {
         // Set success message and clear it after 2 seconds

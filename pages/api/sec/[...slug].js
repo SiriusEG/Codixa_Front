@@ -13,33 +13,6 @@ export default async function handler(req, res) {
         });
         return res.status(response.status).json(await response.json());
 
-      case "POST":
-        const addResponse = await fetch(
-          `https://codixa.runasp.net/api/Lesson/AddNewLesson`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(req.body),
-          }
-        );
-        return res.status(addResponse.status).json(await addResponse.json());
-
-      case "DELETE":
-        const deleteResponse = await fetch(`${baseUrl}/Delete`, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(req.body),
-        });
-        return res
-          .status(deleteResponse.status)
-          .json(await deleteResponse.json());
-
       case "PUT":
         const updateResponse = await fetch(
           `https://codixa.runasp.net/api/section/UpdateSectionsLessons`,

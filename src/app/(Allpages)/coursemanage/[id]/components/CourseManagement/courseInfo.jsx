@@ -31,8 +31,6 @@ export default function CourseInfo({ courseData, refreshData }) {
             )}`
           : ""
       );
-      console.log("Image URL:", courseData.CourseCardPhoto);
-      console.log(imagePreview);
     }
   }, [courseData]);
 
@@ -75,7 +73,7 @@ export default function CourseInfo({ courseData, refreshData }) {
         formPayload.append("CourseCardPhoto", formData.CourseCardPhoto);
       }
 
-      const response = await fetch("/api/update", {
+      const response = await fetch("/api/crs/upcrsinfo", {
         method: "PUT",
         headers: { Authorization: `Bearer ${token}` },
         body: formPayload,

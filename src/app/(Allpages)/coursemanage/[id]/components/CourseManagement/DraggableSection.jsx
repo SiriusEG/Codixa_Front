@@ -28,7 +28,7 @@ export default function DraggableSection({
     setShowDeleteModal(false);
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/Delete", {
+      const response = await fetch("/api/sec/dltsec", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function DraggableSection({
   const handleSave = async () => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/sections/UpdateSectionsLessons", {
+      const response = await fetch("/api/sec/updateSectionsLessons", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export default function DraggableSection({
   };
 
   return (
-    <Draggable draggableId={String(section.sectionId)} index={index}>
+    <Draggable draggableId={`section-${section.sectionId}`} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
@@ -159,11 +159,11 @@ export default function DraggableSection({
               >
                 {section.sectionContent
                   ?.sort((a, b) => a.lessonOrder - b.lessonOrder)
-                  .map((lesson, index) => (
+                  .map((lesson, lessonIndex) => (
                     <Draggable
                       key={lesson.lessonId}
-                      draggableId={String(lesson.lessonId)}
-                      index={index}
+                      draggableId={`lesson-${lesson.lessonId}`}
+                      index={lessonIndex}
                     >
                       {(provided, snapshot) => (
                         <div

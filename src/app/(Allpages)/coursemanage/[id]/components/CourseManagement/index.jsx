@@ -5,6 +5,7 @@ import Header from "./Header";
 import SidebarNavigation from "./SidebarNavigation";
 import CurriculumTab from "./CurriculumTab";
 import AnalyticsTab from "./analytics";
+import Studentreq from "./studentreq/Studentreq";
 import CourseInfo from "./courseInfo";
 import { useToast } from "../context/ToastContext";
 
@@ -22,7 +23,7 @@ export default function CourseManagement() {
   const fetchCourseData = async () => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`/api/${id}`, {
+      const response = await fetch(`/api/crs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -53,6 +54,7 @@ export default function CourseManagement() {
           {activeTab === "course info" && courseData && (
             <CourseInfo courseData={courseData} refreshData={fetchCourseData} />
           )}
+          {activeTab === "students" && <Studentreq courseId={id} />}
         </main>
       </div>
     </div>

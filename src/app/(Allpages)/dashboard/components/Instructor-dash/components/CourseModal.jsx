@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from "react";
 import { FaPlusCircle } from "react-icons/fa";
@@ -19,7 +19,7 @@ const CourseModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("/api/course-categories");
+        const response = await fetch("/api/crs/course-categories");
         const data = await response.json();
         if (!response.ok)
           throw new Error(data.error || "Failed to load categories");
@@ -58,7 +58,7 @@ const CourseModal = ({ isOpen, onClose }) => {
       }
 
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/add-new-course", {
+      const response = await fetch("/api/crs/add-new-course", {
         method: "POST",
         body: formPayload,
         headers: {

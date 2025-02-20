@@ -15,7 +15,7 @@ const InstructorRequests = () => {
       try {
         const token = sessionStorage.getItem("token");
         const response = await fetch(
-          `/api/get-instructor-requests?page=${currentPage}`,
+          `/api/Adm/get-instructor-requests?page=${currentPage}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ const InstructorRequests = () => {
     setUpdating(requestId);
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/PUTinstructor", {
+      const response = await fetch("/api/Adm/PUTinstructor", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
