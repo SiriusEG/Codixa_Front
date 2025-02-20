@@ -11,7 +11,8 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 import { useToast } from "../context/ToastContext";
-import ConfirmationModal from "./ConfirmationModal";
+import DeleteLessonButton from "./ui/DeleteLessonButton";
+import ConfirmationModal from "./ui/ConfirmationModal";
 
 export default function DraggableSection({
   section,
@@ -59,7 +60,7 @@ export default function DraggableSection({
   const handleSave = async () => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch("/api/sec/updateSectionsLessons", {
+      const response = await fetch("/api/sec/UpdateSectionsLessons", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -157,57 +158,56 @@ export default function DraggableSection({
                 ref={provided.innerRef}
                 className="ml-8 space-y-2"
               >
-                {section.sectionContent
-                  ?.sort((a, b) => a.lessonOrder - b.lessonOrder)
-                  .map((lesson, lessonIndex) => (
-                    <Draggable
-                      key={lesson.lessonId}
-                      draggableId={`lesson-${lesson.lessonId}`}
-                      index={lessonIndex}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          className={`flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors ${
-                            snapshot.isDragging
-                              ? "bg-blue-50 ring-2 ring-primary-100"
-                              : ""
-                          }`}
-                        >
-                          <div className="flex items-center gap-3 flex-1">
-                            <span {...provided.dragHandleProps}>
-                              <FaGripVertical className="text-gray-400 hover:text-primary-100 cursor-move transition-colors" />
-                            </span>
-                            {lesson.isVideo ? (
-                              <FaVideo className="text-blue-500" />
-                            ) : (
-                              <FaFileAlt className="text-green-500" />
-                            )}
-                            <p className="text-sm font-medium text-gray-700">
-                              {lesson.lessonName}
-                            </p>
-                            {lesson.isVideo && lesson.videoLink && (
-                              <a
-                                href={`https://codixa.runasp.net/${lesson.videoLink.replace(
-                                  /\\/g,
-                                  "/"
-                                )}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs text-primary-100 hover:underline ml-2"
-                              >
-                                (Preview)
-                              </a>
-                            )}
-                          </div>
-                          <span className="text-xs text-gray-500">
-                            Order: {lesson.lessonOrder}
+                {section.sectionContent?.map((lesson, lessonIndex) => (
+                  <Draggable
+                    key={`lesson-${lesson.lessonId}`}
+                    draggableId={`lesson-${lesson.lessonId}`}
+                    index={lessonIndex}
+                  >
+                    {(provided, snapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        className={`flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors ${
+                          snapshot.isDragging
+                            ? "bg-blue-50 ring-2 ring-primary-100"
+                            : ""
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 flex-1">
+                          <span {...provided.dragHandleProps}>
+                            <FaGripVertical className="text-gray-400 hover:text-primary-100 cursor-move transition-colors" />
                           </span>
+                          {lesson.isVideo ? (
+                            <FaVideo className="text-blue-500" />
+                          ) : (
+                            <FaFileAlt className="text-green-500" />
+                          )}
+                          <p className="text-sm font-medium text-gray-700">
+                            {lesson.lessonName}
+                          </p>
+                          {lesson.isVideo && lesson.videoLink && (
+                            <a
+                              href={`https://codixa.runasp.net/${lesson.videoLink.replace(
+                                /\\/g,
+                                "/"
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-primary-100 hover:underline ml-2"
+                            >
+                              (Preview)
+                            </a>
+                          )}
                         </div>
-                      )}
-                    </Draggable>
-                  ))}
+                        <span className="text-xs text-gray-500">
+                          Order: {lesson.lessonOrder}
+                        </span>
+                        <DeleteLessonButton lessonId={lesson.lessonId} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
                 {provided.placeholder}
               </div>
             )}

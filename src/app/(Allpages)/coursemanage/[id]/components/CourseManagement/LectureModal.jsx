@@ -11,7 +11,7 @@ export default function LectureModal({
   const [formData, setFormData] = useState({
     LessonName: "",
     IsVideo: "true",
-    Video: null, // File input
+    Video: null,
     LessonText: "",
     LessonOrder: "1",
     IsForpreview: "false",

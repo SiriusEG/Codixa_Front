@@ -1,3 +1,14 @@
+import { IncomingForm } from "formidable";
+import FormData from "form-data";
+import { createReadStream } from "fs";
+import axios from "axios";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res
@@ -8,42 +19,57 @@ export default async function handler(req, res) {
   try {
     const token = req.headers.authorization?.split(" ")[1] || "";
 
-    const formData = new FormData();
-    for (const key in req.body) {
-      if (key === "Video" && req.body[key]) {
-        formData.append("Video", req.body[key]); // Handle file separately
-      } else {
-        formData.append(key, req.body[key]);
-      }
-    }
+    // Parse incoming form data
+    const { fields, files } = await new Promise((resolve, reject) => {
+      const form = new IncomingForm();
+      form.parse(req, (err, fields, files) => {
+        if (err) return reject(err);
+        resolve({ fields, files });
+      });
+    });
 
-    const addResponse = await fetch(
-      "https://codixa.runasp.net/api/Lesson/AddNewLesson",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`, // Token is required
-        },
-        body: formData,
-      }
-    );
+    // Create external API form data
+    const externalForm = new FormData();
 
-    if (!addResponse.ok) {
-      const errorText = await addResponse.text();
-      return res.status(addResponse.status).json({
-        success: false,
-        message: `Backend error: ${errorText.substring(0, 200)}...`,
-        status: addResponse.status,
+    // Process regular fields
+    Object.entries(fields).forEach(([key, value]) => {
+      const fieldValue = Array.isArray(value) ? value[0] : value;
+      if (fieldValue !== undefined) {
+        externalForm.append(key, fieldValue);
+      }
+    });
+
+    // Process file upload
+    if (files.Video) {
+      const videoFile = files.Video[0];
+      externalForm.append("Video", createReadStream(videoFile.filepath), {
+        filename: videoFile.originalFilename,
+        knownLength: videoFile.size,
+        contentType: videoFile.mimetype || "video/*",
       });
     }
 
-    const responseData = await addResponse.json();
-    return res.status(200).json(responseData);
+    // Send to external API using axios
+    const response = await axios.post(
+      "https://codixa.runasp.net/api/Lesson/AddNewLesson",
+      externalForm,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          ...externalForm.getHeaders(),
+        },
+        maxBodyLength: Infinity,
+      }
+    );
+
+    return res.status(response.status).json(response.data);
   } catch (error) {
     console.error("Lesson creation error:", error);
-    return res.status(500).json({
+    const status = error.response?.status || 500;
+    const message = error.response?.data?.message || error.message;
+    return res.status(status).json({
       success: false,
-      message: error.message || "Internal server error",
+      message: `Backend error: ${message.substring(0, 200)}...`,
     });
   }
 }

@@ -44,17 +44,52 @@ export default function CurriculumTab({ courseId }) {
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
-    const items = Array.from(sections);
-    const [movedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, movedItem);
+    // Handle section reordering
+    if (result.type === "SECTION") {
+      const items = Array.from(sections);
+      const [movedItem] = items.splice(result.source.index, 1);
+      items.splice(result.destination.index, 0, movedItem);
 
-    const updatedSections = items.map((section, index) => ({
-      ...section,
-      sectionOrder: index + 1,
-    }));
+      const updatedSections = items.map((section, index) => ({
+        ...section,
+        sectionOrder: index + 1,
+      }));
 
-    setSections(updatedSections);
-    setHasOrderChanged(true);
+      setSections(updatedSections);
+      setHasOrderChanged(true);
+    }
+    // Handle lesson reordering
+    else if (result.type === "LESSON") {
+      const sourceSectionId = parseInt(result.source.droppableId.split("-")[1]);
+      const destSectionId = parseInt(
+        result.destination.droppableId.split("-")[1]
+      );
+      const sourceIndex = result.source.index;
+      const destIndex = result.destination.index;
+
+      // Only allow reordering within the same section
+      if (sourceSectionId === destSectionId) {
+        const updatedSections = sections.map((section) => {
+          if (section.sectionId === sourceSectionId) {
+            const lessons = Array.from(section.sectionContent);
+            const [movedLesson] = lessons.splice(sourceIndex, 1);
+            lessons.splice(destIndex, 0, movedLesson);
+
+            return {
+              ...section,
+              sectionContent: lessons.map((lesson, index) => ({
+                ...lesson,
+                lessonOrder: index + 1,
+              })),
+            };
+          }
+          return section;
+        });
+
+        setSections(updatedSections);
+        setHasOrderChanged(true);
+      }
+    }
   };
 
   const handleSaveOrder = async () => {
@@ -145,7 +180,7 @@ export default function CurriculumTab({ courseId }) {
         </div>
       ) : (
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Droppable droppableId="sections">
+          <Droppable droppableId="sections" type="SECTION">
             {(provided) => (
               <div
                 {...provided.droppableProps}
