@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/**/*.js": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  },
+  "build": {
+    "env": {
+      "MAX_FILE_SIZE": "500mb"
+    }
+  }
+}
