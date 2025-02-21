@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useToast } from "../../context/ToastContext";
 
-export default function DeleteLessonButton({ lessonId }) {
+export default function DeleteLessonButton({ lessonId, refreshSections }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const { addToast } = useToast();
@@ -28,9 +28,9 @@ export default function DeleteLessonButton({ lessonId }) {
       if (!response.ok) {
         throw new Error(data.message || "Failed to delete lesson");
       }
-
       addToast(data.message || "Lesson deleted successfully", "success");
       setIsConfirmOpen(false);
+      refreshSections();
     } catch (error) {
       addToast(error.message, "error");
     } finally {

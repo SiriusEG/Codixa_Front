@@ -203,7 +203,12 @@ export default function DraggableSection({
                         <span className="text-xs text-gray-500">
                           Order: {lesson.lessonOrder}
                         </span>
-                        <DeleteLessonButton lessonId={lesson.lessonId} />
+                        <DeleteLessonButton
+                          lessonId={lesson.lessonId}
+                          refreshSections={() => {
+                            refreshSections();
+                          }}
+                        />
                       </div>
                     )}
                   </Draggable>
