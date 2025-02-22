@@ -19,13 +19,12 @@ export default function LectureModal({
   });
   const [isLoading, setIsLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const uploadComplete = useRef(false); // Tracks whether the upload is complete
+  const uploadComplete = useRef(false);
   const { addToast } = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Validate form data
       if (!formData.LessonName.trim()) {
         throw new Error("Lecture name is required");
       }
@@ -41,7 +40,6 @@ export default function LectureModal({
       formPayload.append("LessonOrder", formData.LessonOrder);
       formPayload.append("IsForpreview", formData.IsForpreview);
 
-      // Append video or text content based on content type
       if (formData.IsVideo === "true") {
         formPayload.append("Video", formData.Video);
       } else {
@@ -52,33 +50,28 @@ export default function LectureModal({
       setUploadProgress(0);
       uploadComplete.current = false;
 
-      // Make the API call to upload the lecture
-      await axios.post("/api/sec/+lec", formPayload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-        onUploadProgress: (progressEvent) => {
-          const total = progressEvent.total || 1;
-          const progress = Math.round((progressEvent.loaded * 100) / total);
-          setUploadProgress(progress);
+      // Direct API call to external endpoint
+      await axios.post(
+        "https://codixa.runasp.net/api/Lesson/AddNewLesson",
+        formPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          onUploadProgress: (progressEvent) => {
+            const total = progressEvent.total || 1;
+            const progress = Math.round((progressEvent.loaded * 100) / total);
+            setUploadProgress(progress);
+            if (progress === 100) uploadComplete.current = true;
+          },
+        }
+      );
 
-          // Mark upload as complete when progress reaches 100%
-          if (progress === 100) {
-            uploadComplete.current = true;
-          }
-        },
-      });
-
-      // Wait for the server to process the file
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate server processing
-
-      // Refresh sections and close modal
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await refreshSections();
       onClose();
       addToast("Lecture added successfully 🎉");
 
-      // Reset the form
       setFormData({
         LessonName: "",
         IsVideo: "true",
@@ -104,7 +97,6 @@ export default function LectureModal({
           Add New Lecture
         </h3>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Lecture Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Lecture Name
@@ -120,7 +112,6 @@ export default function LectureModal({
             />
           </div>
 
-          {/* Content Type */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content Type
@@ -140,7 +131,6 @@ export default function LectureModal({
             </select>
           </div>
 
-          {/* Video File or Lesson Content */}
           {formData.IsVideo === "true" ? (
             <div className="relative">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -154,8 +144,7 @@ export default function LectureModal({
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
-                      // Validate file size (optional)
-                      const maxSizeInMB = 500; // Example: 50 MB limit
+                      const maxSizeInMB = 500;
                       if (file.size > maxSizeInMB * 1024 * 1024) {
                         addToast(
                           `File size exceeds ${maxSizeInMB} MB limit`,
@@ -210,7 +199,6 @@ export default function LectureModal({
             </div>
           )}
 
-          {/* Lesson Order */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Lesson Order
@@ -225,7 +213,6 @@ export default function LectureModal({
             />
           </div>
 
-          {/* Preview Checkbox */}
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -243,7 +230,6 @@ export default function LectureModal({
             </label>
           </div>
 
-          {/* Action Buttons */}
           <div className="flex justify-end gap-4 mt-6">
             <button
               type="button"
