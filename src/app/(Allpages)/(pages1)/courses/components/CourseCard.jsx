@@ -12,8 +12,8 @@ function CourseCard({ element: course }) {
   }
 
   return (
-    <Link href={`coursedetail/${course.id}`}>
-      <div className=" w-[374px] flex flex-col gap-8 p-6  rounded-xl shadow-xl bg-white ">
+    <div className=" w-[374px] flex flex-col gap-8 p-6  rounded-xl shadow-xl bg-white ">
+      <Link href={`coursedetail/${course.id}`}>
         <Image
           width={1500}
           height={1000}
@@ -53,8 +53,8 @@ function CourseCard({ element: course }) {
             <p>{course.owner}</p>
           </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

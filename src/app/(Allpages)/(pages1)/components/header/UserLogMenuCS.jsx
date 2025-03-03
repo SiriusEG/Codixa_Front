@@ -33,7 +33,7 @@ const UserLogMenuCS = () => {
         <MoonLoader color="#20B486" size={15} />
       ) : userInfo ? (
         // Drop menu
-        <div className="p-8 flex items-center justify-center bg-white">
+        <div className="p-8 flex items-center justify-center bg-white z-50">
           <motion.div animate={open ? "open" : "closed"} className="relative">
             <button
               onClick={() => setOpen((pv) => !pv)}

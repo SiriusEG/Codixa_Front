@@ -1,4 +1,3 @@
-// Frontend: components/CourseInfo.js
 "use client";
 import { useState, useEffect } from "react";
 import { useToast } from "../context/ToastContext";
@@ -17,10 +16,11 @@ export default function CourseInfo({ courseData, refreshData }) {
   useEffect(() => {
     if (courseData) {
       setOriginalData(courseData);
+      console.log(courseData);
       setFormData({
         CourseName: courseData.courseName,
         CourseDescription: courseData.courseDescription,
-        IsPublished: courseData.isPublished,
+        IsPublished: Boolean(courseData.isPublished), // Ensure boolean conversion
         CourseCardPhoto: null,
       });
       setImagePreview(
@@ -107,7 +107,7 @@ export default function CourseInfo({ courseData, refreshData }) {
     <div className="bg-white rounded-xl shadow-sm p-6">
       <h2 className="text-2xl font-semibold mb-6">Course Information</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Current Image - Fixed Line */}
+        {/* Current Image */}
         <div>
           <label className="block text-sm font-medium mb-2">
             Current Image
@@ -134,7 +134,7 @@ export default function CourseInfo({ courseData, refreshData }) {
           </div>
         </div>
 
-        {/* Form Fields */}
+        {/* Course Name */}
         <div>
           <label className="block text-sm font-medium mb-2">Course Name</label>
           <input
@@ -148,6 +148,7 @@ export default function CourseInfo({ courseData, refreshData }) {
           />
         </div>
 
+        {/* Description */}
         <div>
           <label className="block text-sm font-medium mb-2">Description</label>
           <textarea
@@ -162,21 +163,31 @@ export default function CourseInfo({ courseData, refreshData }) {
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            checked={formData.IsPublished}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                IsPublished: e.target.checked,
-              }))
-            }
-            className="w-5 h-5 text-primary rounded focus:ring-primary"
-          />
-          <label className="text-sm font-medium">Publish Course</label>
+        {/* Publish Status */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={formData.IsPublished}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  IsPublished: e.target.checked,
+                }))
+              }
+              className="w-5 h-5 text-primary rounded focus:ring-primary"
+            />
+            <label className="text-sm font-medium">Publish Course</label>
+          </div>
+          {originalData.isPublished !== undefined && (
+            <span className="text-xs text-gray-500">
+              Originally{" "}
+              {originalData.isPublished ? "Published" : "Unpublished"}
+            </span>
+          )}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"

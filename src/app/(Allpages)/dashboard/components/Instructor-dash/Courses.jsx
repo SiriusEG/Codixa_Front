@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FaPlusCircle, FaEdit, FaTrash } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Link from "next/link";
 import { ClipLoader } from "react-spinners";
 import CourseModal from "./components/CourseModal";
@@ -14,6 +14,14 @@ function Courses() {
   const [totalPages, setTotalPages] = useState(1);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState(null);
+
+  // Get the user's locale (default to 'en-US' if not available)
+  const userLocale = navigator.language || "en-US";
+
+  // Helper function to localize numbers
+  const localizeNumber = (number) => {
+    return new Intl.NumberFormat(userLocale).format(number);
+  };
 
   useEffect(() => {
     fetchCourses();
@@ -75,7 +83,7 @@ function Courses() {
   return (
     <div className="container mx-auto p-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start  md:items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div className="mb-4 md:mb-0">
           <h1 className="text-3xl font-bold text-gray-800">Your Courses</h1>
           <p className="text-gray-600 mt-2">Manage and track your courses</p>
@@ -84,7 +92,6 @@ function Courses() {
           onClick={() => setIsModalOpen(true)}
           className="px-6 py-3 bg-primary-100 text-white rounded-lg flex items-center hover:bg-primary-110 transition-colors"
         >
-          <FaPlusCircle className="mr-2" />
           Create New Course
         </button>
       </div>
@@ -96,7 +103,7 @@ function Courses() {
         </div>
       ) : (
         /* Courses Grid */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
             <motion.div
               key={course.courseId}
@@ -142,17 +149,19 @@ function Courses() {
                   {/* Actions */}
                   <div className="flex justify-between items-center border-t pt-4 mt-auto gap-2">
                     <Link
-                      href={`/coursemanage/${course.courseId}`}
+                      href={`/coursemanage/${localizeNumber(course.courseId)}`}
                       className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
                     >
-                      <FaEdit className="mr-2" />
                       Manage
                     </Link>
                     <button
-                      onClick={() => handleDeleteConfirmation(course.courseId)}
+                      onClick={() =>
+                        handleDeleteConfirmation(
+                          localizeNumber(course.courseId)
+                        )
+                      }
                       className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
                     >
-                      <FaTrash className="mr-2" />
                       Delete
                     </button>
                   </div>
@@ -160,22 +169,6 @@ function Courses() {
               </div>
             </motion.div>
           ))}
-          {/* Pagination Controls */}
-          <div className="col-span-full flex justify-center gap-2 my-6">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-4 py-2 rounded transition-colors ${
-                  currentPage === page
-                    ? "bg-primary-100 text-white"
-                    : "bg-gray-200 hover:bg-gray-300"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-          </div>
         </div>
       )}
 
@@ -185,6 +178,40 @@ function Courses() {
           <p className="text-gray-500 text-lg">No courses found</p>
         </div>
       )}
+
+      {/* Pagination Controls */}
+      <div
+        style={{ display: totalPages > 1 ? "flex" : "none" }}
+        className="justify-end items-center gap-4 mt-4 me-4 md:me-10"
+      >
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          className={`px-2 py-2 text-white rounded-[0.200rem] transition ${
+            currentPage === 1
+              ? "bg-gray-400 cursor-not-allowed"
+              : "hover:bg-primary-100 bg-primary"
+          }`}
+          disabled={currentPage === 1}
+        >
+          <FaAngleLeft />
+        </button>
+        <span className="text-gray-700 font-medium">
+          {localizeNumber(currentPage)} / {localizeNumber(totalPages)}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          className={`px-2 py-2 text-white rounded-[0.200rem] transition ${
+            currentPage === totalPages
+              ? "bg-gray-400 cursor-not-allowed"
+              : "hover:bg-primary-100 bg-primary"
+          }`}
+          disabled={currentPage === totalPages}
+        >
+          <FaAngleRight />
+        </button>
+      </div>
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
