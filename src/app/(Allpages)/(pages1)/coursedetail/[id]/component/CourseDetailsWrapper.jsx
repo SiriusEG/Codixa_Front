@@ -21,14 +21,77 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import dynamic from "next/dynamic";
 
+// Star Rating Component
+const StarRating = ({
+  totalRate,
+  count5Stars,
+  count4Stars,
+  count3Stars,
+  count2Stars,
+  count1Star,
+}) => {
+  const totalCount =
+    count5Stars + count4Stars + count3Stars + count2Stars + count1Star;
+  const averageRating =
+    totalCount > 0
+      ? (
+          (5 * count5Stars +
+            4 * count4Stars +
+            3 * count3Stars +
+            2 * count2Stars +
+            1 * count1Star) /
+          totalCount
+        ).toFixed(1)
+      : 0;
+
+  const renderStars = () => {
+    const stars = [];
+    const fullStars = Math.floor(averageRating);
+    const hasHalfStar = averageRating - fullStars >= 0.5;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        stars.push(
+          <span key={i} className="text-yellow-500 text-xl">
+            ★
+          </span>
+        );
+      } else if (hasHalfStar && i === fullStars + 1) {
+        stars.push(
+          <span key={i} className="text-yellow-500 text-xl">
+            ½
+          </span>
+        );
+      } else {
+        stars.push(
+          <span key={i} className="text-gray-400 text-xl">
+            ★
+          </span>
+        );
+      }
+    }
+
+    return stars;
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="flex">{renderStars()}</div>
+      <div className="text-sm text-gray-600">
+        {averageRating} ({totalCount} reviews)
+      </div>
+    </div>
+  );
+};
+
 const CourseDetailsPage = () => {
   const params = useParams();
   const [courseData, setCourseData] = useState(null);
   const [activeTab, setActiveTab] = useState("Overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [enrollmentMessage, setEnrollmentMessage] = useState(""); // Line Added
-  const [isLoading, setIsLoading] = useState(false); // Line Added
+  const [enrollmentMessage, setEnrollmentMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchCourseDetails = async () => {
@@ -43,7 +106,6 @@ const CourseDetailsPage = () => {
 
         const data = await response.json();
 
-        // Map API response fields to match your code's expected structure
         const mappedData = {
           title: data.courseName || "No Title",
           description: data.courseDescription || "No Description",
@@ -57,6 +119,11 @@ const CourseDetailsPage = () => {
           instructorName: data.insrtuctorName || "Unknown Instructor",
           sectionCount: data.sectionCount || 0,
           totalRate: data.totalRate || 0,
+          count5Stars: data.count5Stars || 0,
+          count4Stars: data.count4Stars || 0,
+          count3Stars: data.count3Stars || 0,
+          count2Stars: data.count2Stars || 0,
+          count1Star: data.count1Star || 0,
           features: ["Feature 1", "Feature 2", "Feature 3"], // Example static features
           comments: [], // Example static comments
         };
@@ -99,25 +166,20 @@ const CourseDetailsPage = () => {
         headers,
       });
 
-      console.log("Response Status:", response.status);
-
-      // Check if the response is successful (status code 2xx)
       if (!response.ok) {
         const contentType = response.headers.get("content-type");
         let errorMessage;
 
-        // Parse the error message from the response
         if (contentType && contentType.includes("application/json")) {
           const errorData = await response.json();
           errorMessage = errorData.message || "Failed to enroll.";
         } else {
-          errorMessage = await response.text(); // Fallback to plain text
+          errorMessage = await response.text();
         }
 
-        throw new Error(errorMessage); // Throw the error to be caught in the catch block
+        throw new Error(errorMessage);
       }
 
-      // Handle successful response
       const contentType = response.headers.get("content-type");
       let result;
 
@@ -135,6 +197,7 @@ const CourseDetailsPage = () => {
       setIsLoading(false);
     }
   };
+
   if (loading) {
     return (
       <section className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row gap-8">
@@ -209,6 +272,18 @@ const CourseDetailsPage = () => {
               <FaTag className="text-xl text-primary" />
               <span>Category: {courseData?.categoryName}</span>
             </div>
+          </div>
+
+          {/* Star Rating */}
+          <div className="mt-4">
+            <StarRating
+              totalRate={courseData?.totalRate || 0}
+              count5Stars={courseData?.count5Stars || 0}
+              count4Stars={courseData?.count4Stars || 0}
+              count3Stars={courseData?.count3Stars || 0}
+              count2Stars={courseData?.count2Stars || 0}
+              count1Star={courseData?.count1Star || 0}
+            />
           </div>
         </div>
       </section>
@@ -313,13 +388,13 @@ const CourseDetailsPage = () => {
 
             <div className="p-6 space-y-6">
               <button
-                onClick={handleEnroll} // Line Changed
-                disabled={isLoading} // Line Added
+                onClick={handleEnroll}
+                disabled={isLoading}
                 className={`w-full py-4 bg-gradient-to-r from-primary to-blue-600 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-md transform hover:scale-[1.01] ${
-                  isLoading ? "opacity-50 cursor-not-allowed" : "" // Line Added
+                  isLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
-                {isLoading ? "Enrolling..." : "Enroll Now"} {/* Line Changed */}
+                {isLoading ? "Enrolling..." : "Enroll Now"}
               </button>
 
               {enrollmentMessage && (
@@ -329,9 +404,9 @@ const CourseDetailsPage = () => {
                     enrollmentMessage.includes("Sent Successfully")
                       ? "text-green-600"
                       : "text-red-600"
-                  }`} // Line Changed
+                  }`}
                 >
-                  {enrollmentMessage} {/* Line Changed */}
+                  {enrollmentMessage}
                 </p>
               )}
 
