@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Provider } from "react-redux" ;
+import { Provider } from "react-redux";
 import { useStore } from "../../lib/store";
 import AuthCheckCS from "./(Allpages)/(pages1)/components/AuthCheckCS";
 
@@ -17,3 +17,4 @@ const StoreProvider = ({ children }) => {
 };
 
 export default StoreProvider;
+// new
