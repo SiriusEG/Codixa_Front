@@ -1,5 +1,5 @@
 import React from "react";
-import MostViewing from "./components/6-sixth-sec/MostViewing";
+// import MostViewing from "./components/6-sixth-sec/MostViewing";
 import SearchPage from "./components/searchPage";
 
 function Page() {
@@ -10,10 +10,10 @@ function Page() {
         <SearchPage />
       </div>
 
-      {/* Most Viewing Section */}
+      {/* Most Viewing Section
       <div className="">
         <MostViewing />
-      </div>
+      </div> */}
     </div>
   );
 }

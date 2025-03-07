@@ -3,8 +3,6 @@
 
 import {
   FaChalkboardTeacher,
-  FaDollarSign,
-  FaTag,
   FaChartLine,
   FaFileAlt,
   FaUsers,
@@ -37,17 +35,17 @@ export default function SidebarNavigation({ activeTab, setActiveTab }) {
       icon: <FaChartLine />,
       label: "Analytics",
     },
-    {
-      id: "resources",
-      icon: <FaFileAlt />,
-      label: "Resources",
-    },
+    // {
+    //   id: "resources",
+    //   icon: <FaFileAlt />,
+    //   label: "Resources",
+    // },
 
-    {
-      id: "certificates",
-      icon: <FaCertificate />,
-      label: "Certificates",
-    },
+    // {
+    //   id: "certificates",
+    //   icon: <FaCertificate />,
+    //   label: "Certificates",
+    // },
   ];
 
   return (

@@ -16,7 +16,6 @@ export default function CourseInfo({ courseData, refreshData }) {
   useEffect(() => {
     if (courseData) {
       setOriginalData(courseData);
-      console.log(courseData);
       setFormData({
         CourseName: courseData.courseName,
         CourseDescription: courseData.courseDescription,
@@ -49,7 +48,7 @@ export default function CourseInfo({ courseData, refreshData }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         addToast("Authentication required", "error");
         return;

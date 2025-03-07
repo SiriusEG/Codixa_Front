@@ -12,7 +12,7 @@ const AuthCheckCS = () => {
 
   const checkToken = async () => {
     const token =
-      localStorage.getItem("token") || sessionStorage.getItem("token");
+      localStorage.getItem("token") || localStorage.getItem("token");
 
     if (token) {
       try {
@@ -20,7 +20,7 @@ const AuthCheckCS = () => {
       } catch (error) {
         console.error("Invalid token", error);
         localStorage.removeItem("token");
-        sessionStorage.removeItem("token");
+        localStorage.removeItem("token");
       }
     }
 

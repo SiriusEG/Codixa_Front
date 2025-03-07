@@ -13,7 +13,7 @@ const InstructorRequests = () => {
     const fetchRequests = async () => {
       setLoading(true);
       try {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         const response = await fetch(
           `/api/Adm/get-instructor-requests?page=${currentPage}`,
           {
@@ -40,7 +40,7 @@ const InstructorRequests = () => {
   const handleStatusUpdate = async (requestId, newStatus) => {
     setUpdating(requestId);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/Adm/PUTinstructor", {
         method: "PUT",
         headers: {

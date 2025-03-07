@@ -32,7 +32,7 @@ export default function LectureModal({
         throw new Error("Please select a video file");
       }
 
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const formPayload = new FormData();
       formPayload.append("SectionId", sectionId.toString());
       formPayload.append("LessonName", formData.LessonName);

@@ -10,7 +10,7 @@ const TokenRefreshHandler = () => {
 
   useEffect(() => {
     // Check if the session token is removed and we need to refresh it
-    if (!sessionStorage.getItem("token") && !tokenChecking && !userInfo) {
+    if (!localStorage.getItem("token") && !tokenChecking && !userInfo) {
       dispatch(refreshTokenAction()); // Trigger the refresh token action
     }
   }, [dispatch, userInfo, tokenChecking]);

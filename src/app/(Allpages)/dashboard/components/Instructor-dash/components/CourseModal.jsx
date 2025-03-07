@@ -57,7 +57,7 @@ const CourseModal = ({ isOpen, onClose }) => {
         formPayload.append("image", formData.image);
       }
 
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/crs/add-new-course", {
         method: "POST",
         body: formPayload,

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { FaCheckCircle, FaTimesCircle, FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-
+import PaginationControls from "../ui/PaginationControls";
 const Studentreq = ({ courseId }) => {
   const router = useRouter();
   const [requests, setRequests] = useState([]);
@@ -18,7 +18,7 @@ const Studentreq = ({ courseId }) => {
       setLoading(true);
       setError(null);
       try {
-        const token = sessionStorage.getItem("token");
+        const token = localStorage.getItem("token");
         if (!token) throw new Error("Authentication required");
 
         const response = await fetch(
@@ -46,7 +46,7 @@ const Studentreq = ({ courseId }) => {
         console.error("Fetch Error:", error);
         setError(error.message);
         if (error.message.includes("401")) {
-          sessionStorage.removeItem("token");
+          localStorage.removeItem("token");
           router.push("/login");
         }
       } finally {
@@ -66,7 +66,7 @@ const Studentreq = ({ courseId }) => {
 
     setUpdating(requestId);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       if (!token) {
         router.push("/login");
         return;
@@ -283,27 +283,33 @@ const Studentreq = ({ courseId }) => {
           </div>
 
           {totalPages > 1 && (
-            <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="text-sm text-gray-700">
-                Page {currentPage} of {totalPages}
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => setCurrentPage((p) => p + 1)}
-                  disabled={currentPage >= totalPages}
-                  className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+            <PaginationControls
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+              currentPage={currentPage}
+            />
+            // ) && (
+            //   <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            //     <div className="text-sm text-gray-700">
+            //       Page {currentPage} of {totalPages}
+            //     </div>
+            //     <div className="flex gap-2">
+            //       <button
+            //         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            //         disabled={currentPage === 1}
+            //         className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            //       >
+            //         Previous
+            //       </button>
+            //       <button
+            //         onClick={() => setCurrentPage((p) => p + 1)}
+            //         disabled={currentPage >= totalPages}
+            //         className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+            //       >
+            //         Next
+            //       </button>
+            //     </div>
+            //   </div>
           )}
         </>
       )}

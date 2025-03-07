@@ -11,7 +11,7 @@ import { useToast } from "../context/ToastContext";
 
 export default function CourseManagement() {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("curriculum");
+  const [activeTab, setActiveTab] = useState("course info");
   const [sections, setSections] = useState([]);
   const [courseData, setCourseData] = useState(null);
   const { addToast } = useToast();
@@ -22,7 +22,7 @@ export default function CourseManagement() {
 
   const fetchCourseData = async () => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/crs/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -28,7 +28,7 @@ export default function DraggableSection({
   const handleDelete = async (Id) => {
     setShowDeleteModal(false);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/sec/dltsec", {
         method: "DELETE",
         headers: {
@@ -59,7 +59,7 @@ export default function DraggableSection({
 
   const handleSave = async () => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/sec/UpdateSectionsLessons", {
         method: "PUT",
         headers: {

@@ -1,41 +1,160 @@
+"use client";
+import { FaPlayCircle, FaStar, FaUsers, FaCertificate } from "react-icons/fa";
+import { GiTeacher } from "react-icons/gi";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
 
-function HomeFirstSection() {
+const CourseHomePage = () => {
+  const features = [
+    {
+      icon: <FaPlayCircle className="w-8 h-8 text-primary" />,
+      title: "Practical Video Lessons",
+      description: "Learn by doing with hands-on projects",
+    },
+    {
+      icon: <GiTeacher className="w-8 h-8 text-primary" />,
+      title: "Expert Instructors",
+      description: "Learn from industry professionals",
+    },
+    {
+      icon: <FaCertificate className="w-8 h-8 text-primary" />,
+      title: "Certification",
+      description: "Earn valuable credentials",
+    },
+    {
+      icon: <FaUsers className="w-8 h-8 text-primary" />,
+      title: "Community Support",
+      description: "Join our learning network",
+    },
+  ];
+
+  const courses = [
+    {
+      title: "Digital Marketing Mastery",
+      image:
+        "https://i.pinimg.com/474x/a0/95/cd/a095cda32b2e721db20551b17e488d52.jpg",
+      description: "Become a digital marketing expert from scratch",
+      lessons: 32,
+      rating: 4.8,
+    },
+    {
+      title: "Web Development Bootcamp",
+      image:
+        "https://i.pinimg.com/474x/22/bc/8e/22bc8ebef610eb881071e1a7007a7a80.jpg",
+      description: "Full-stack development career path",
+      lessons: 45,
+      rating: 4.9,
+    },
+    {
+      title: "Graphic Design Pro",
+      image:
+        "https://i.pinimg.com/474x/45/27/9b/45279bf5fade53b05ed0a36535740576.jpg",
+      description: "Master professional design tools",
+      lessons: 28,
+      rating: 4.7,
+    },
+  ];
+
   return (
-    <section className="bg-primary-background grid grid-cols-1 lg:grid-cols-2 rounded-lg text-center md:text-start gap-12 px-6 py-12 md:px-12 md:py-20">
-      <div className="flex flex-col items-start justify-center gap-6">
-        <h4 className="text-xl md:text-2xl text-gray-700">
-          By Themadbrains in{" "}
-          <span className="text-primary font-semibold">Inspiration</span>
-        </h4>
-
-        <h2 className="text-3xl md:text-5xl font-bold text-secondary leading-snug md:leading-tight">
-          Why UI should be on the radar of every mobile developer
-        </h2>
-
-        <p className="text-gray-600 text-base md:text-lg">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium
-          earum expedita nesciunt architecto quae aliquid a soluta ipsam! Vitae
-          asperiores et tempore, consectetur magni alias.
-        </p>
-      </div>
-
-      <div className=" flex justify-center lg:justify-end  items-center">
-        <div className="relative">
-          <div className="absolute bg-transparent rounded-full border-4 border-primary -top-6 -right-0 md:right-0 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
-          <div className="absolute bg-transparent rounded-full border-4 border-primary -top-6 -right-8 md:right-8 w-[220px] h-[220px] md:w-[420px] md:h-[420px]"></div>
+    <div className="min-h-screen bg-gray-50 font-sans">
+      {/* Hero Section */}
+      <section className="relative h-[700px] bg-gradient-to-r from-primary to-primary-100">
+        <div className="absolute inset-0">
           <Image
-            src="/home-first-sec.png"
-            alt="first-sec-image"
-            width={1500}
-            height={1500}
-            className="relative z-10 w-[180px] h-[180px] md:w-[400px] md:h-[350px] rounded-lg object-cover"
+            src="https://i.pinimg.com/474x/c9/f2/95/c9f295b6b7fa58ddfaea827557b9297b.jpg"
+            alt="Inspiration"
+            fill
+            className="object-cover opacity-30"
           />
         </div>
-      </div>
-    </section>
-  );
-}
+        <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center text-white"
+          >
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+              Unlock Your Potential
+            </h1>
+            <p className="text-2xl mb-8">
+              Discover new skills with our comprehensive courses
+            </p>
+            <Link
+              href="/courses"
+              className="px-8 py-3 bg-white text-primary rounded-full text-lg font-semibold hover:bg-gray-200 transition"
+            >
+              Explore Courses
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
-export default HomeFirstSection;
+      {/* Features Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="p-6 text-center"
+              >
+                <div className="mb-4 text-primary">{feature.icon}</div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Popular Courses */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12">
+            Featured Courses
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {courses.map((course, index) => (
+              <motion.div
+                key={index}
+                whileHover={{ y: -5 }}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              >
+                <div className="relative h-48">
+                  <Image
+                    src={course.image}
+                    alt={course.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2">{course.title}</h3>
+                  <p className="text-gray-600 mb-4">{course.description}</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center text-primary">
+                      <FaStar className="mr-1" />
+                      <span>{course.rating}</span>
+                    </div>
+                    <span className="text-gray-600">
+                      {course.lessons} lessons
+                    </span>
+                  </div>
+                  <button className="w-full py-2 bg-primary text-white rounded-lg hover:bg-primary-100 transition">
+                    Enroll Now
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default CourseHomePage;

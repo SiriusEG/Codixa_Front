@@ -11,7 +11,7 @@ export default function DeleteLessonButton({ lessonId, refreshSections }) {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       const response = await fetch("/api/sec/deltlec", {
         method: "DELETE",

@@ -7,12 +7,8 @@ import {
   AiOutlineSetting,
   AiOutlineLogout,
   AiOutlineHome,
-  AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
 } from "react-icons/ai";
 import { SiCoursera } from "react-icons/si";
-import { TbReportAnalytics } from "react-icons/tb";
-import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { LuExpand, LuShrink } from "react-icons/lu";
 import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Courses from "./Courses";
@@ -39,10 +35,6 @@ const InstructorDashboard = () => {
             <Courses />
           </div>
         );
-      case "students":
-        return <div>Student Interactions Content</div>;
-      case "reports":
-        return <div>Reports and Analytics Content</div>;
       default:
         return <div>Instructor Dashboard Content</div>;
     }
@@ -89,13 +81,6 @@ const InstructorDashboard = () => {
           {[
             { name: "Dashboard", id: "dashboard", icon: <AiOutlineHome /> },
             { name: "Courses", id: "courses", icon: <SiCoursera /> },
-            {
-              name: "Students",
-              id: "students",
-              icon: <LiaChalkboardTeacherSolid />,
-            },
-            { name: "Reports", id: "reports", icon: <TbReportAnalytics /> },
-
             { name: "Settings", id: "settings", icon: <AiOutlineSetting /> },
           ].map((item) => (
             <li

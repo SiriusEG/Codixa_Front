@@ -23,7 +23,7 @@ export default function CurriculumTab({ courseId }) {
   const fetchSections = async () => {
     try {
       setLoading(true);
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
       const response = await fetch(`/api/sec/getAllSections/${courseId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -94,7 +94,7 @@ export default function CurriculumTab({ courseId }) {
 
   const handleSaveOrder = async () => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/sec/updateSectionsLessons", {
         method: "PUT",
         headers: {
@@ -127,7 +127,7 @@ export default function CurriculumTab({ courseId }) {
 
   const handleAddSection = async () => {
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/sec/+sec", {
         method: "POST",
         headers: {

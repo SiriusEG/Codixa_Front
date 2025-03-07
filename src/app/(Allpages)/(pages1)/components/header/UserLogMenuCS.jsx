@@ -22,7 +22,7 @@ const UserLogMenuCS = () => {
     {
       icon: userInfo?.role === "Student" ? FaUser : MdDashboard,
       text: userInfo?.role === "Student" ? "Profile" : "Dashboard",
-      route: userInfo?.role === "Student" ? "/dashboard" : "/dashboard",
+      route: userInfo?.role === "Student" ? "/profile" : "/dashboard",
     },
     { icon: CiLogout, text: "Log Out", route: "/", isLogout: true },
   ];
@@ -41,7 +41,7 @@ const UserLogMenuCS = () => {
               className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-300 transition-colors"
             >
               <span className="text-sm font-medium text-gray-700">
-                {userInfo.role}
+                {userInfo.name}
               </span>
               <motion.span variants={iconVariants}>
                 <FiChevronDown />

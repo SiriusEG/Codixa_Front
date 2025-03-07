@@ -6,7 +6,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import Link from "next/link";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
-
+import PaginationControls from "./PaginationControls";
 const SearchPage = () => {
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -271,28 +271,6 @@ const CourseCard = ({ course }) => (
         <FaArrowRight className="text-sm" />
       </Link>
     </div>
-  </div>
-);
-
-const PaginationControls = ({ currentPage, totalPages, setCurrentPage }) => (
-  <div className="flex justify-center mt-8 space-x-4">
-    <button
-      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-      disabled={currentPage === 1}
-      className="px-4 py-2 bg-primary text-white rounded-lg disabled:opacity-50 hover:bg-primary-dark transition-colors"
-    >
-      Previous
-    </button>
-    <span className="px-4 py-2 text-gray-700">
-      Page {currentPage} of {totalPages}
-    </span>
-    <button
-      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
-      disabled={currentPage >= totalPages}
-      className="px-4 py-2 bg-primary text-white rounded-lg disabled:opacity-50 hover:bg-primary-dark transition-colors"
-    >
-      Next
-    </button>
   </div>
 );
 

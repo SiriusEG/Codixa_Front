@@ -1,5 +1,5 @@
 import React from "react";
-import CourseDetailsPage from "./component/CourseDetailsWrapper";
+import CourseDetailsPage from "./component/CourseDetailsPage";
 
 export default function coursesDetails() {
   return (

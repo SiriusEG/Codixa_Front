@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../../../lib/hooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import AdminDashboard from "./admin-dashboard/admindashboard";
-import StudentDashboard from "./student-dash/StudentDash";
+import StudentDashboard from "../../profile/StudentDash";
 import InstructorDashboard from "./Instructor-dash/InstructorDash";
 
 function Seperation() {

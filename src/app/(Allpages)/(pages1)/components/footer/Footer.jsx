@@ -22,7 +22,7 @@ export default function Footer() {
         </div>
         <div className="flex items-center justify-around gap-2 ph:flex-col ph:items-center ph:justify-center">
           <p className="text-gray-10 text-base">
-            &copy; 2024 SiriusEG. All rights reserved.
+            &copy; 2025 SiriusEG. All rights reserved.
           </p>
           <SocialLinks />
         </div>

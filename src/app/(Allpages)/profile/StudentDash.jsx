@@ -1,12 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { useAppSelector, useAppDispatch } from "../../../../../../lib/hooks"; // Adjust the path if needed
+import { useAppSelector, useAppDispatch } from "../../../../lib/hooks";
 import { useRouter } from "next/navigation";
-import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
+import { logout } from "../../../../lib/reducers/auth/logInSlice";
 import {
   AiOutlineHome,
-  AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
   AiOutlineSetting,
   AiOutlineLogout,
 } from "react-icons/ai";
@@ -38,19 +36,6 @@ const StudentDashboard = () => {
         );
       case "courses":
         return <div>Your enrolled courses will be listed here.</div>;
-      case "assignments":
-        return (
-          <div>Your assignments and submissions will be displayed here.</div>
-        );
-      case "progress":
-        return <div>Your progress tracking and reports will appear here.</div>;
-      case "teachers":
-        return (
-          <div>
-            List of available teachers and their contact info will be shown
-            here.
-          </div>
-        );
       case "settings":
         return <div>Account and dashboard settings can be modified here.</div>;
       default:
@@ -98,9 +83,6 @@ const StudentDashboard = () => {
           {[
             { name: "Overview", id: "overview", icon: <BsGraphUp /> },
             { name: "Courses", id: "courses", icon: <BsBook /> },
-            { name: "Assignments", id: "assignments", icon: <MdAssignment /> },
-            { name: "Progress", id: "progress", icon: <MdOutlineSchool /> },
-            { name: "Teachers", id: "teachers", icon: <FaChalkboardTeacher /> },
             { name: "Settings", id: "settings", icon: <AiOutlineSetting /> },
           ].map((item) => (
             <li

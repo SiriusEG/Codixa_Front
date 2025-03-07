@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ClipLoader } from "react-spinners";
 import CourseModal from "./components/CourseModal";
 import { motion } from "framer-motion";
+import PaginationControls from "./PaginationControls";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -30,7 +31,7 @@ function Courses() {
   const fetchCourses = async () => {
     setLoading(true);
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch(`/api/crs/gtcrs?page=${currentPage}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -57,7 +58,7 @@ function Courses() {
     if (!courseToDelete) return;
 
     try {
-      const token = sessionStorage.getItem("token");
+      const token = localStorage.getItem("token");
       const response = await fetch("/api/crs/delcrs", {
         method: "DELETE",
         headers: {
@@ -81,7 +82,7 @@ function Courses() {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 pb-20">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div className="mb-4 md:mb-0">
@@ -171,6 +172,13 @@ function Courses() {
           ))}
         </div>
       )}
+      {/* Pagination Controls */}
+      <PaginationControls
+        className=" flex justify-center"
+        currentPage={currentPage}
+        totalPages={totalPages}
+        setCurrentPage={setCurrentPage}
+      />
 
       {/* Empty State */}
       {!loading && courses.length === 0 && (
@@ -178,40 +186,6 @@ function Courses() {
           <p className="text-gray-500 text-lg">No courses found</p>
         </div>
       )}
-
-      {/* Pagination Controls */}
-      <div
-        style={{ display: totalPages > 1 ? "flex" : "none" }}
-        className="justify-end items-center gap-4 mt-4 me-4 md:me-10"
-      >
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          className={`px-2 py-2 text-white rounded-[0.200rem] transition ${
-            currentPage === 1
-              ? "bg-gray-400 cursor-not-allowed"
-              : "hover:bg-primary-100 bg-primary"
-          }`}
-          disabled={currentPage === 1}
-        >
-          <FaAngleLeft />
-        </button>
-        <span className="text-gray-700 font-medium">
-          {localizeNumber(currentPage)} / {localizeNumber(totalPages)}
-        </span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          className={`px-2 py-2 text-white rounded-[0.200rem] transition ${
-            currentPage === totalPages
-              ? "bg-gray-400 cursor-not-allowed"
-              : "hover:bg-primary-100 bg-primary"
-          }`}
-          disabled={currentPage === totalPages}
-        >
-          <FaAngleRight />
-        </button>
-      </div>
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
