@@ -177,35 +177,42 @@ const HeroSection = ({ courseData }) => (
   </section>
 );
 
-const MainContent = ({ activeTab, setActiveTab, courseData }) => (
-  <div className="flex-1 lg:max-w-3xl">
-    <div className="flex gap-4 mb-8 border-b border-gray-200">
-      {["Overview", "Comments"].map((tab) => (
-        <button
-          key={tab}
-          className={`pb-4 px-1 relative ${
-            activeTab === tab
-              ? "text-primary font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-primary"
-              : "text-gray-500 hover:text-gray-700"
-          }`}
-          onClick={() => setActiveTab(tab)}
-        >
-          {tab}
-        </button>
-      ))}
-    </div>
+const MainContent = ({ activeTab, setActiveTab, courseData }) => {
+  const params = useParams();
 
-    {activeTab === "Overview" && (
-      <div className="space-y-8">
-        <CourseContent sections={courseData?.sections} />
+  return (
+    <div className="flex-1 lg:max-w-3xl">
+      <div className="flex gap-4 mb-8 border-b border-gray-200">
+        {["Overview", "Comments"].map((tab) => (
+          <button
+            key={tab}
+            className={`pb-4 px-1 relative ${
+              activeTab === tab
+                ? "text-primary font-semibold after:absolute after:bottom-0 after:left-0 after:w-full after:h-1 after:bg-primary"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab}
+          </button>
+        ))}
       </div>
-    )}
 
-    {activeTab === "Comments" && (
-      <CommentsSection feedbacks={courseData.feedBacks} />
-    )}
-  </div>
-);
+      {activeTab === "Overview" && (
+        <div className="space-y-8">
+          <CourseContent sections={courseData?.sections} />
+        </div>
+      )}
+
+      {activeTab === "Comments" && (
+        <CommentsSection
+          feedbacks={courseData.feedBacks}
+          courseId={params.id}
+        />
+      )}
+    </div>
+  );
+};
 
 const SkeletonLoader = () => (
   <section className="container mx-auto px-4 py-8 lg:py-12 flex flex-col lg:flex-row gap-8">
