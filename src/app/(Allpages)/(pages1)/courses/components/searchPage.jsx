@@ -253,7 +253,7 @@ const CourseCard = ({ course }) => (
         </div>
       </div>
 
-      <Link href={`/courses/${course.id}`} className="block mb-3">
+      <Link href={`/coursedetail/${course.id}`} className="block mb-3">
         <h3 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
           {course.title}
         </h3>

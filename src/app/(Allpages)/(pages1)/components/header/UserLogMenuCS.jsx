@@ -12,6 +12,7 @@ import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import { useRouter } from "next/navigation";
 import { clearUserInfo } from "../../../../../../lib/reducers/user/userSlice";
 import { FaUser } from "react-icons/fa"; // Import profile icon
+import { FaGear } from "react-icons/fa6";
 
 const UserLogMenuCS = () => {
   const [open, setOpen] = useState(false);
@@ -23,6 +24,11 @@ const UserLogMenuCS = () => {
       icon: userInfo?.role === "Student" ? FaUser : MdDashboard,
       text: userInfo?.role === "Student" ? "Profile" : "Dashboard",
       route: userInfo?.role === "Student" ? "/profile" : "/dashboard",
+    },
+    {
+      icon: userInfo?.role === "Student" ? FaGear : MdDashboard,
+      text: userInfo?.role === "Student" ? "Profile settings" : "Dashboard",
+      route: userInfo?.role === "Student" ? "/profilesetting" : "/dashboard",
     },
     { icon: CiLogout, text: "Log Out", route: "/", isLogout: true },
   ];

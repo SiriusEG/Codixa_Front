@@ -9,3 +9,4 @@
 .hovringFooter {
   @apply hover:text-primary hover:scale-105 transition delay-100 cursor-pointer;
 }
+/* Add this to your global CSS file */

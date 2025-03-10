@@ -50,35 +50,35 @@ const CourseDetailsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { userInfo } = useAppSelector((state) => state.user);
 
+  const loadCourseData = async () => {
+    try {
+      const response = await fetch(
+        `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`
+      );
+
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+
+      const data = await response.json();
+      setCourseData({
+        ...data,
+        image: data.courseCardPhotoPath
+          ? `https://codixa.runasp.net/${data.courseCardPhotoPath.replace(
+              /\\/g,
+              "/"
+            )}`
+          : "/logo.gif",
+        totalCount: data.feedBacks?.length || 0,
+      });
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchCourseDetails = async () => {
-      try {
-        const response = await fetch(
-          `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`
-        );
-
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-
-        const data = await response.json();
-        setCourseData({
-          ...data,
-          image: data.courseCardPhotoPath
-            ? `https://codixa.runasp.net/${data.courseCardPhotoPath.replace(
-                /\\/g,
-                "/"
-              )}`
-            : "/logo.gif",
-          totalCount: data.feedBacks?.length || 0,
-        });
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    params?.id && fetchCourseDetails();
+    params?.id && loadCourseData();
   }, [params.id]);
 
   const handleEnroll = async () => {
@@ -128,6 +128,7 @@ const CourseDetailsPage = () => {
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           courseData={courseData}
+          reloadCourseData={loadCourseData}
         />
 
         <RightSidebar
@@ -177,7 +178,12 @@ const HeroSection = ({ courseData }) => (
   </section>
 );
 
-const MainContent = ({ activeTab, setActiveTab, courseData }) => {
+const MainContent = ({
+  activeTab,
+  setActiveTab,
+  courseData,
+  reloadCourseData,
+}) => {
   const params = useParams();
 
   return (
@@ -208,6 +214,7 @@ const MainContent = ({ activeTab, setActiveTab, courseData }) => {
         <CommentsSection
           feedbacks={courseData.feedBacks}
           courseId={params.id}
+          onFeedbackUpdated={reloadCourseData}
         />
       )}
     </div>

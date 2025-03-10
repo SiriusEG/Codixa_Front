@@ -59,25 +59,26 @@ const CourseHomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       {/* Hero Section */}
-      <section className="relative h-[700px] bg-gradient-to-r from-primary to-primary-100">
-        <div className="absolute inset-0">
-          <Image
-            src="https://i.pinimg.com/474x/c9/f2/95/c9f295b6b7fa58ddfaea827557b9297b.jpg"
-            alt="Inspiration"
-            fill
-            className="object-cover opacity-30"
-          />
-        </div>
+      <section className="relative h-[700px]">
+        <div
+          className="absolute inset-0 bg-cover bg-center rounded-md"
+          style={{
+            backgroundImage: "url('https://codixa.runasp.net/uploads/3.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.5)",
+          }}
+        ></div>
         <div className="container mx-auto px-4 h-full flex flex-col items-center justify-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-white"
+            className="text-center"
           >
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight text-white">
               Unlock Your Potential
             </h1>
-            <p className="text-2xl mb-8">
+            <p className="text-2xl mb-8 text-gray-200">
               Discover new skills with our comprehensive courses
             </p>
             <Link

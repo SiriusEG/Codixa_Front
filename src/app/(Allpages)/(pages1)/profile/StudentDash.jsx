@@ -46,14 +46,6 @@ const StudentDashboard = () => {
     fetchCourses();
   }, [router]);
 
-  const handleLogout = async () => {
-    await dispatch(logout());
-    router.replace("/");
-    setTimeout(() => {
-      window.location.href = "/";
-    }, 100);
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navigation Bar */}
@@ -70,11 +62,6 @@ const StudentDashboard = () => {
                     id: "my-courses",
                     name: "My Courses",
                     icon: <MdOutlineSchool className="inline-block mr-2" />,
-                  },
-                  {
-                    id: "profile-settings",
-                    name: "Profile Settings",
-                    icon: <AiOutlineSetting className="inline-block mr-2" />,
                   },
                 ].map((tab) => (
                   <button
@@ -95,7 +82,7 @@ const StudentDashboard = () => {
 
             {/* Profile Section */}
             <div className="flex items-center space-x-4">
-              {/* <div className="flex items-center">
+              <div className="flex items-center">
                 <img
                   src={
                     userInfo?.image ||
@@ -104,7 +91,7 @@ const StudentDashboard = () => {
                   alt="Profile"
                   className="w-8 h-8 rounded-full"
                 />
-              </div> */}
+              </div>
             </div>
           </div>
         </div>
@@ -112,7 +99,6 @@ const StudentDashboard = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Content Area */}
         <div className="bg-white rounded-lg shadow p-6">
           {loading ? (
             <div className="text-center py-8">
@@ -120,68 +106,36 @@ const StudentDashboard = () => {
             </div>
           ) : error ? (
             <div className="text-red-500 text-center py-8">{error}</div>
-          ) : (
-            activeTab === "my-courses" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {courses.map((course) => (
-                  <div
-                    key={course.courseId}
-                    className="border rounded-lg p-4 hover:shadow-lg transition-shadow"
-                  >
-                    <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
-                      {course.coursePhoto && (
-                        <img
-                          src={`https://codixa.runasp.net/${course.coursePhoto.replace(
-                            /\\/g,
-                            "/"
-                          )}`}
-                          alt={course.courseName}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                    <h3 className="font-semibold mb-2">{course.courseName}</h3>
-                    <p className="text-gray-600 text-sm">
-                      {course.courseDescription}
-                    </p>
-                    <div className="mt-4 text-sm text-gray-500">
-                      Category: {course.categoryName}
-                    </div>
+          ) : activeTab === "my-courses" ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <div
+                  key={course.courseId}
+                  className="border rounded-lg p-4 hover:shadow-lg transition-shadow"
+                >
+                  <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
+                    {course.coursePhoto && (
+                      <img
+                        src={`https://codixa.runasp.net/${course.coursePhoto.replace(
+                          /\\/g,
+                          "/"
+                        )}`}
+                        alt={course.courseName}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
-                ))}
-              </div>
-            )
-          )}
-
-          {activeTab === "profile-settings" && (
-            <div className="max-w-md mx-auto">
-              <h2 className="text-2xl font-semibold mb-6">Profile Settings</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    value={userInfo?.name || ""}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-                    readOnly
-                  />
+                  <h3 className="font-semibold mb-2">{course.courseName}</h3>
+                  <p className="text-gray-600 text-sm">
+                    {course.courseDescription}
+                  </p>
+                  <div className="mt-4 text-sm text-gray-500">
+                    Category: {course.categoryName}
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    value={userInfo?.email || ""}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-                    readOnly
-                  />
-                </div>
-              </div>
+              ))}
             </div>
-          )}
+          ) : null}
         </div>
       </main>
     </div>
