@@ -8,11 +8,13 @@ import {
   FaGripVertical,
   FaVideo,
   FaFileAlt,
+  FaClipboardList,
 } from "react-icons/fa";
 import { useState } from "react";
 import { useToast } from "../context/ToastContext";
 import DeleteLessonButton from "./ui/DeleteLessonButton";
 import ConfirmationModal from "./ui/ConfirmationModal";
+import TestSectionForm from "./ui/TestSectionForm";
 
 export default function DraggableSection({
   section,
@@ -22,20 +24,23 @@ export default function DraggableSection({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showTestModal, setShowTestModal] = useState(false);
   const [sectionName, setSectionName] = useState(section.sectionName);
   const { addToast } = useToast();
+
+  // Fixed test section detection
+  const isTestSection = section.testContent?.successResult !== undefined;
 
   const handleDelete = async (Id) => {
     setShowDeleteModal(false);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/sec/dltsec", {
+      const response = await fetch(`/api/sec/dltsec/${Id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ sectionId: Id }),
       });
 
       const text = await response.text();
@@ -90,14 +95,24 @@ export default function DraggableSection({
     }
   };
 
+  const handleAddClick = () => {
+    if (isTestSection) {
+      setShowTestModal(true);
+    } else {
+      onAddLectureClick(section.sectionId);
+    }
+  };
+
   return (
     <Draggable draggableId={`section-${section.sectionId}`} index={index}>
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className={`bg-gray-50 rounded-lg p-4 mb-4 shadow-sm transition-all ${
-            snapshot.isDragging ? "bg-blue-50 ring-2 ring-primary-100" : ""
+          className={`${
+            isTestSection ? "bg-orange-50" : "bg-gray-50"
+          } rounded-lg p-4 mb-4 shadow-sm transition-all ${
+            snapshot.isDragging ? "ring-2 ring-primary-100" : ""
           }`}
         >
           <div className="flex items-center justify-between mb-2">
@@ -114,9 +129,14 @@ export default function DraggableSection({
                   autoFocus
                 />
               ) : (
-                <h3 className="font-semibold text-gray-800">
-                  {section.sectionName}
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-800">
+                    {section.sectionName}
+                  </h3>
+                  {isTestSection && (
+                    <FaClipboardList className="text-orange-500" />
+                  )}
+                </div>
               )}
             </div>
 
@@ -143,88 +163,118 @@ export default function DraggableSection({
                 <FaTrash size={18} />
               </button>
               <button
-                onClick={() => onAddLectureClick(section.sectionId)}
-                className="text-primary-100 hover:text-primary-110 transition-colors"
+                onClick={handleAddClick}
+                className={`${
+                  isTestSection
+                    ? "text-orange-500 hover:text-orange-600"
+                    : "text-primary-100 hover:text-primary-110"
+                } transition-colors`}
               >
                 <FaPlus size={18} />
               </button>
             </div>
           </div>
 
-          <Droppable droppableId={`lessons-${section.sectionId}`} type="LESSON">
-            {(provided) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                className="ml-8 space-y-2"
-              >
-                {section.sectionContent?.map((lesson, lessonIndex) => (
-                  <Draggable
-                    key={`lesson-${lesson.lessonId}`}
-                    draggableId={`lesson-${lesson.lessonId}`}
-                    index={lessonIndex}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        className={`flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors ${
-                          snapshot.isDragging
-                            ? "bg-blue-50 ring-2 ring-primary-100"
-                            : ""
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 flex-1">
-                          <span {...provided.dragHandleProps}>
-                            <FaGripVertical className="text-gray-400 hover:text-primary-100 cursor-move transition-colors" />
+          {!isTestSection && (
+            <Droppable
+              droppableId={`lessons-${section.sectionId}`}
+              type="LESSON"
+            >
+              {(provided) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  className="ml-8 space-y-2"
+                >
+                  {section.sectionContent?.map((lesson, lessonIndex) => (
+                    <Draggable
+                      key={`lesson-${lesson.lessonId}`}
+                      draggableId={`lesson-${lesson.lessonId}`}
+                      index={lessonIndex}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={`flex items-center justify-between p-3 bg-white rounded-lg hover:bg-gray-50 transition-colors ${
+                            snapshot.isDragging
+                              ? "bg-blue-50 ring-2 ring-primary-100"
+                              : ""
+                          }`}
+                        >
+                          <div className="flex items-center gap-3 flex-1">
+                            <span {...provided.dragHandleProps}>
+                              <FaGripVertical className="text-gray-400 hover:text-primary-100 cursor-move transition-colors" />
+                            </span>
+                            {lesson.isVideo ? (
+                              <FaVideo className="text-blue-500" />
+                            ) : (
+                              <FaFileAlt className="text-green-500" />
+                            )}
+                            <p className="text-sm font-medium text-gray-700">
+                              {lesson.lessonName}
+                            </p>
+                            {lesson.isVideo && lesson.videoLink && (
+                              <a
+                                href={`https://codixa.runasp.net/${lesson.videoLink.replace(
+                                  /\\/g,
+                                  "/"
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-xs text-primary-100 hover:underline ml-2"
+                              >
+                                (Preview)
+                              </a>
+                            )}
+                          </div>
+                          <span className="text-xs text-gray-500">
+                            Order: {lesson.lessonOrder}
                           </span>
-                          {lesson.isVideo ? (
-                            <FaVideo className="text-blue-500" />
-                          ) : (
-                            <FaFileAlt className="text-green-500" />
-                          )}
-                          <p className="text-sm font-medium text-gray-700">
-                            {lesson.lessonName}
-                          </p>
-                          {lesson.isVideo && lesson.videoLink && (
-                            <a
-                              href={`https://codixa.runasp.net/${lesson.videoLink.replace(
-                                /\\/g,
-                                "/"
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-primary-100 hover:underline ml-2"
-                            >
-                              (Preview)
-                            </a>
-                          )}
+                          <DeleteLessonButton
+                            lessonId={lesson.lessonId}
+                            refreshSections={() => {
+                              refreshSections();
+                            }}
+                          />
                         </div>
-                        <span className="text-xs text-gray-500">
-                          Order: {lesson.lessonOrder}
-                        </span>
-                        <DeleteLessonButton
-                          lessonId={lesson.lessonId}
-                          refreshSections={() => {
-                            refreshSections();
-                          }}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          )}
+
+          {isTestSection && (
+            <div className="ml-8 p-3 bg-white rounded-lg">
+              <p className="text-sm text-gray-500">
+                Test Section - Passing Score:{" "}
+                {section.testContent?.successResult}%
+              </p>
+            </div>
+          )}
 
           <ConfirmationModal
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
             onConfirm={() => handleDelete(section.sectionId)}
             title="Delete Section"
-            message="Are you sure you want to delete this section? All lessons in this section will be permanently removed."
+            message="Are you sure you want to delete this section? All content in this section will be permanently removed."
           />
+
+          {showTestModal && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-lg max-w-2xl w-full">
+                <TestSectionForm
+                  sectionId={section.sectionId}
+                  onClose={() => setShowTestModal(false)}
+                  initialSuccessResult={section.testContent?.successResult}
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
     </Draggable>

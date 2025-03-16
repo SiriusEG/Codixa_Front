@@ -25,11 +25,15 @@ const UserLogMenuCS = () => {
       text: userInfo?.role === "Student" ? "Profile" : "Dashboard",
       route: userInfo?.role === "Student" ? "/profile" : "/dashboard",
     },
-    {
-      icon: userInfo?.role === "Student" ? FaGear : MdDashboard,
-      text: userInfo?.role === "Student" ? "Profile settings" : "Dashboard",
-      route: userInfo?.role === "Student" ? "/profilesetting" : "/dashboard",
-    },
+    ...(userInfo?.role === "Student"
+      ? [
+          {
+            icon: FaGear,
+            text: "Profile settings",
+            route: "/profilesetting",
+          },
+        ]
+      : []), // If not "Student," an empty array is added, effectively skipping it
     { icon: CiLogout, text: "Log Out", route: "/", isLogout: true },
   ];
 

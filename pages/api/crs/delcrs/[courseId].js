@@ -3,16 +3,15 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
-  const { courseId } = req.body;
+  const { courseId } = req.query;
   const authHeader = req.headers.authorization;
 
-  if (!courseId) {
-    return res.status(400).json({ message: "Course ID is required" });
+  if (!courseId || isNaN(Number(courseId))) {
+    return res.status(400).json({ message: "Valid Course ID is required" });
   }
 
   try {
     const apiUrl = `https://codixa.runasp.net/api/Courses/delete/${courseId}`;
-
     const response = await fetch(apiUrl, {
       method: "DELETE",
       headers: {
@@ -45,7 +44,6 @@ export default async function handler(req, res) {
     res.status(500).json({
       success: false,
       message: error.message || "Failed to delete course",
-      details: error.details || null,
     });
   }
 }

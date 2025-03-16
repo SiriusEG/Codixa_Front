@@ -1,4 +1,3 @@
-// Backend: pages/api/update.js
 import { IncomingForm } from "formidable";
 import fetch from "node-fetch";
 import FormData from "form-data";
@@ -40,10 +39,9 @@ export default async function handler(req, res) {
       apiFormData.append("CourseDescription", fields.CourseDescription[0]);
     if (fields.IsPublished)
       apiFormData.append("IsPublished", fields.IsPublished[0]);
-    apiFormData.append(
-      "CategoryId",
-      fields.CategoryId?.[0] || originalData.categoryId
-    );
+    if (fields.Language) apiFormData.append("Language", fields.Language[0]);
+    if (fields.Level) apiFormData.append("Level", fields.Level[0]);
+    apiFormData.append("CategoryId", fields.CategoryId?.[0]);
 
     // Handle file upload
     if (files.CourseCardPhoto) {

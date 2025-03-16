@@ -49,7 +49,13 @@ export default async function handler(req, res) {
     });
 
     // Validate required fields
-    if (!fields.title || !fields.description || !fields.categoryId) {
+    if (
+      !fields.title ||
+      !fields.description ||
+      !fields.categoryId ||
+      !fields.language ||
+      !fields.level
+    ) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -58,6 +64,8 @@ export default async function handler(req, res) {
     formData.append("CourseName", fields.title[0]);
     formData.append("CourseDescription", fields.description[0]);
     formData.append("CategoryId", fields.categoryId[0]);
+    formData.append("Language", fields.language[0]);
+    formData.append("Level", fields.level[0]);
 
     // Handle file upload
     if (files.image) {

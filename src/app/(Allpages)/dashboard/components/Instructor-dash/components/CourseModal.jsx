@@ -9,6 +9,8 @@ const CourseModal = ({ isOpen, onClose }) => {
     description: "",
     categoryId: "",
     image: null,
+    language: "",
+    level: "",
   });
 
   const [categories, setCategories] = useState([]);
@@ -52,6 +54,8 @@ const CourseModal = ({ isOpen, onClose }) => {
       formPayload.append("title", formData.title);
       formPayload.append("description", formData.description);
       formPayload.append("categoryId", formData.categoryId);
+      formPayload.append("language", formData.language);
+      formPayload.append("level", formData.level);
 
       if (formData.image) {
         formPayload.append("image", formData.image);
@@ -71,7 +75,14 @@ const CourseModal = ({ isOpen, onClose }) => {
         throw new Error(data.error || "Failed to create course");
 
       onClose();
-      setFormData({ title: "", description: "", categoryId: "", image: null });
+      setFormData({
+        title: "",
+        description: "",
+        categoryId: "",
+        image: null,
+        language: "",
+        level: "",
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -83,7 +94,7 @@ const CourseModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl w-full max-w-2xl">
+      <div className="bg-white rounded-xl w-full max-w-3xl mx-4 my-8">
         <div className="p-6 border-b flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800">
             Create New Course
@@ -98,7 +109,7 @@ const CourseModal = ({ isOpen, onClose }) => {
 
         <form
           onSubmit={handleSubmit}
-          className="p-6"
+          className="p-6 max-h-[calc(100vh-200px)] overflow-y-auto"
           encType="multipart/form-data"
         >
           <div className="space-y-6">
@@ -188,6 +199,48 @@ const CourseModal = ({ isOpen, onClose }) => {
                   ))}
                 </select>
               )}
+            </div>
+
+            {/* Language Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Language
+              </label>
+              <select
+                name="language"
+                value={formData.language}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 rounded-lg border focus:border-primary focus:ring-1 outline-none"
+                required
+                disabled={isSubmitting}
+              >
+                <option value="">Select language</option>
+                <option value="0">English</option>
+                <option value="1">Arabic</option>
+                <option value="2">Russian</option>
+                <option value="3">Francais</option>
+              </select>
+            </div>
+
+            {/* Level Selection */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Level
+              </label>
+              <select
+                name="level"
+                value={formData.level}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 rounded-lg border focus:border-primary focus:ring-1 outline-none"
+                required
+                disabled={isSubmitting}
+              >
+                <option value="">Select difficulty level</option>
+                <option value="0">Beginner </option>
+                <option value="1">Intermediate</option>
+                <option value="2">Expert</option>
+                <option value="3">forAll</option>
+              </select>
             </div>
           </div>
 

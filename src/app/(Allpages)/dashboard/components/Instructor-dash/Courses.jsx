@@ -16,13 +16,10 @@ function Courses() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState(null);
 
-  // Get the user's locale (default to 'en-US' if not available)
   const userLocale = navigator.language || "en-US";
 
-  // Helper function to localize numbers
-  const localizeNumber = (number) => {
-    return new Intl.NumberFormat(userLocale).format(number);
-  };
+  const localizeNumber = (number) =>
+    new Intl.NumberFormat(userLocale).format(number);
 
   useEffect(() => {
     fetchCourses();
@@ -42,7 +39,6 @@ function Courses() {
       setTotalPages(data.totalPages);
     } catch (error) {
       console.error("Error fetching courses:", error);
-      alert(error.message);
     } finally {
       setLoading(false);
     }
@@ -59,13 +55,12 @@ function Courses() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/crs/delcrs", {
+      const response = await fetch(`/api/crs/delcrs/${courseToDelete}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ courseId: courseToDelete }),
       });
 
       if (!response.ok) {
@@ -73,17 +68,15 @@ function Courses() {
         throw new Error(errorData.message || "Failed to delete course");
       }
 
-      console.log("Course deleted successfully:", courseToDelete);
       await fetchCourses();
+      setCourseToDelete(null);
     } catch (error) {
       console.error("Error deleting course:", error);
-      alert(`Error: ${error.message}`);
     }
   };
 
   return (
     <div className="container mx-auto p-6 pb-20">
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div className="mb-4 md:mb-0">
           <h1 className="text-3xl font-bold text-gray-800">Your Courses</h1>
@@ -97,13 +90,11 @@ function Courses() {
         </button>
       </div>
 
-      {/* Loading State */}
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <ClipLoader size={50} color={"#4A90E2"} />
         </div>
       ) : (
-        /* Courses Grid */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {courses.map((course) => (
             <motion.div
@@ -114,7 +105,6 @@ function Courses() {
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
               <div className="relative min-h-[25rem] flex flex-col">
-                {/* Image */}
                 <img
                   src={
                     course.courseCardPhotoPath
@@ -128,14 +118,13 @@ function Courses() {
                   className="w-full h-48 object-cover rounded-t-xl"
                 />
 
-                {/* Content */}
                 <div className="p-4 flex-1 flex flex-col">
                   <div className="flex flex-row justify-between items-center">
                     <h3 className="font-semibold text-lg">
                       {course.courseName}
                     </h3>
                     <p
-                      className={` text-sm font-semibold ${
+                      className={`text-sm font-semibold ${
                         course.isPublished ? "text-green-500" : "text-red-500"
                       }`}
                     >
@@ -147,20 +136,15 @@ function Courses() {
                     {course.courseDescription}
                   </p>
 
-                  {/* Actions */}
                   <div className="flex justify-between items-center border-t pt-4 mt-auto gap-2">
                     <Link
-                      href={`/coursemanage/${localizeNumber(course.courseId)}`}
+                      href={`/coursemanage/${course.courseId}`}
                       className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
                     >
                       Manage
                     </Link>
                     <button
-                      onClick={() =>
-                        handleDeleteConfirmation(
-                          localizeNumber(course.courseId)
-                        )
-                      }
+                      onClick={() => handleDeleteConfirmation(course.courseId)}
                       className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
                     >
                       Delete
@@ -172,22 +156,20 @@ function Courses() {
           ))}
         </div>
       )}
-      {/* Pagination Controls */}
+
       <PaginationControls
-        className=" flex justify-center"
+        className="flex justify-center"
         currentPage={currentPage}
         totalPages={totalPages}
         setCurrentPage={setCurrentPage}
       />
 
-      {/* Empty State */}
       {!loading && courses.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No courses found</p>
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-[#00000051] bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 max-w-sm w-full">
@@ -214,7 +196,6 @@ function Courses() {
         </div>
       )}
 
-      {/* Course Creation/Edit Modal */}
       {isModalOpen && (
         <CourseModal
           isOpen={isModalOpen}
