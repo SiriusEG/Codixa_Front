@@ -34,9 +34,15 @@ export const RightSidebar = ({
       <div className="p-6 space-y-6">
         <button
           onClick={handleEnroll}
-          disabled={isLoading || userInfo?.role === "Instructor"}
+          disabled={
+            isLoading ||
+            userInfo?.role === "Instructor" ||
+            userInfo?.role === "Admin"
+          }
           className={`w-full py-4 bg-gradient-to-r from-primary to-primary-100 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity shadow-md transform hover:scale-[1.01] ${
-            isLoading || userInfo?.role === "Instructor"
+            isLoading ||
+            userInfo?.role === "Instructor" ||
+            userInfo?.role === "Admin"
               ? "cursor-not-allowed"
               : ""
           }`}

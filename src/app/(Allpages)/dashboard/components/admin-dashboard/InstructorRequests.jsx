@@ -128,16 +128,16 @@ const InstructorRequests = () => {
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                       ${
-                        request.status === 1
+                        request.status === "Accepted"
                           ? "bg-green-100 text-green-800"
-                          : request.status === 0
+                          : request.status === "Rejected"
                           ? "bg-red-100 text-red-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {request.status === 1
+                      {request.status === "Accepted"
                         ? "Approved"
-                        : request.status === 0
+                        : request.status === "Rejected"
                         ? "Rejected"
                         : "Pending"}
                     </span>
@@ -153,10 +153,10 @@ const InstructorRequests = () => {
                   <td className="px-3 py-4 whitespace-nowrap space-x-2">
                     <button
                       onClick={() => handleStatusUpdate(request.requestId, 1)}
-                      disabled={request.status === 1 || updating}
+                      disabled={request.status === "Accepted" || updating}
                       className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded 
                         ${
-                          request.status === 1
+                          request.status === "Accepted"
                             ? "bg-green-100 text-green-700 cursor-not-allowed"
                             : "bg-green-600 text-white hover:bg-green-700"
                         }`}
@@ -168,10 +168,10 @@ const InstructorRequests = () => {
                     </button>
                     <button
                       onClick={() => handleStatusUpdate(request.requestId, 0)}
-                      disabled={request.status === 0 || updating}
+                      disabled={request.status === "Rejected" || updating}
                       className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded 
                         ${
-                          request.status === 0
+                          request.status === "Rejected"
                             ? "bg-red-100 text-red-700 cursor-not-allowed"
                             : "bg-red-600 text-white hover:bg-red-700"
                         }`}

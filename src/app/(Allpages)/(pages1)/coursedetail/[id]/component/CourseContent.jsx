@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaClipboardList } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const CourseContent = ({ sections }) => {
@@ -11,14 +11,28 @@ export const CourseContent = ({ sections }) => {
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Course Content</h2>
       <div className="space-y-4">
         {sections?.map((section, index) => (
-          <div key={index} className="border rounded-lg overflow-hidden">
+          <div
+            key={index}
+            className={`border rounded-lg overflow-hidden ${
+              section.sectionType === "Test"
+                ? "border-orange-100"
+                : "border-gray-100"
+            }`}
+          >
             <div
-              className="p-4 bg-gray-50 flex justify-between items-center cursor-pointer"
+              className={`p-4 ${
+                section.sectionType === "Test" ? "bg-orange-50" : "bg-gray-50"
+              } flex justify-between items-center cursor-pointer`}
               onClick={() =>
                 setExpandedSection(expandedSection === index ? null : index)
               }
             >
-              <h3 className="font-semibold">{section.sectionName}</h3>
+              <h3 className="font-semibold flex items-center gap-2">
+                {section.sectionType === "Test" && (
+                  <FaClipboardList className="text-orange-500" />
+                )}
+                {section.sectionName}
+              </h3>
               {expandedSection === index ? (
                 <FaChevronUp className="text-primary" />
               ) : (
@@ -40,14 +54,20 @@ export const CourseContent = ({ sections }) => {
                       section.lessons.map((lesson, idx) => (
                         <div
                           key={idx}
-                          className="py-2 px-4 bg-gray-50 border-primary-100 rounded-md my-1 hover:bg-gray-50"
+                          className={`py-2 px-4 ${
+                            section.sectionType === "Test"
+                              ? "bg-orange-50 border-orange-100"
+                              : "bg-gray-50 border-primary-100"
+                          } rounded-md my-1 hover:bg-gray-50`}
                         >
                           {lesson.lessonName}
                         </div>
                       ))
                     ) : (
                       <div className="py-2 px-4 text-gray-500">
-                        No lessons available
+                        {section.sectionType === "Test"
+                          ? "Test configuration"
+                          : "No lessons available"}
                       </div>
                     )}
                   </div>
