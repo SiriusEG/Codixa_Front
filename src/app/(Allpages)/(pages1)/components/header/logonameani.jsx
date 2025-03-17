@@ -12,7 +12,7 @@ const Codixia = () => {
         ease: "easeInOut",
       }}
     >
-      Codixia
+      Codixa
     </motion.h2>
   );
 };

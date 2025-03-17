@@ -15,7 +15,7 @@ const InstructorRequests = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `/api/Adm/get-instructor-requests?page=${currentPage}`,
+          `https://codixa.runasp.net/api/admin/GetInstructorsRequests/${currentPage}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -26,7 +26,7 @@ const InstructorRequests = () => {
           throw new Error("Failed to fetch instructor requests");
         }
         const data = await response.json();
-        setRequests(data.result);
+        setRequests(data.instructorsRequests);
         setTotalPages(data.totalpages);
       } catch (error) {
         console.error("Error fetching instructor requests:", error);
@@ -41,14 +41,17 @@ const InstructorRequests = () => {
     setUpdating(requestId);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/Adm/PUTinstructor", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ requestId, newStatus }),
-      });
+      const response = await fetch(
+        "https://codixa.runasp.net/api/admin/ChangeInstructorStatus",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ requestId, newStatus }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update status");
@@ -75,7 +78,6 @@ const InstructorRequests = () => {
     <div className="p-6 bg-gray-100 min-h-screen min-w-[100vh]">
       <h1 className="text-2xl font-bold mb-6">Instructor Requests</h1>
 
-      {/* Loading Spinner */}
       {loading && (
         <div className="flex justify-center items-center py-6">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-800"></div>
@@ -126,14 +128,18 @@ const InstructorRequests = () => {
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
                       ${
-                        request.status === "Approved"
+                        request.status === 1
                           ? "bg-green-100 text-green-800"
-                          : request.status === "Rejected"
+                          : request.status === 0
                           ? "bg-red-100 text-red-800"
                           : "bg-yellow-100 text-yellow-800"
                       }`}
                     >
-                      {request.status || "Pending"}
+                      {request.status === 1
+                        ? "Approved"
+                        : request.status === 0
+                        ? "Rejected"
+                        : "Pending"}
                     </span>
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap">
@@ -146,13 +152,11 @@ const InstructorRequests = () => {
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap space-x-2">
                     <button
-                      onClick={() =>
-                        handleStatusUpdate(request.requestId, "Approved")
-                      }
-                      disabled={request.status === "Approved" || updating}
+                      onClick={() => handleStatusUpdate(request.requestId, 1)}
+                      disabled={request.status === 1 || updating}
                       className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded 
                         ${
-                          request.status === "Approved"
+                          request.status === 1
                             ? "bg-green-100 text-green-700 cursor-not-allowed"
                             : "bg-green-600 text-white hover:bg-green-700"
                         }`}
@@ -163,13 +167,11 @@ const InstructorRequests = () => {
                         : "Approve"}
                     </button>
                     <button
-                      onClick={() =>
-                        handleStatusUpdate(request.requestId, "Rejected")
-                      }
-                      disabled={request.status === "Rejected" || updating}
+                      onClick={() => handleStatusUpdate(request.requestId, 0)}
+                      disabled={request.status === 0 || updating}
                       className={`inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded 
                         ${
-                          request.status === "Rejected"
+                          request.status === 0
                             ? "bg-red-100 text-red-700 cursor-not-allowed"
                             : "bg-red-600 text-white hover:bg-red-700"
                         }`}
@@ -192,13 +194,12 @@ const InstructorRequests = () => {
         </div>
       )}
 
-      {/* Pagination Controls */}
       {!loading && (
         <div className="mt-6 flex justify-center items-center gap-4">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-100 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -206,7 +207,7 @@ const InstructorRequests = () => {
           <button
             onClick={() => setCurrentPage((prev) => prev + 1)}
             disabled={currentPage >= totalPages}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-100 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
             Next
           </button>

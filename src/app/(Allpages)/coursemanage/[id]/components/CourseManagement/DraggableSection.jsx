@@ -28,8 +28,7 @@ export default function DraggableSection({
   const [sectionName, setSectionName] = useState(section.sectionName);
   const { addToast } = useToast();
 
-  // Fixed test section detection
-  const isTestSection = section.testContent?.successResult !== undefined;
+  const isTestSection = section.sectionType === 1;
 
   const handleDelete = async (Id) => {
     setShowDeleteModal(false);
@@ -76,12 +75,14 @@ export default function DraggableSection({
             SectionId: section.sectionId,
             SectionOrder: section.sectionOrder,
             SectionName: sectionName,
-            Lessons:
-              section.sectionContent?.map((lesson) => ({
-                LessonId: lesson.lessonId,
-                LessonOrder: lesson.lessonOrder,
-                LessonName: lesson.lessonName,
-              })) || [],
+            SectionType: section.sectionType,
+            Lessons: !isTestSection
+              ? section.sectionContent?.map((lesson) => ({
+                  LessonId: lesson.lessonId,
+                  LessonOrder: lesson.lessonOrder,
+                  LessonName: lesson.lessonName,
+                })) || []
+              : [],
           },
         ]),
       });
@@ -175,6 +176,7 @@ export default function DraggableSection({
             </div>
           </div>
 
+          {/* Lesson List for Normal Sections */}
           {!isTestSection && (
             <Droppable
               droppableId={`lessons-${section.sectionId}`}
@@ -233,9 +235,7 @@ export default function DraggableSection({
                           </span>
                           <DeleteLessonButton
                             lessonId={lesson.lessonId}
-                            refreshSections={() => {
-                              refreshSections();
-                            }}
+                            refreshSections={refreshSections}
                           />
                         </div>
                       )}
@@ -247,15 +247,27 @@ export default function DraggableSection({
             </Droppable>
           )}
 
+          {/* Test Section Content */}
           {isTestSection && (
             <div className="ml-8 p-3 bg-white rounded-lg">
-              <p className="text-sm text-gray-500">
-                Test Section - Passing Score:{" "}
-                {section.testContent?.successResult}%
-              </p>
+              {section.testContent ? (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-gray-700">
+                    Passing Score: {section.testContent.successResult}%
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Test Duration: {section.testContent.testDuration} minutes
+                  </p>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No test configuration found
+                </p>
+              )}
             </div>
           )}
 
+          {/* Delete Confirmation Modal */}
           <ConfirmationModal
             isOpen={showDeleteModal}
             onClose={() => setShowDeleteModal(false)}
@@ -264,13 +276,15 @@ export default function DraggableSection({
             message="Are you sure you want to delete this section? All content in this section will be permanently removed."
           />
 
+          {/* Test Configuration Modal */}
           {showTestModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
               <div className="bg-white rounded-lg max-w-2xl w-full">
                 <TestSectionForm
                   sectionId={section.sectionId}
                   onClose={() => setShowTestModal(false)}
-                  initialSuccessResult={section.testContent?.successResult}
+                  initialData={section.testContent}
+                  refreshSections={refreshSections}
                 />
               </div>
             </div>

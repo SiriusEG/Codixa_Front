@@ -80,9 +80,6 @@ const SignupTeacherForm = () => {
           "Registration successful! Please check your email for verification."
         );
         e.target.reset();
-        setTimeout(() => {
-          setSuccess(null);
-        }, 2000);
       } else {
         throw new Error(response.data?.error || "Registration failed");
       }

@@ -20,7 +20,7 @@ import InstructorRequests from "./InstructorRequests";
 import AdminControl from "./AdminControl";
 
 const AdminDashboard = () => {
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] = useState("statics");
   const [isSidebarExpanded, setSidebarExpanded] = useState(true); // Toggle state
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
@@ -49,8 +49,6 @@ const AdminDashboard = () => {
             <InstructorRequests />;
           </div>
         );
-      case "reports":
-        return <div>Reports Content</div>;
       case "admincontrol":
         return (
           <div>
@@ -62,7 +60,11 @@ const AdminDashboard = () => {
       case "settings":
         return <div>Settings Content</div>;
       default:
-        return <div>Dashboard Content</div>;
+        return (
+          <div>
+            <Status />
+          </div>
+        );
     }
   };
 
@@ -111,7 +113,6 @@ const AdminDashboard = () => {
               id: "teachercontrol",
               icon: <LiaChalkboardTeacherSolid />,
             },
-            { name: "Reports", id: "reports", icon: <TbReportAnalytics /> },
             {
               name: "Admin Control",
               id: "admincontrol",

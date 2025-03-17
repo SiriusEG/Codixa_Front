@@ -6,6 +6,7 @@ export default function TestSectionForm({
   sectionId,
   onClose,
   initialSuccessResult = 70.0,
+  refreshSections,
 }) {
   const { addToast } = useToast();
   const [formData, setFormData] = useState({
@@ -60,6 +61,7 @@ export default function TestSectionForm({
       if (!response.ok) throw new Error("Failed to save questions");
       addToast("Questions saved successfully!");
       onClose();
+      await refreshSections();
     } catch (error) {
       addToast(error.message, "error");
     }

@@ -120,7 +120,7 @@ export default function CurriculumTab({ courseId }) {
             SectionId: section.sectionId,
             SectionOrder: section.sectionOrder,
             SectionName: section.sectionName,
-            SectionType: section.sectionType, // Added sectionType here
+            SectionType: section.sectionType,
             Lessons:
               section.sectionContent?.map((lesson) => ({
                 LessonId: lesson.lessonId,
@@ -143,21 +143,24 @@ export default function CurriculumTab({ courseId }) {
   const handleAddSection = async (sectionType) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("/api/sec/+sec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          courseId: Number(courseId),
-          sectionName: `${sectionType === 1 ? "Test " : ""}Section ${
-            sections.length + 1
-          }`,
-          sectionOrder: sections.length + 1,
-          sectionType: sectionType,
-        }),
-      });
+      const response = await fetch(
+        "https://codixa.runasp.net/api/Section/AddNewSection",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            sectionName: `${sectionType === 1 ? "Test " : ""}Section ${
+              sections.length + 1
+            }`,
+            sectionOrder: sections.length + 1,
+            courseId: Number(courseId),
+            sectionType: sectionType,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to add section");
       await fetchSections();
