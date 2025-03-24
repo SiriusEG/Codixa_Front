@@ -111,7 +111,7 @@ const StudentDashboard = () => {
               {courses.map((course) => (
                 <div
                   key={course.courseId}
-                  className="border rounded-lg p-4 hover:shadow-lg transition-shadow"
+                  className="border rounded-lg p-4 hover:shadow-lg transition-shadow flex flex-col h-full"
                 >
                   <div className="bg-gray-200 h-40 rounded-lg mb-4 overflow-hidden">
                     {course.coursePhoto && (
@@ -125,12 +125,26 @@ const StudentDashboard = () => {
                       />
                     )}
                   </div>
-                  <h3 className="font-semibold mb-2">{course.courseName}</h3>
-                  <p className="text-gray-600 text-sm">
-                    {course.courseDescription}
-                  </p>
-                  <div className="mt-4 text-sm text-gray-500">
-                    Category: {course.categoryName}
+                  <div className="flex flex-col flex-grow">
+                    <h3 className="font-semibold mb-2 text-lg">
+                      {course.courseName}
+                    </h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {course.courseDescription}
+                    </p>
+                    <div className="text-sm text-gray-500 mb-4">
+                      Category: {course.categoryName}
+                    </div>
+                    <div className="mt-auto">
+                      <button
+                        onClick={() =>
+                          router.push(`/coursecontent/${course.courseId}`)
+                        }
+                        className="w-full px-4 py-2 bg-primary text-white rounded hover:bg-primary-100 transition-colors"
+                      >
+                        View Course Content
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
