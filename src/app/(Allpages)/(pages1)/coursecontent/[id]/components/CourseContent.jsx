@@ -18,15 +18,18 @@ const CourseContent = () => {
   const [error, setError] = useState("");
   const [expandedSections, setExpandedSections] = useState(new Set());
   const [lessonTypes, setLessonTypes] = useState({});
+  const [nextItem, setNextItem] = useState(null);
 
   const toggleSection = (index) => {
     setExpandedSections((prev) => {
       const next = new Set(prev);
-      next.has(index) ? next.delete(index) : next.add(index);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
       return next;
     });
   };
 
+  // 1) Fetch course content on mount
   useEffect(() => {
     const fetchCourseContent = async () => {
       try {
@@ -42,57 +45,51 @@ const CourseContent = () => {
         if (!response.ok) throw new Error("Failed to fetch course content");
         const data = await response.json();
 
+        // Build lessonTypes (video/text) for the sidebar icons
         const types = {};
-        data.courseData.forEach((section) => {
-          section.sectionContent?.forEach((lesson) => {
-            types[lesson.lessonId] = lesson.videoUrl ? "video" : "text";
-          });
+        const flatItems = data.courseData.flatMap((section) => {
+          if (section.sectionType === 0 && section.sectionContent) {
+            section.sectionContent.forEach((lesson) => {
+              types[lesson.lessonId] = lesson.videoUrl ? "video" : "text";
+            });
+            return section.sectionContent.map((lesson) => ({
+              type: "lesson",
+              id: lesson.lessonId,
+              sectionId: section.sectionId,
+              sectionName: section.sectionName,
+              lessonName: lesson.lessonName,
+              order: lesson.lessonOrder || 0,
+            }));
+          }
+          if (section.sectionType === 1 && section.sectionTestContent) {
+            return section.sectionTestContent.map((test) => ({
+              type: "test",
+              id: test.sectionTestId,
+              sectionId: section.sectionId,
+              sectionName: section.sectionName,
+              order: test.testOrder || 0,
+            }));
+          }
+          return [];
         });
 
         setLessonTypes(types);
         setContent(data.courseData);
         setCurrentProgress(data.courseData);
 
+        // If there's a lastLessonId, auto-load that lesson:
         if (data.lastLessonId) {
-          let isTest = false;
-          const sectionIndex = data.courseData.findIndex((section) => {
-            if (section.sectionType === 0) {
-              return section.sectionContent?.some(
-                (lesson) => lesson.lessonId === data.lastLessonId
-              );
-            }
-            if (section.sectionType === 1) {
-              const hasTest = section.sectionTestContent?.some(
-                (test) => test.sectionTestId === data.lastLessonId
-              );
-              if (hasTest) isTest = true;
-              return hasTest;
-            }
-            return false;
-          });
-
-          if (sectionIndex !== -1) {
-            setExpandedSections(new Set([sectionIndex]));
-            const section = data.courseData[sectionIndex];
-            if (section.sectionType === 0) {
-              const lesson = section.sectionContent.find(
-                (l) => l.lessonId === data.lastLessonId
-              );
-              fetchLessonDetails(
-                data.lastLessonId,
-                false,
-                section.sectionId,
-                section.sectionName,
-                lesson.lessonName
-              );
-            } else {
-              fetchLessonDetails(
-                data.lastLessonId,
-                true,
-                section.sectionId,
-                section.sectionName
-              );
-            }
+          const defaultItem = flatItems.find(
+            (item) => item.type === "lesson" && item.id === data.lastLessonId
+          );
+          if (defaultItem) {
+            fetchLessonDetails(
+              data.lastLessonId,
+              false,
+              defaultItem.sectionId,
+              defaultItem.sectionName,
+              defaultItem.lessonName
+            );
           }
         }
       } catch (err) {
@@ -102,8 +99,59 @@ const CourseContent = () => {
       }
     };
     fetchCourseContent();
-  }, [courseId]);
+  }, [courseId, router]);
 
+  // 2) Recompute nextItem whenever activeItem changes
+  useEffect(() => {
+    if (activeItem) {
+      const currentId = activeItem.isTest
+        ? activeItem.sectionTestId
+        : activeItem.lessonId;
+      const next = findNextItem(currentId, activeItem.isTest);
+      setNextItem(next);
+    } else {
+      setNextItem(null);
+    }
+  }, [activeItem, currentProgress]);
+
+  // 3) Flatten out the items in ascending order
+  const findNextItem = (currentId, isTest = false) => {
+    const allItems = currentProgress
+      .flatMap((section) => {
+        if (section.sectionType === 0 && section.sectionContent) {
+          return section.sectionContent.map((lesson) => ({
+            type: "lesson",
+            id: lesson.lessonId,
+            sectionId: section.sectionId,
+            sectionName: section.sectionName,
+            lessonName: lesson.lessonName,
+            order: lesson.lessonOrder || 0,
+          }));
+        }
+        if (section.sectionType === 1 && section.sectionTestContent) {
+          return section.sectionTestContent.map((test) => ({
+            type: "test",
+            id: test.sectionTestId,
+            sectionId: section.sectionId,
+            sectionName: section.sectionName,
+            order: test.testOrder || 0,
+          }));
+        }
+        return [];
+      })
+      .sort((a, b) => a.order - b.order);
+
+    const currentIndex = allItems.findIndex(
+      (item) =>
+        item.id === currentId && item.type === (isTest ? "test" : "lesson")
+    );
+    if (currentIndex !== -1 && currentIndex < allItems.length - 1) {
+      return allItems[currentIndex + 1];
+    }
+    return null;
+  };
+
+  // 4) Generic fetch function for a lesson or test
   const fetchLessonDetails = async (
     id,
     isTest = false,
@@ -113,11 +161,12 @@ const CourseContent = () => {
   ) => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) return router.push("/login");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
 
-      const payload = isTest
-        ? { sectionTestId: id, sectionId }
-        : { lessonId: id, sectionId };
+      const payload = isTest ? { sectionId } : { lessonId: id };
       const response = await fetch(
         "https://codixa.runasp.net/api/CourseProgress/GetLessonTestDetails",
         {
@@ -136,76 +185,156 @@ const CourseContent = () => {
       }
 
       const data = await response.json();
+
+      // If it's a test
       if (isTest) {
-        if (data.hasOwnProperty("Result") && data.hasOwnProperty("IsPassed")) {
-          setActiveItem({ isTest, sectionName, ...data });
+        if (Array.isArray(data.questions)) {
+          // We have questions to display
+          setTestResult(null);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: id, // highlight this in sidebar
+            sectionName,
+            questions: data.questions,
+            message: data.message,
+          });
+        } else if (
+          typeof data.Result !== "undefined" &&
+          typeof data.IsPassed !== "undefined"
+        ) {
+          // It's a completed test result
+          setTestResult(data);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: id,
+            sectionName,
+            questions: [],
+            message: data.message,
+          });
         } else {
-          setActiveItem({ isTest, sectionName, questions: data });
+          // Fallback
+          setTestResult(null);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: id,
+            sectionName,
+            questions: data.questions || [],
+            message: data.message || "No questions / result found.",
+          });
         }
       } else {
-        setActiveItem({ ...data, isTest, sectionName, lessonName });
+        // It's a lesson
+        setTestResult(null);
+        setActiveItem({
+          ...data,
+          isTest: false,
+          lessonId: id, // highlight this in sidebar
+          sectionName,
+          lessonName,
+          message: data.message,
+        });
       }
       setError("");
     } catch (err) {
-      if (err.message.includes("Access Denied")) {
-        setActiveItem({ message: err.message, isTest: false, sectionName });
-      } else {
-        setError(err.message);
-      }
+      setTestResult(null);
+      setActiveItem({
+        message: err.message,
+        isTest,
+        sectionName,
+      });
+      setError(err.message);
     }
   };
 
-  const handleNextLesson = () => {
+  // 5) When user clicks "Next →"
+  const handleNextLesson = async () => {
     setTestResult(null);
-    if (!activeItem) return;
-    const currentId = activeItem.isTest
-      ? activeItem.sectionTestId
-      : activeItem.lessonId;
-    const nextItem = findNextItem(currentId, activeItem.isTest);
+    if (!nextItem) return;
 
-    if (nextItem) {
-      fetchLessonDetails(
-        nextItem.id,
-        nextItem.type === "test",
-        nextItem.sectionId,
-        nextItem.sectionName,
-        nextItem.lessonName
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        router.push("/login");
+        return;
+      }
+
+      const payload =
+        nextItem.type === "test"
+          ? { sectionId: nextItem.sectionId }
+          : { lessonId: nextItem.id };
+
+      const response = await fetch(
+        "https://codixa.runasp.net/api/CourseProgress/GetLessonTestDetails",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        }
       );
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Failed to fetch details");
+      }
+
+      const data = await response.json();
+
+      if (nextItem.type === "test") {
+        if (Array.isArray(data.questions)) {
+          setTestResult(null);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: nextItem.id,
+            sectionName: nextItem.sectionName,
+            questions: data.questions,
+            message: data.message,
+          });
+        } else if (
+          typeof data.Result !== "undefined" &&
+          typeof data.IsPassed !== "undefined"
+        ) {
+          setTestResult(data);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: nextItem.id,
+            sectionName: nextItem.sectionName,
+            questions: [],
+            message: data.message,
+          });
+        } else {
+          setTestResult(null);
+          setActiveItem({
+            isTest: true,
+            sectionTestId: nextItem.id,
+            sectionName: nextItem.sectionName,
+            questions: data.questions || [],
+            message: data.message || "No questions / result found.",
+          });
+        }
+      } else {
+        // It's a lesson
+        setTestResult(null);
+        setActiveItem({
+          ...data,
+          isTest: false,
+          lessonId: nextItem.id,
+          sectionName: nextItem.sectionName,
+          lessonName: nextItem.lessonName,
+          message: data.message,
+        });
+      }
+    } catch (err) {
+      setActiveItem({
+        message: err.message,
+        isTest: nextItem.type === "test",
+        sectionName: nextItem.sectionName,
+      });
     }
   };
 
-  const findNextItem = (currentId, isTest = false) => {
-    let found = false;
-    for (const section of currentProgress) {
-      if (section.sectionType === 0) {
-        for (const lesson of section.sectionContent || []) {
-          if (found)
-            return {
-              id: lesson.lessonId,
-              type: "lesson",
-              sectionId: section.sectionId,
-              sectionName: section.sectionName,
-              lessonName: lesson.lessonName,
-            };
-          if (lesson.lessonId === currentId && !isTest) found = true;
-        }
-      }
-      if (section.sectionType === 1) {
-        for (const test of section.sectionTestContent || []) {
-          if (found)
-            return {
-              id: test.sectionTestId,
-              type: "test",
-              sectionId: section.sectionId,
-              sectionName: section.sectionName,
-            };
-          if (test.sectionTestId === currentId && isTest) found = true;
-        }
-      }
-    }
-    return null;
-  };
-
+  // 6) Submitting test answers
   const handleTestSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -213,13 +342,6 @@ const CourseContent = () => {
         router.push("/login");
         return;
       }
-      const answerArray = Object.entries(answers).map(
-        ([questionId, choiceId]) => ({
-          questionId: parseInt(questionId),
-          selectedChoicesQuestionId: choiceId,
-        })
-      );
-
       const response = await fetch(
         "https://codixa.runasp.net/api/test/AddAnswer",
         {
@@ -228,12 +350,21 @@ const CourseContent = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(answerArray),
+          body: JSON.stringify(
+            Object.entries(answers).map(([qId, cId]) => ({
+              questionId: parseInt(qId),
+              selectedChoicesQuestionId: cId,
+            }))
+          ),
         }
       );
 
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "Submission failed");
+      console.log("Test submission result:", result);
+      if (!response.ok) {
+        throw new Error(result.message || "Submission failed");
+      }
+      // Now we have a test result:
       setTestResult(result);
       setError("");
     } catch (err) {
@@ -241,9 +372,9 @@ const CourseContent = () => {
     }
   };
 
-  if (loading)
+  if (loading) {
     return <div className="text-center p-8 h-screen">Loading...</div>;
-  if (error) return <div className="text-red-500 p-8">{error}</div>;
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -255,7 +386,6 @@ const CourseContent = () => {
         lessonTypes={lessonTypes}
         fetchLessonDetails={fetchLessonDetails}
       />
-
       <CourseMainContent
         activeItem={activeItem}
         testResult={testResult}
@@ -264,6 +394,7 @@ const CourseContent = () => {
         handleTestSubmit={handleTestSubmit}
         handleNextLesson={handleNextLesson}
         error={error}
+        nextItem={nextItem}
       />
     </div>
   );
