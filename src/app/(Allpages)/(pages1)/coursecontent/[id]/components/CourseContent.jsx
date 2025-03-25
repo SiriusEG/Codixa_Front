@@ -29,7 +29,6 @@ const CourseContent = () => {
     });
   };
 
-  // 1) Fetch course content on mount
   useEffect(() => {
     const fetchCourseContent = async () => {
       try {
@@ -45,39 +44,47 @@ const CourseContent = () => {
         if (!response.ok) throw new Error("Failed to fetch course content");
         const data = await response.json();
 
-        // Build lessonTypes (video/text) for the sidebar icons
+        // Build lessonTypes for the sidebar icons:
         const types = {};
-        const flatItems = data.courseData.flatMap((section) => {
+        // We'll also build a "flatItems" array in the exact order they appear:
+        const flatItems = [];
+
+        data.courseData.forEach((section) => {
+          // If it's a lesson section
           if (section.sectionType === 0 && section.sectionContent) {
             section.sectionContent.forEach((lesson) => {
+              // Record the type (video or text) for icons
               types[lesson.lessonId] = lesson.videoUrl ? "video" : "text";
+
+              // Push the lesson item in the exact array order
+              flatItems.push({
+                type: "lesson",
+                id: lesson.lessonId,
+                sectionId: section.sectionId,
+                sectionName: section.sectionName,
+                lessonName: lesson.lessonName,
+              });
             });
-            return section.sectionContent.map((lesson) => ({
-              type: "lesson",
-              id: lesson.lessonId,
-              sectionId: section.sectionId,
-              sectionName: section.sectionName,
-              lessonName: lesson.lessonName,
-              order: lesson.lessonOrder || 0,
-            }));
           }
-          if (section.sectionType === 1 && section.sectionTestContent) {
-            return section.sectionTestContent.map((test) => ({
-              type: "test",
-              id: test.sectionTestId,
-              sectionId: section.sectionId,
-              sectionName: section.sectionName,
-              order: test.testOrder || 0,
-            }));
+          // If it's a test section
+          else if (section.sectionType === 1 && section.sectionTestContent) {
+            section.sectionTestContent.forEach((test) => {
+              // Push the test item in the exact array order
+              flatItems.push({
+                type: "test",
+                id: test.sectionTestId,
+                sectionId: section.sectionId,
+                sectionName: section.sectionName,
+              });
+            });
           }
-          return [];
         });
 
         setLessonTypes(types);
         setContent(data.courseData);
         setCurrentProgress(data.courseData);
 
-        // If there's a lastLessonId, auto-load that lesson:
+        // If there's a lastLessonId, auto-load that lesson
         if (data.lastLessonId) {
           const defaultItem = flatItems.find(
             (item) => item.type === "lesson" && item.id === data.lastLessonId
@@ -101,49 +108,51 @@ const CourseContent = () => {
     fetchCourseContent();
   }, [courseId, router]);
 
-  // 2) Recompute nextItem whenever activeItem changes
+  // Whenever activeItem changes, figure out the next item
   useEffect(() => {
     if (activeItem) {
-      const currentId = activeItem.isTest
-        ? activeItem.sectionTestId
-        : activeItem.lessonId;
-      const next = findNextItem(currentId, activeItem.isTest);
-      setNextItem(next);
+      setNextItem(findNextItem(activeItem));
     } else {
       setNextItem(null);
     }
   }, [activeItem, currentProgress]);
 
-  // 3) Flatten out the items in ascending order
-  const findNextItem = (currentId, isTest = false) => {
-    const allItems = currentProgress
-      .flatMap((section) => {
-        if (section.sectionType === 0 && section.sectionContent) {
-          return section.sectionContent.map((lesson) => ({
+  // Flatten all items in the exact order they appear in currentProgress
+  const buildFlatItems = () => {
+    const flat = [];
+    currentProgress.forEach((section) => {
+      if (section.sectionType === 0 && section.sectionContent) {
+        section.sectionContent.forEach((lesson) => {
+          flat.push({
             type: "lesson",
             id: lesson.lessonId,
             sectionId: section.sectionId,
             sectionName: section.sectionName,
             lessonName: lesson.lessonName,
-            order: lesson.lessonOrder || 0,
-          }));
-        }
-        if (section.sectionType === 1 && section.sectionTestContent) {
-          return section.sectionTestContent.map((test) => ({
+          });
+        });
+      } else if (section.sectionType === 1 && section.sectionTestContent) {
+        section.sectionTestContent.forEach((test) => {
+          flat.push({
             type: "test",
             id: test.sectionTestId,
             sectionId: section.sectionId,
             sectionName: section.sectionName,
-            order: test.testOrder || 0,
-          }));
-        }
-        return [];
-      })
-      .sort((a, b) => a.order - b.order);
+          });
+        });
+      }
+    });
+    return flat;
+  };
 
+  // Finds the next item by index in the flattened array
+  const findNextItem = (current) => {
+    const allItems = buildFlatItems();
     const currentIndex = allItems.findIndex(
       (item) =>
-        item.id === currentId && item.type === (isTest ? "test" : "lesson")
+        item.id ===
+          (current.isTest ? current.sectionTestId : current.lessonId) &&
+        item.type === (current.isTest ? "test" : "lesson")
     );
     if (currentIndex !== -1 && currentIndex < allItems.length - 1) {
       return allItems[currentIndex + 1];
@@ -151,7 +160,6 @@ const CourseContent = () => {
     return null;
   };
 
-  // 4) Generic fetch function for a lesson or test
   const fetchLessonDetails = async (
     id,
     isTest = false,
@@ -186,14 +194,13 @@ const CourseContent = () => {
 
       const data = await response.json();
 
-      // If it's a test
       if (isTest) {
+        // It's a test
         if (Array.isArray(data.questions)) {
-          // We have questions to display
           setTestResult(null);
           setActiveItem({
             isTest: true,
-            sectionTestId: id, // highlight this in sidebar
+            sectionTestId: id,
             sectionName,
             questions: data.questions,
             message: data.message,
@@ -202,7 +209,7 @@ const CourseContent = () => {
           typeof data.Result !== "undefined" &&
           typeof data.IsPassed !== "undefined"
         ) {
-          // It's a completed test result
+          // Completed test result
           setTestResult(data);
           setActiveItem({
             isTest: true,
@@ -228,7 +235,7 @@ const CourseContent = () => {
         setActiveItem({
           ...data,
           isTest: false,
-          lessonId: id, // highlight this in sidebar
+          lessonId: id,
           sectionName,
           lessonName,
           message: data.message,
@@ -246,7 +253,7 @@ const CourseContent = () => {
     }
   };
 
-  // 5) When user clicks "Next →"
+  // When user clicks "Next"
   const handleNextLesson = async () => {
     setTestResult(null);
     if (!nextItem) return;
@@ -258,6 +265,7 @@ const CourseContent = () => {
         return;
       }
 
+      // If next is a test => send {sectionId}, else => send {lessonId}
       const payload =
         nextItem.type === "test"
           ? { sectionId: nextItem.sectionId }
@@ -282,6 +290,7 @@ const CourseContent = () => {
       const data = await response.json();
 
       if (nextItem.type === "test") {
+        // It's a test
         if (Array.isArray(data.questions)) {
           setTestResult(null);
           setActiveItem({
@@ -334,7 +343,6 @@ const CourseContent = () => {
     }
   };
 
-  // 6) Submitting test answers
   const handleTestSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -364,7 +372,6 @@ const CourseContent = () => {
       if (!response.ok) {
         throw new Error(result.message || "Submission failed");
       }
-      // Now we have a test result:
       setTestResult(result);
       setError("");
     } catch (err) {

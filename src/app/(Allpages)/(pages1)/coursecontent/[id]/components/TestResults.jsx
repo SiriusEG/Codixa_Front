@@ -1,6 +1,7 @@
 import React from "react";
 
 const TestResults = ({ testResult, handleNextLesson }) => {
+  // Debug log
   console.log("Rendering TestResults with:", testResult);
 
   return (
@@ -17,7 +18,8 @@ const TestResults = ({ testResult, handleNextLesson }) => {
         </p>
         {testResult.message && <p>Message: {testResult.message}</p>}
       </div>
-      {/* 
+
+      {/* Show entire JSON for debugging
       <pre className="bg-gray-100 p-2 mt-4 rounded text-sm">
         {JSON.stringify(testResult, null, 2)}
       </pre> */}
