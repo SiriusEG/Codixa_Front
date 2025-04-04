@@ -63,7 +63,7 @@ const CourseHomePage = () => {
         <div
           className="absolute inset-0 bg-cover bg-center rounded-md"
           style={{
-            backgroundImage: "url('https://codixa.runasp.net/uploads/3.png')",
+            backgroundImage: "url('/bg2.png')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "brightness(0.5)",

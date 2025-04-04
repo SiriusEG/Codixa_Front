@@ -192,23 +192,6 @@ const FilterSection = ({
           { label: "Russian", value: 2 },
           { label: "Francais", value: 3 },
         ];
-      case "Price":
-        return [
-          { label: "Paid", value: "Paid" },
-          { label: "Free", value: "Free" },
-        ];
-      case "Video Duration":
-        return [
-          { label: "0-2 hours", value: "0-2" },
-          { label: "3-6 hours", value: "3-6" },
-          { label: "7-9 hours", value: "7-9" },
-        ];
-      case "Features":
-        return [
-          { label: "Caption", value: "Caption" },
-          { label: "Quizzes", value: "Quizzes" },
-          { label: "Practice Test", value: "Practice Test" },
-        ];
       default:
         return [];
     }
@@ -254,57 +237,52 @@ const FilterSection = ({
         )}
       </div>
 
-      {["Level", "Language", "Price", "Video Duration", "Features"].map(
-        (section) => (
-          <div key={section}>
-            <div
-              className="flex justify-between items-center p-4 bg-gray-50 rounded-lg cursor-pointer"
-              onClick={() => toggleSection(section.toLowerCase())}
-            >
-              <span className="font-bold text-gray-800">{section}</span>
-              {openSections[section.toLowerCase()] ? (
-                <RiArrowDropUpLine className="text-2xl text-gray-600" />
-              ) : (
-                <RiArrowDropDownLine className="text-2xl text-gray-600" />
-              )}
-            </div>
-            {openSections[section.toLowerCase()] && (
-              <div className="mt-3 pl-3 space-y-3">
-                {getFilterItems(section).map((item) => (
-                  <label
-                    key={item.value}
-                    className="flex items-center space-x-3"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={
-                        section === "Level"
-                          ? selectedLevel === item.value
-                          : section === "Language"
-                          ? selectedLanguage === item.value
-                          : false
-                      }
-                      onChange={() => {
-                        if (section === "Level") {
-                          setSelectedLevel(
-                            selectedLevel === item.value ? null : item.value
-                          );
-                        } else if (section === "Language") {
-                          setSelectedLanguage(
-                            selectedLanguage === item.value ? null : item.value
-                          );
-                        }
-                      }}
-                      className="form-checkbox h-5 w-5 text-primary border-2 border-gray-300 rounded-md"
-                    />
-                    <span className="text-gray-700">{item.label}</span>
-                  </label>
-                ))}
-              </div>
+      {["Level", "Language"].map((section) => (
+        <div key={section}>
+          <div
+            className="flex justify-between items-center p-4 bg-gray-50 rounded-lg cursor-pointer"
+            onClick={() => toggleSection(section.toLowerCase())}
+          >
+            <span className="font-bold text-gray-800">{section}</span>
+            {openSections[section.toLowerCase()] ? (
+              <RiArrowDropUpLine className="text-2xl text-gray-600" />
+            ) : (
+              <RiArrowDropDownLine className="text-2xl text-gray-600" />
             )}
           </div>
-        )
-      )}
+          {openSections[section.toLowerCase()] && (
+            <div className="mt-3 pl-3 space-y-3">
+              {getFilterItems(section).map((item) => (
+                <label key={item.value} className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={
+                      section === "Level"
+                        ? selectedLevel === item.value
+                        : section === "Language"
+                        ? selectedLanguage === item.value
+                        : false
+                    }
+                    onChange={() => {
+                      if (section === "Level") {
+                        setSelectedLevel(
+                          selectedLevel === item.value ? null : item.value
+                        );
+                      } else if (section === "Language") {
+                        setSelectedLanguage(
+                          selectedLanguage === item.value ? null : item.value
+                        );
+                      }
+                    }}
+                    className="form-checkbox h-5 w-5 text-primary border-2 border-gray-300 rounded-md"
+                  />
+                  <span className="text-gray-700">{item.label}</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
