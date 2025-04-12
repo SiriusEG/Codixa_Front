@@ -62,6 +62,7 @@ const SearchPage = () => {
                   "/"
                 )}`
               : "/imgs/study-place.jpg",
+            instructorFullName: course.instructorFullName
           })) || [];
 
         setCourses(formattedCourses);
@@ -306,14 +307,18 @@ const CourseCard = ({ course }) => (
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-xs text-gray-600">AI</span>
+            <span className="text-gray-600 text-sm">
+              {course.instructorFullName?.charAt(0)}
+            </span>
           </div>
-          <span className="text-gray-600 text-sm">Codixa Team</span>
+          <span className="text-gray-600 text-sm">
+            {course.instructorFullName}
+          </span>
         </div>
-        <div className="flex items-center text-gray-500 text-sm">
+        {/* <div className="flex items-center text-gray-500 text-sm">
           <CiTimer className="mr-1 text-lg" />
           {"3 months"}
-        </div>
+        </div> */}
       </div>
 
       <Link href={`/coursedetail/${course.id}`} className="block mb-3">

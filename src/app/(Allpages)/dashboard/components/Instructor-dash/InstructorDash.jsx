@@ -58,11 +58,21 @@ const InstructorDashboard = () => {
 
         {/* Profile Section */}
         <div className="mb-8 flex flex-col mr-4 items-center">
-          <img
-            src="https://i.pinimg.com/236x/a4/67/5a/a4675ada509320a63ebc2172c352ef9f.jpg"
-            alt="Profile"
-            className="w-12 h-12 rounded-full border-2 border-gray-600 mb-4"
-          />
+        <div className="relative">
+                {userInfo?.ProfilePicturePath === "null" || !userInfo?.ProfilePicturePath ? (
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-600 text-sm font-medium">
+                      {userInfo?.name?.charAt(0)?.toUpperCase() || "?"}
+                    </span>
+                  </div>
+                ) : (
+                  <img
+                    src={`https://codixa.runasp.net/${userInfo.ProfilePicturePath}`}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
+              </div>
           {isSidebarExpanded && (
             <>
               <h2 className="text-lg font-semibold">

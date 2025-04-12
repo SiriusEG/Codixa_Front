@@ -24,6 +24,36 @@ const CourseMainContent = ({
     exit: { opacity: 0, y: -20 },
   };
 
+  const handleMarkLessonCompleted = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const response = await fetch(
+        `https://codixa.runasp.net/api/CourseProgress/MarkLessonAsCompleted/${activeItem.lessonId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to mark lesson as completed");
+      }
+    } catch (error) {
+      console.error("Error marking lesson as completed:", error);
+    }
+  };
+
+  const handleNextWithProgress = async () => {
+    if (!activeItem.isTest) {
+      await handleMarkLessonCompleted();
+    }
+    handleNextLesson();
+  };
+
   return (
     <div className="flex-1 p-8 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
       {activeItem?.message?.includes("Access Denied") ? (
@@ -55,7 +85,7 @@ const CourseMainContent = ({
             </div>
             {nextItem && (
               <button
-                onClick={handleNextLesson}
+                onClick={handleNextWithProgress}
                 className="px-4 py-2.5 bg-primary hover:bg-primary-100 text-white rounded-lg transition-all 
                          flex items-center gap-2 text-sm font-medium shadow-lg hover:shadow-blue-200"
               >

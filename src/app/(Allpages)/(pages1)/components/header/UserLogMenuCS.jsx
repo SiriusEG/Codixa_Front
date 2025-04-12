@@ -50,6 +50,21 @@ const UserLogMenuCS = () => {
               onBlur={() => setOpen(false)}
               className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-300 transition-colors"
             >
+              <div className="relative">
+                {userInfo?.ProfilePicturePath === "null" || !userInfo?.ProfilePicturePath ? (
+                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-gray-600 text-sm font-medium">
+                      {userInfo?.name?.charAt(0)?.toUpperCase() || "?"}
+                    </span>
+                  </div>
+                ) : (
+                  <img
+                    src={`https://codixa.runasp.net/${userInfo.ProfilePicturePath}`}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full"
+                  />
+                )}
+              </div>
               <span className="text-sm font-medium text-gray-700">
                 {userInfo.name}
               </span>

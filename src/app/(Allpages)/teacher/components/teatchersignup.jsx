@@ -11,7 +11,43 @@ const SignupTeacherForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [passwordError, setPasswordError] = useState("");
   const pathname = usePathname();
+
+  const validatePassword = (password) => {
+    const errors = [];
+    if (!/[A-Z]/.test(password)) errors.push("one uppercase letter");
+    if (!/[a-z]/.test(password)) errors.push("one lowercase letter");
+    if (!/[0-9]/.test(password)) errors.push("one number");
+    if (!/[!@#$%^&*]/.test(password)) errors.push("one special character (!@#$%^&*)");
+    if (password.length < 8) errors.push("minimum 8 characters");
+    
+    return errors;
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    const errors = validatePassword(password);
+    if (errors.length > 0) {
+      setPasswordError(`Password must contain: ${errors.join(", ")}`);
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +59,7 @@ const SignupTeacherForm = () => {
     const password = e.target.Password.value;
     const confirmPassword = e.target.ConfirmPassword.value;
     const cvFile = e.target.Cv.files[0];
+    const photoFile = e.target.Photo.files[0];
 
     // Client-side validations
     if (password !== confirmPassword) {
@@ -31,12 +68,9 @@ const SignupTeacherForm = () => {
       return;
     }
 
-    const passwordRegex =
-      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|[\]\\:";'<>?,./`~]).{8,}$/;
-    if (!passwordRegex.test(password)) {
-      setError(
-        "Password must contain at least one uppercase letter, one number, and one special character"
-      );
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      setError(`Password must contain: ${passwordErrors.join(", ")}`);
       setIsSubmitting(false);
       return;
     }
@@ -64,6 +98,9 @@ const SignupTeacherForm = () => {
     formData.append("PhoneNumber", e.target.PhoneNumber.value);
     formData.append("DateOfBirth", e.target.DateOfBirth.value);
     formData.append("Gender", e.target.Gender.value);
+    if (photoFile) {
+      formData.append("Photo", photoFile);
+    }
 
     try {
       const response = await axios.post(
@@ -75,11 +112,9 @@ const SignupTeacherForm = () => {
       );
 
       if (response.data?.success) {
-        // Set success message and clear it after 2 seconds
-        setSuccess(
-          "Registration successful! Please check your email for verification."
-        );
+        setSuccess("Registration successful! Please check your email for verification.");
         e.target.reset();
+        setImagePreview(null);
       } else {
         throw new Error(response.data?.error || "Registration failed");
       }
@@ -87,9 +122,9 @@ const SignupTeacherForm = () => {
       console.error("Registration error:", error);
       setError(
         error.response?.data?.error?.message ||
-          error.response?.data?.error ||
-          error.message ||
-          "Connection error. Please try again later."
+        error.response?.data?.error ||
+        error.message ||
+        "Connection error. Please try again later."
       );
     } finally {
       setIsSubmitting(false);
@@ -97,11 +132,7 @@ const SignupTeacherForm = () => {
   };
 
   return (
-    <div
-      className={`${
-        pathname === "/teacher" ? "opacity-100" : "opacity-0"
-      } h-screen overflow-hidden flex`}
-    >
+    <div className={`${pathname === "/teacher" ? "opacity-100" : "opacity-0"} h-screen overflow-hidden flex`}>
       {/* Image Section */}
       <div className="hidden lg:block w-1/2 h-full relative">
         <img
@@ -112,38 +143,49 @@ const SignupTeacherForm = () => {
       </div>
 
       {/* Form Section */}
-      <div className="w-full lg:w-1/2 h-full bg-gray-50 px-8 py-1 flex flex-col justify-center relative">
-        <Link
-          href="/"
-          className="absolute top-4 left-4 inline-flex items-center text-primary hover:text-primary-100 transition-colors"
-        >
+      <div className="w-full lg:w-1/2 h-full bg-gray-50 px-8 flex flex-col relative overflow-y-auto">
+        <Link href="/" className="sticky top-4 left-4 inline-flex items-center text-primary hover:text-primary-100 transition-colors">
           <IoArrowBack className="mr-1" />
           <span className="text-sm">Home</span>
         </Link>
 
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-2xl mx-auto w-full flex flex-col justify-center"
-        >
-          <h1 className="text-3xl font-bold text-primary mb-8 text-center">
-            Educator Registration
-          </h1>
+        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto w-full py-8">
+          <div className=" top-0 bg-gray-50 pt-4 pb-6 z-10">
+            <h1 className="text-3xl font-bold text-primary text-center">
+              Educator Registration
+            </h1>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-              ⚠️ {error}
-            </div>
-          )}
+            {/* Error Message */}
+            {error && (
+              <div className="mt-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
+                ⚠️ {error}
+              </div>
+            )}
 
-          {/* Success Message */}
-          {success && (
-            <div className="mb-4 px-4 py-1 bg-green-50 text-green-700 rounded-lg border border-green-200">
-              ✔️ {success}
-            </div>
-          )}
+            {/* Success Message */}
+            {success && (
+              <div className="mt-4 px-4 py-1 bg-green-50 text-green-700 rounded-lg border border-green-200">
+                ✔️ {success}
+              </div>
+            )}
 
-          <div className="space-y-6">
+            {/* Image Preview */}
+            {imagePreview && (
+              <div className="flex justify-center mt-4">
+                <div className="relative w-24 h-24">
+                  <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-primary">
+                    <img
+                      src={imagePreview}
+                      alt="Profile Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-6 mt-6">
             {/* Username and Full Name */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -182,23 +224,25 @@ const SignupTeacherForm = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="Password"
-                  className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12"
+                  className={`w-full px-4 py-1 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 pr-12 
+                    ${passwordError ? 'border-red-500' : 'border-gray-300'}`}
                   placeholder="••••••••"
                   required
                   minLength="8"
+                  onChange={handlePasswordChange}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-9 text-gray-400 hover:text-primary transition-colors"
-                  aria-label="Toggle password visibility"
                 >
-                  {showPassword ? (
-                    <FaEye size={20} />
-                  ) : (
-                    <FaEyeSlash size={20} />
-                  )}
+                  {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
                 </button>
+                {passwordError && (
+                  <p className="mt-1 text-xs text-red-600">
+                    {passwordError}
+                  </p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -251,7 +295,7 @@ const SignupTeacherForm = () => {
                 type="file"
                 name="Cv"
                 accept=".pdf"
-                className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-colors"
+                className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-colors cursor-pointer"
                 required
               />
             </div>
@@ -278,7 +322,7 @@ const SignupTeacherForm = () => {
                 <input
                   type="date"
                   name="DateOfBirth"
-                  className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
+                  className="w-full cursor-pointer px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100"
                   required
                   max={new Date().toISOString().split("T")[0]}
                 />
@@ -298,6 +342,20 @@ const SignupTeacherForm = () => {
                 <option value="true">Male</option>
                 <option value="false">Female</option>
               </select>
+            </div>
+
+            {/* Photo Upload */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Profile Photo
+              </label>
+              <input
+                type="file"
+                name="Photo"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="w-full px-4 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary-100 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/20 file:text-primary hover:file:bg-primary/30 transition-colors cursor-pointer"
+              />
             </div>
 
             {/* Submit Button */}

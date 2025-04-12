@@ -40,6 +40,7 @@ export default async function handler(req, res) {
       "PhoneNumber",
       "DateOfBirth",
       "Gender",
+      "Photo"
     ];
 
     fieldOrder.forEach((field) => {
@@ -57,6 +58,22 @@ export default async function handler(req, res) {
           externalFormData.append("Cv", fileStream, {
             filename: cvFile.originalFilename || "cv.pdf",
             contentType: "application/pdf",
+          });
+        }
+      } else if (field === "Photo") {
+        if (files.Photo) {
+          const photoFile = files.Photo[0];
+          const fileStream = createReadStream(photoFile.filepath);
+
+          fileStream.on("end", () => {
+            fs.unlink(photoFile.filepath, (err) => {
+              if (err) console.error("Temp file cleanup error:", err);
+            });
+          });
+
+          externalFormData.append("Photo", fileStream, {
+            filename: photoFile.originalFilename || "profile.jpg",
+            contentType: photoFile.mimetype,
           });
         }
       } else if (fields[field]) {

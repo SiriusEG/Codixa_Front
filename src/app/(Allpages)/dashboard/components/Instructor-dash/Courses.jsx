@@ -35,10 +35,12 @@ function Courses() {
 
       if (!response.ok) throw new Error("Failed to fetch courses");
       const data = await response.json();
-      setCourses(data.courses);
-      setTotalPages(data.totalPages);
+      setCourses(data.courses || []);
+      setTotalPages(data.totalPages || 1);
     } catch (error) {
       console.error("Error fetching courses:", error);
+      setCourses([]);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }
@@ -93,6 +95,11 @@ function Courses() {
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <ClipLoader size={50} color={"#4A90E2"} />
+        </div>
+      ) : !courses || courses.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No courses found</p>
+          <p className="text-gray-400 text-sm mt-2">Create your first course to get started</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -163,12 +170,6 @@ function Courses() {
         totalPages={totalPages}
         setCurrentPage={setCurrentPage}
       />
-
-      {!loading && courses.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No courses found</p>
-        </div>
-      )}
 
       {showDeleteModal && (
         <div className="fixed inset-0 bg-[#00000051] bg-opacity-50 flex items-center justify-center p-4">

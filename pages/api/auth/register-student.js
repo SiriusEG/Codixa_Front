@@ -1,13 +1,35 @@
+import axios from "axios";
+import { IncomingForm } from "formidable";
+import { createReadStream } from "fs";
+import FormData from "form-data";
+import fs from "fs";
+
+export const config = { api: { bodyParser: false } };
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res
       .status(405)
-      .json({ success: false, message: "Method not allowed" });
+      .json({ success: false, error: "Method not allowed" });
   }
 
+  const form = new IncomingForm({
+    multiples: false,
+    maxFileSize: 5 * 1024 * 1024, // 5MB max file size
+  });
+
   try {
-    // Validate required fields
-    const requiredFields = [
+    const [fields, files] = await new Promise((resolve, reject) => {
+      form.parse(req, (err, fields, files) => {
+        if (err) reject(err);
+        else resolve([fields, files]);
+      });
+    });
+
+    const externalFormData = new FormData();
+
+    // Strict field order for student registration
+    const fieldOrder = [
       "userName",
       "fullName",
       "password",
@@ -16,48 +38,70 @@ export default async function handler(req, res) {
       "phoneNumber",
       "dateOfBirth",
       "gender",
+      "Photo"
     ];
-    const missingFields = requiredFields.filter((field) => !req.body[field]);
 
-    if (missingFields.length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: `Missing required fields: ${missingFields.join(", ")}`,
-      });
-    }
+    fieldOrder.forEach((field) => {
+      if (field === "Photo") {
+        if (files.Photo) {
+          const photoFile = files.Photo[0];
+          const fileStream = createReadStream(photoFile.filepath);
 
-    // Forward the entire request body (including confirmPassword) to the external API
-    const externalResponse = await fetch(
+          fileStream.on("end", () => {
+            fs.unlink(photoFile.filepath, (err) => {
+              if (err) console.error("Temp file cleanup error:", err);
+            });
+          });
+
+          externalFormData.append("Photo", fileStream, {
+            filename: photoFile.originalFilename || "profile.jpg",
+            contentType: photoFile.mimetype,
+          });
+        }
+      } else if (fields[field]) {
+        externalFormData.append(field, fields[field][0]);
+      }
+    });
+
+    // Debugging output
+    console.log("\n=== FORM DATA DEBUG ===");
+    console.log("Field Order:", fieldOrder);
+    console.log("Actual Parts:");
+    externalFormData._streams.forEach((part, index) => {
+      if (typeof part === "string") {
+        console.log(`[${index}]`, part.trim());
+      } else if (part.header) {
+        const field = part.header.match(/name="([^"]+)"/)?.[1] || "unknown";
+        const filename = part.header.match(/filename="([^"]+)"/)?.[1];
+        console.log(`[${index}] ${field}:`, filename || part.value);
+      }
+    });
+
+    const response = await axios.post(
       "https://codixa.runasp.net/api/account/RegisterNewStudent",
+      externalFormData,
       {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(req.body),
+        headers: { "Content-Type": "multipart/form-data" },
       }
     );
 
-    // Handle any errors returned by the external API
-    if (!externalResponse.ok) {
-      const errorData = await externalResponse.json();
-      return res.status(externalResponse.status).json({
+    res.status(200).json({ success: true, data: response.data });
+  } catch (error) {
+    console.error("API Error:", error);
+
+    if (error.code === "ECONNRESET") {
+      return res.status(504).json({
         success: false,
-        message: errorData.message || "Registration failed. Please try again.",
+        error: "Connection timed out. Please try again later.",
       });
     }
 
-    // Parse the external API response
-    const data = await externalResponse.json();
+    const status = error.response?.status || 500;
+    const errorData = error.response?.data || { message: error.message };
 
-    // Return the successful response
-    res.status(200).json({
-      success: true,
-      data,
-    });
-  } catch (error) {
-    console.error("Registration error:", error.message);
-    res.status(500).json({
+    res.status(status).json({
       success: false,
-      message: "Registration failed. Please try again.",
+      error: errorData.message || "Internal server error",
     });
   }
 }

@@ -24,7 +24,12 @@ const Studentreq = ({ courseId }) => {
         const response = await fetch(
           `https://codixa.runasp.net/api/Instructor/GetStudentsRequestsByCourse/${courseId}/${currentPage}`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            method: "POST",
+            headers: { 
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}` 
+            },
+            body: JSON.stringify(searchTerm)
           }
         );
 
@@ -56,7 +61,7 @@ const Studentreq = ({ courseId }) => {
 
     const timer = setTimeout(fetchRequests, 300);
     return () => clearTimeout(timer);
-  }, [courseId, currentPage, router]);
+  }, [courseId, currentPage, router, searchTerm]);
 
   const handleStatusUpdate = async (requestId, newStatus) => {
     if (!requestId || ![1, 2].includes(newStatus)) {
@@ -150,14 +155,19 @@ const Studentreq = ({ courseId }) => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen min-w-[100vh]">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Student Enrollment Requests</h1>
-        <input
-          type="text"
-          placeholder="Search students..."
-          className="px-4 py-2 border rounded-lg w-64"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        <h1 className="text-2xl font-bold">Student Requests</h1>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search students..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
       </div>
 
       {error && (
@@ -288,28 +298,6 @@ const Studentreq = ({ courseId }) => {
               totalPages={totalPages}
               currentPage={currentPage}
             />
-            // ) && (
-            //   <div className="mt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            //     <div className="text-sm text-gray-700">
-            //       Page {currentPage} of {totalPages}
-            //     </div>
-            //     <div className="flex gap-2">
-            //       <button
-            //         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            //         disabled={currentPage === 1}
-            //         className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-            //       >
-            //         Previous
-            //       </button>
-            //       <button
-            //         onClick={() => setCurrentPage((p) => p + 1)}
-            //         disabled={currentPage >= totalPages}
-            //         className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-            //       >
-            //         Next
-            //       </button>
-            //     </div>
-            //   </div>
           )}
         </>
       )}
