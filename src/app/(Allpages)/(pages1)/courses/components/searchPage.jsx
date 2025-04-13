@@ -19,6 +19,7 @@ const SearchPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -62,7 +63,7 @@ const SearchPage = () => {
                   "/"
                 )}`
               : "/imgs/study-place.jpg",
-            instructorFullName: course.instructorFullName
+            instructorFullName: course.instructorFullName,
           })) || [];
 
         setCourses(formattedCourses);
@@ -87,75 +88,94 @@ const SearchPage = () => {
   ]);
 
   return (
-    <div className="flex flex-col md:flex-row bg-gray-50 min-h-screen w-screen p-6 gap-6">
-      {/* Filters Section */}
-      <div className="w-full md:w-1/4">
-        <div className="bg-gray-100 rounded-xl p-6 shadow-lg h-fit sticky top-6">
-          <input
-            type="text"
-            placeholder="Search courses..."
-            className="w-full mb-6 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1);
-            }}
-          />
-
-          <FilterSection
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={(id) => {
-              setSelectedCategory(id);
-              setCurrentPage(1);
-            }}
-            selectedLevel={selectedLevel}
-            setSelectedLevel={(value) => {
-              setSelectedLevel(value);
-              setCurrentPage(1);
-            }}
-            selectedLanguage={selectedLanguage}
-            setSelectedLanguage={(value) => {
-              setSelectedLanguage(value);
-              setCurrentPage(1);
-            }}
-            isMounted={isMounted}
-          />
-        </div>
+    <div className="flex flex-col bg-gray-50 min-h-screen w-full p-3 sm:p-6 gap-4 sm:gap-6">
+      {/* Mobile Filter Toggle */}
+      <div className="md:hidden w-full mb-2">
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="w-full bg-primary text-white py-3 rounded-lg font-medium flex justify-center items-center"
+        >
+          {showFilters ? "Hide Filters" : "Show Filters"}
+          {showFilters ? (
+            <RiArrowDropUpLine className="text-2xl ml-1" />
+          ) : (
+            <RiArrowDropDownLine className="text-2xl ml-1" />
+          )}
+        </button>
       </div>
 
-      {/* Results Section */}
-      <div className="w-full md:w-3/4">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Search Results
-        </h2>
+      <div className="flex flex-col md:flex-row w-full gap-4 sm:gap-6">
+        {/* Filters Section */}
+        <div className={`w-full md:w-1/4 ${showFilters || "hidden md:block"}`}>
+          <div className="bg-gray-100 rounded-xl p-4 sm:p-6 shadow-lg h-fit sticky top-6">
+            <input
+              type="text"
+              placeholder="Search courses..."
+              className="w-full mb-6 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading ? (
-            [...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl shadow-lg h-[500px] animate-pulse"
-              />
-            ))
-          ) : courses.length === 0 ? (
-            <p className="text-gray-600 col-span-full p-6 bg-white rounded-xl">
-              No courses found
-            </p>
-          ) : (
-            courses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))
-          )}
+            <FilterSection
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={(id) => {
+                setSelectedCategory(id);
+                setCurrentPage(1);
+              }}
+              selectedLevel={selectedLevel}
+              setSelectedLevel={(value) => {
+                setSelectedLevel(value);
+                setCurrentPage(1);
+              }}
+              selectedLanguage={selectedLanguage}
+              setSelectedLanguage={(value) => {
+                setSelectedLanguage(value);
+                setCurrentPage(1);
+              }}
+              isMounted={isMounted}
+            />
+          </div>
         </div>
 
-        {isMounted && (
-          <PaginationControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            setCurrentPage={setCurrentPage}
-          />
-        )}
+        {/* Results Section */}
+        <div className="w-full md:w-3/4">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+            Search Results
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {isLoading ? (
+              [...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-xl shadow-lg h-[400px] sm:h-[450px] animate-pulse"
+                />
+              ))
+            ) : courses.length === 0 ? (
+              <p className="text-gray-600 col-span-full p-6 bg-white rounded-xl">
+                No courses found
+              </p>
+            ) : (
+              courses.map((course) => (
+                <CourseCard key={course.id} course={course} />
+              ))
+            )}
+          </div>
+
+          {isMounted && (
+            <div className="mt-8">
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -199,10 +219,10 @@ const FilterSection = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
         <div
-          className="flex justify-between items-center p-4 bg-gray-50 rounded-lg cursor-pointer"
+          className="flex justify-between items-center p-3 sm:p-4 bg-gray-50 rounded-lg cursor-pointer"
           onClick={() => toggleSection("category")}
         >
           <span className="font-bold text-gray-800">Category</span>
@@ -213,11 +233,11 @@ const FilterSection = ({
           )}
         </div>
         {openSections.category && (
-          <ul className="space-y-3 mt-3 pl-3">
+          <ul className="space-y-2 mt-2 pl-2 sm:pl-3">
             {isMounted &&
               categories.map((category) => (
                 <li key={category.categoryId}>
-                  <label className="flex items-center space-x-3">
+                  <label className="flex items-center space-x-2 sm:space-x-3">
                     <input
                       type="checkbox"
                       checked={selectedCategory === category.categoryId}
@@ -228,9 +248,11 @@ const FilterSection = ({
                             : category.categoryId
                         )
                       }
-                      className="form-checkbox h-5 w-5 text-primary border-2 border-gray-300 rounded-md"
+                      className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md"
                     />
-                    <span className="text-gray-700">{category.name}</span>
+                    <span className="text-sm sm:text-base text-gray-700">
+                      {category.name}
+                    </span>
                   </label>
                 </li>
               ))}
@@ -241,7 +263,7 @@ const FilterSection = ({
       {["Level", "Language"].map((section) => (
         <div key={section}>
           <div
-            className="flex justify-between items-center p-4 bg-gray-50 rounded-lg cursor-pointer"
+            className="flex justify-between items-center p-3 sm:p-4 bg-gray-50 rounded-lg cursor-pointer"
             onClick={() => toggleSection(section.toLowerCase())}
           >
             <span className="font-bold text-gray-800">{section}</span>
@@ -252,9 +274,12 @@ const FilterSection = ({
             )}
           </div>
           {openSections[section.toLowerCase()] && (
-            <div className="mt-3 pl-3 space-y-3">
+            <div className="mt-2 pl-2 sm:pl-3 space-y-2 sm:space-y-3">
               {getFilterItems(section).map((item) => (
-                <label key={item.value} className="flex items-center space-x-3">
+                <label
+                  key={item.value}
+                  className="flex items-center space-x-2 sm:space-x-3"
+                >
                   <input
                     type="checkbox"
                     checked={
@@ -275,9 +300,11 @@ const FilterSection = ({
                         );
                       }
                     }}
-                    className="form-checkbox h-5 w-5 text-primary border-2 border-gray-300 rounded-md"
+                    className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md"
                   />
-                  <span className="text-gray-700">{item.label}</span>
+                  <span className="text-sm sm:text-base text-gray-700">
+                    {item.label}
+                  </span>
                 </label>
               ))}
             </div>
@@ -289,54 +316,51 @@ const FilterSection = ({
 };
 
 const CourseCard = ({ course }) => (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-[500px] flex flex-col">
-    <div className="relative h-48 w-full shrink-0">
+  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-[380px] sm:h-[420px]">
+    <div className="relative w-full aspect-video">
       <Image
         src={course.imageUrl}
         alt={course.title}
         fill
-        className="object-cover rounded-t-xl"
+        className="object-cover"
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         priority
       />
-      <div className="absolute top-2 right-2 bg-primary/90 text-white px-3 py-1 rounded-full text-sm">
+      <div className="absolute top-2 right-2 bg-primary/90 text-white px-2 py-1 text-xs sm:px-3 sm:text-sm rounded-full">
         {course.category || "Uncategorized"}
       </div>
     </div>
 
-    <div className="p-6 flex flex-col flex-grow">
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-600 text-sm">
+    <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
+      <div className="flex items-center justify-between mb-2 sm:mb-3">
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 flex items-center justify-center">
+            <span className="text-gray-600 text-xs sm:text-sm">
               {course.instructorFullName?.charAt(0)}
             </span>
           </div>
-          <span className="text-gray-600 text-sm">
+          <span className="text-gray-600 text-xs sm:text-sm truncate max-w-24 sm:max-w-32">
             {course.instructorFullName}
           </span>
         </div>
-        {/* <div className="flex items-center text-gray-500 text-sm">
-          <CiTimer className="mr-1 text-lg" />
-          {"3 months"}
-        </div> */}
       </div>
 
-      <Link href={`/coursedetail/${course.id}`} className="block mb-3">
-        <h3 className="text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
+      <Link href={`/coursedetail/${course.id}`} className="block mb-2">
+        <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
           {course.title}
         </h3>
       </Link>
 
-      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">
+      <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2 sm:line-clamp-3 flex-grow">
         {course.description || "No description available"}
       </p>
 
       <Link
         href={`/coursedetail/${course.id}`}
-        className="inline-flex items-center bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors mt-auto"
+        className="inline-flex items-center bg-primary text-white px-3 py-2 text-sm rounded-lg hover:bg-primary-dark transition-colors mt-auto"
       >
-        <span className="mr-2">View Course</span>
-        <FaArrowRight className="text-sm" />
+        <span className="mr-1 sm:mr-2">View Course</span>
+        <FaArrowRight className="text-xs sm:text-sm" />
       </Link>
     </div>
   </div>

@@ -1,8 +1,9 @@
 import "./global.css";
-import { FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
+import { FaArrowLeft, FaQuoteLeft, FaQuoteRight } from "react-icons/fa";
 import Image from "next/image";
 import DropdownMenu from "./user/Dropdown";
 import StoreProvider from "../StoreProvider";
+import Link from "next/link";
 
 export const metadata = {
   title: "E-learningSiriusEg",
@@ -42,12 +43,25 @@ export default function RootLayout({ children }) {
             </div>
 
             {/* Children side */}
-            <div className="absolute top-5 right-5">
-              <DropdownMenu className="flex items-center gap-2 cursor-pointer" />
-            </div>
-            <div className="relative sm:w-1/2 w-full flex items-center justify-center">
-              {/* Dropdown Menu */}
-              <StoreProvider>{children}</StoreProvider>
+            <div className="relative sm:w-1/2 w-full flex flex-col items-center justify-center">
+              <div className="flex justify-between w-full px-4">
+                <Link
+                  href="/"
+                  className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-primary/10 hover:text-primary transition rounded-lg"
+                >
+                  <FaArrowLeft />
+                  Back To Home
+                </Link>
+                <Link
+                  href="/teacher"
+                  className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-primary/10 hover:text-primary transition rounded-lg"
+                >
+                  Sign Up as Teacher?
+                </Link>
+              </div>{" "}
+              <div>
+                <StoreProvider>{children}</StoreProvider>
+              </div>
             </div>
           </div>
         </div>

@@ -40,7 +40,7 @@ export default async function handler(req, res) {
       "PhoneNumber",
       "DateOfBirth",
       "Gender",
-      "Photo"
+      "Photo",
     ];
 
     fieldOrder.forEach((field) => {
