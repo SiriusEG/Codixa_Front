@@ -3,11 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
-import { CiTimer } from "react-icons/ci";
 import Link from "next/link";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import PaginationControls from "./PaginationControls";
-
+import BackgroundAnimation from "./BackgroundAnimation";
+import Circles from "./Circles";
 const SearchPage = () => {
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
@@ -88,7 +88,8 @@ const SearchPage = () => {
   ]);
 
   return (
-    <div className="flex flex-col bg-gray-50 min-h-screen w-full p-3 sm:p-6 gap-4 sm:gap-6">
+    <div className="flex flex-col z-0 min-h-screen w-full p-3 sm:p-6 gap-4 sm:gap-6 relative">
+      <BackgroundAnimation />
       {/* Mobile Filter Toggle */}
       <div className="md:hidden w-full mb-2">
         <button
@@ -220,6 +221,7 @@ const FilterSection = ({
 
   return (
     <div className="space-y-4 sm:space-y-6">
+      <Circles />
       <div>
         <div
           className="flex justify-between items-center p-3 sm:p-4 bg-gray-50 rounded-lg cursor-pointer"

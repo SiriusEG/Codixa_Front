@@ -1,0 +1,103 @@
+"filename", "language", "JavaScript", "JavaScript JSX", "CSS", "comment", "blank", "total"
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\PUTinstructor.js", "JavaScript", 22, 0, 0, 1, 5, 28
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\get-instructor-requests.js", "JavaScript", 23, 0, 0, 0, 4, 27
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\registerAdmin.js", "JavaScript", 29, 0, 0, 1, 2, 32
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\REGESTinsturctor.js", "JavaScript", 106, 0, 0, 2, 18, 126
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\login.js", "JavaScript", 26, 0, 0, 2, 6, 34
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\refreshToken.js", "JavaScript", 31, 0, 0, 2, 8, 41
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\register-student.js", "JavaScript", 90, 0, 0, 2, 16, 108
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\[id].js", "JavaScript", 16, 0, 0, 0, 4, 20
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\add-new-course.js", "JavaScript", 108, 0, 0, 8, 15, 131
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\course-categories.js", "JavaScript", 19, 0, 0, 1, 2, 22
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\delcrs\[courseId].js", "JavaScript", 42, 0, 0, 0, 8, 50
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\gtcrs.js", "JavaScript", 21, 0, 0, 0, 5, 26
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\upcrsinfo.js", "JavaScript", 82, 0, 0, 2, 13, 97
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\+sec.js", "JavaScript", 54, 0, 0, 0, 9, 63
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\[...slug].js", "JavaScript", 34, 0, 0, 0, 5, 39
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\deltlec.js", "JavaScript", 93, 0, 0, 8, 13, 114
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\dltsec\[sectionId].js", "JavaScript", 37, 0, 0, 0, 6, 43
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\std\gtstd\route.js", "JavaScript", 68, 0, 0, 3, 8, 79
+"c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\std\putstdstatus\route.js", "JavaScript", 63, 0, 0, 3, 8, 74
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\(home)\components\HomeFirstSection.jsx", "JavaScript JSX", 0, -444, 0, -12, -24, -480
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\(home)\page.jsx", "JavaScript JSX", 0, -9, 0, -1, -2, -12
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\aboutus\page.jsx", "JavaScript JSX", 0, -50, 0, 0, -5, -55
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\AuthCheckCS.jsx", "JavaScript JSX", 0, -29, 0, 0, -8, -37
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\footer\Footer.jsx", "JavaScript JSX", 0, -30, 0, -1, -2, -33
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\footer\footerList.jsx", "JavaScript JSX", 0, -32, 0, 0, -2, -34
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\footer\leftFooter.jsx", "JavaScript JSX", 0, -45, 0, 0, -2, -47
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\footer\socialLinks.jsx", "JavaScript JSX", 0, -26, 0, 0, -4, -30
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\CollapseCS.jsx", "JavaScript JSX", 0, -51, 0, -2, -7, -60
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\Header.jsx", "JavaScript JSX", 0, -38, 0, -6, -3, -47
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\NavListCS.jsx", "JavaScript JSX", 0, -52, 0, 0, -4, -56
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\Search.jsx", "JavaScript JSX", 0, -29, 0, 0, -4, -33
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\UserLogMenuCS.jsx", "JavaScript JSX", 0, -157, 0, -3, -14, -174
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\header\logonameani.jsx", "JavaScript JSX", 0, -18, 0, 0, -3, -21
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\components\logo.jsx", "JavaScript JSX", 0, -17, 0, 0, -2, -19
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\contactus\components\LeftSec.jsx", "JavaScript JSX", 0, -27, 0, 0, -3, -30
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\contactus\components\RightSec.jsx", "JavaScript JSX", 0, -61, 0, 0, -7, -68
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\contactus\page.jsx", "JavaScript JSX", 0, -11, 0, 0, -2, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursecontent\[id]\components\CourseContent.jsx", "JavaScript JSX", 0, -363, 0, -19, -29, -411
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursecontent\[id]\components\CourseMainContent.jsx", "JavaScript JSX", 0, -582, 0, -8, -36, -626
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursecontent\[id]\components\CourseSidebar.jsx", "JavaScript JSX", 0, -202, 0, 0, -8, -210
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursecontent\[id]\components\TestResults.jsx", "JavaScript JSX", 0, -154, 0, -8, -8, -170
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursecontent\[id]\page.jsx", "JavaScript JSX", 0, -4, 0, 0, -2, -6
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\component\CommentsSection.jsx", "JavaScript JSX", 0, -336, 0, 0, -28, -364
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\component\CourseContent.jsx", "JavaScript JSX", 0, -79, 0, 0, -4, -83
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\component\CourseDetailsPage.jsx", "JavaScript JSX", 0, -238, 0, -2, -26, -266
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\component\RightSidebar.jsx", "JavaScript JSX", 0, -104, 0, 0, -6, -110
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\component\StarRating.jsx", "JavaScript JSX", 0, -23, 0, 0, -2, -25
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\coursedetail\[id]\page.jsx", "JavaScript JSX", 0, -11, 0, 0, -2, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\courses\components\6-sixth-sec\MostViewing.jsx", "JavaScript JSX", 0, -97, 0, 0, -6, -103
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\courses\components\CourseCard.jsx", "JavaScript JSX", 0, -52, 0, -6, -11, -69
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\courses\components\PaginationControls.jsx", "JavaScript JSX", 0, -44, 0, 0, -5, -49
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\courses\components\searchPage.jsx", "JavaScript JSX", 0, -340, 0, -3, -27, -370
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\courses\page.jsx", "JavaScript JSX", 0, -12, 0, -6, -4, -22
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\global.css", "CSS", 0, 0, -28, -2, -3, -33
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\layout.jsx", "JavaScript JSX", 0, -19, 0, -1, -5, -25
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\profile\StudentDash.jsx", "JavaScript JSX", 0, -162, 0, -4, -11, -177
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\profile\page.jsx", "JavaScript JSX", 0, -10, 0, 0, -3, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\profilesetting\page.jsx", "JavaScript JSX", 0, -10, 0, 0, -2, -12
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\(pages1)\profilesetting\profilesetting.jsx", "JavaScript JSX", 0, -95, 0, -13, -10, -118
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\TokenRefreshHandler.js", "JavaScript", -15, 0, 0, -1, -6, -22
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\CurriculumTab.jsx", "JavaScript JSX", 0, -257, 0, 0, -21, -278
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\DraggableSection.jsx", "JavaScript JSX", 0, -277, 0, -4, -16, -297
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\Header.jsx", "JavaScript JSX", 0, -14, 0, -1, -1, -16
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\LectureModal.jsx", "JavaScript JSX", 0, -247, 0, -1, -16, -264
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\SidebarNavigation.jsx", "JavaScript JSX", 0, -68, 0, -13, -6, -87
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\analytics.jsx", "JavaScript JSX", 0, -179, 0, -4, -9, -192
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\courseInfo.jsx", "JavaScript JSX", 0, -216, 0, -7, -22, -245
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\index.jsx", "JavaScript JSX", 0, -55, 0, 0, -8, -63
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\studentreq\Studentreq.jsx", "JavaScript JSX", 0, -285, 0, 0, -24, -309
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\ui\ConfirmationModal.jsx", "JavaScript JSX", 0, -32, 0, 0, -2, -34
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\ui\DeleteLessonButton.jsx", "JavaScript JSX", 0, -73, 0, 0, -9, -82
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\ui\PaginationControls.jsx", "JavaScript JSX", 0, -44, 0, 0, -5, -49
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\CourseManagement\ui\TestSectionForm.jsx", "JavaScript JSX", 0, -195, 0, 0, -11, -206
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\components\context\ToastContext.jsx", "JavaScript JSX", 0, -33, 0, 0, -7, -40
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\coursemanage\[id]\page.jsx", "JavaScript JSX", 0, -4, 0, -1, -2, -7
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\Instructor-dash\Courses.jsx", "JavaScript JSX", 0, -194, 0, 0, -20, -214
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\Instructor-dash\InstructorDash.jsx", "JavaScript JSX", 0, -125, 0, -7, -11, -143
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\Instructor-dash\PaginationControls.jsx", "JavaScript JSX", 0, -44, 0, 0, -5, -49
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\Instructor-dash\components\CourseModal.jsx", "JavaScript JSX", 0, -247, 0, -8, -24, -279
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\admin-dashboard\AdminControl.jsx", "JavaScript JSX", 0, -352, 0, -6, -24, -382
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\admin-dashboard\InstructorRequests.jsx", "JavaScript JSX", 0, -243, 0, 0, -13, -256
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\admin-dashboard\admindashboard.jsx", "JavaScript JSX", 0, -161, 0, -7, -13, -181
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\admin-dashboard\status.jsx", "JavaScript JSX", 0, -142, 0, -3, -9, -154
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\components\seperation.jsx", "JavaScript JSX", 0, -63, 0, -4, -7, -74
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\dashboard\page.jsx", "JavaScript JSX", 0, -12, 0, 0, -3, -15
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\global.css", "CSS", 0, 0, -10, -2, -1, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\layout.jsx", "JavaScript JSX", 0, -23, 0, 0, -2, -25
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\teacher\components\teatchersignup.jsx", "JavaScript JSX", 0, -367, 0, -15, -31, -413
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(Allpages)\teacher\page.jsx", "JavaScript JSX", 0, -10, 0, 0, -3, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\forgotpassword\components\ForgotPassword.jsx", "JavaScript JSX", 0, -68, 0, -2, -9, -79
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\forgotpassword\page.jsx", "JavaScript JSX", 0, -11, 0, 0, -3, -14
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\global.css", "CSS", 0, 0, -10, -1, -1, -12
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\layout.jsx", "JavaScript JSX", 0, -66, 0, -2, -4, -72
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\Dropdown.jsx", "JavaScript JSX", 0, -24, 0, 0, -3, -27
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\layout.jsx", "JavaScript JSX", 0, -32, 0, -2, -3, -37
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\login\components\LoginForm.jsx", "JavaScript JSX", 0, -123, 0, 0, -14, -137
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\login\page.jsx", "JavaScript JSX", 0, -9, 0, -1, -4, -14
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\signup\components\SignupForm.jsx", "JavaScript JSX", 0, -271, 0, -10, -33, -314
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\signup\page.jsx", "JavaScript JSX", 0, -8, 0, -2, -3, -13
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\(pages2)\user\switch.jsx", "JavaScript JSX", 0, -33, 0, -3, -7, -43
+"c:\Users\ascom\Desktop\Codixa_Front-main\src\app\StoreProvider.jsx", "JavaScript JSX", 0, -15, 0, -1, -5, -21
+"Total", "-", 949, -8685, -48, -170, -601, -8555

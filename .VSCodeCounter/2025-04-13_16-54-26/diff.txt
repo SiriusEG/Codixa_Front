@@ -1,0 +1,67 @@
+Date : 2025-04-13 16:54:26
+Directory : c:\Users\ascom\Desktop\Codixa_Front-main\lib
+Total : 24 files,  -780 codes, -29 comments, -119 blanks, all -928 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |         24 |       -780 |        -29 |       -119 |       -928 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                 |         24 |       -780 |        -29 |       -119 |       -928 |
+| . (Files)                                                                         |          2 |         30 |          1 |          9 |         40 |
+| ..                                                                                |         19 |       -964 |        -35 |       -155 |     -1,154 |
+| ..\pages                                                                          |         19 |       -964 |        -35 |       -155 |     -1,154 |
+| ..\pages\api                                                                      |         19 |       -964 |        -35 |       -155 |     -1,154 |
+| ..\pages\api\Adm                                                                  |          3 |        -74 |         -2 |        -11 |        -87 |
+| ..\pages\api\auth                                                                 |          4 |       -253 |         -8 |        -48 |       -309 |
+| ..\pages\api\crs                                                                  |          6 |       -288 |        -11 |        -47 |       -346 |
+| ..\pages\api\crs (Files)                                                          |          5 |       -246 |        -11 |        -39 |       -296 |
+| ..\pages\api\crs\delcrs                                                           |          1 |        -42 |          0 |         -8 |        -50 |
+| ..\pages\api\sec                                                                  |          4 |       -218 |         -8 |        -33 |       -259 |
+| ..\pages\api\sec (Files)                                                          |          3 |       -181 |         -8 |        -27 |       -216 |
+| ..\pages\api\sec\dltsec                                                           |          1 |        -37 |          0 |         -6 |        -43 |
+| ..\pages\api\std                                                                  |          2 |       -131 |         -6 |        -16 |       -153 |
+| ..\pages\api\std\gtstd                                                            |          1 |        -68 |         -3 |         -8 |        -79 |
+| ..\pages\api\std\putstdstatus                                                     |          1 |        -63 |         -3 |         -8 |        -74 |
+| reducers                                                                          |          3 |        154 |          5 |         27 |        186 |
+| reducers (Files)                                                                  |          1 |          8 |          0 |          3 |         11 |
+| reducers\auth                                                                     |          1 |         99 |          4 |         17 |        120 |
+| reducers\user                                                                     |          1 |         47 |          1 |          7 |         55 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                          | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Users\ascom\Desktop\Codixa_Front-main\lib\hooks.js                             | JavaScript |          4 |          1 |          2 |          7 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\lib\reducers\auth\logInSlice.js          | JavaScript |         99 |          4 |         17 |        120 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\lib\reducers\rootReducer.js              | JavaScript |          8 |          0 |          3 |         11 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\lib\reducers\user\userSlice.js           | JavaScript |         47 |          1 |          7 |         55 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\lib\store.js                             | JavaScript |         26 |          0 |          7 |         33 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\PUTinstructor.js           | JavaScript |        -22 |         -1 |         -5 |        -28 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\get-instructor-requests.js | JavaScript |        -23 |          0 |         -4 |        -27 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\Adm\registerAdmin.js           | JavaScript |        -29 |         -1 |         -2 |        -32 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\REGESTinsturctor.js       | JavaScript |       -106 |         -2 |        -18 |       -126 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\login.js                  | JavaScript |        -26 |         -2 |         -6 |        -34 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\refreshToken.js           | JavaScript |        -31 |         -2 |         -8 |        -41 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\auth\register-student.js       | JavaScript |        -90 |         -2 |        -16 |       -108 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\[id].js                    | JavaScript |        -16 |          0 |         -4 |        -20 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\add-new-course.js          | JavaScript |       -108 |         -8 |        -15 |       -131 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\course-categories.js       | JavaScript |        -19 |         -1 |         -2 |        -22 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\delcrs\[courseId].js       | JavaScript |        -42 |          0 |         -8 |        -50 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\gtcrs.js                   | JavaScript |        -21 |          0 |         -5 |        -26 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\crs\upcrsinfo.js               | JavaScript |        -82 |         -2 |        -13 |        -97 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\+sec.js                    | JavaScript |        -54 |          0 |         -9 |        -63 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\[...slug].js               | JavaScript |        -34 |          0 |         -5 |        -39 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\deltlec.js                 | JavaScript |        -93 |         -8 |        -13 |       -114 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\sec\dltsec\[sectionId].js      | JavaScript |        -37 |          0 |         -6 |        -43 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\std\gtstd\route.js             | JavaScript |        -68 |         -3 |         -8 |        -79 |
+| c:\Users\ascom\Desktop\Codixa_Front-main\pages\api\std\putstdstatus\route.js      | JavaScript |        -63 |         -3 |         -8 |        -74 |
+| Total                                                                             |            |       -780 |        -29 |       -119 |       -928 |
++-----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
