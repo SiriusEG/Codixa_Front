@@ -7,7 +7,7 @@ import Link from "next/link";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import PaginationControls from "./PaginationControls";
 import BackgroundAnimation from "./BackgroundAnimation";
-import Circles from "./Circles";
+import Circles from "./circles";
 const SearchPage = () => {
   const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState([]);
