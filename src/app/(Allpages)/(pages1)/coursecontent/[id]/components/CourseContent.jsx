@@ -20,6 +20,44 @@ const CourseContent = () => {
   const [lessonTypes, setLessonTypes] = useState({});
   const [nextItem, setNextItem] = useState(null);
 
+  const findInfoForItem = (itemId, itemType) => {
+    if (!currentProgress) return null;
+
+    for (const section of currentProgress) {
+      if (
+        itemType === "lesson" &&
+        section.sectionType === 0 &&
+        section.sectionContent
+      ) {
+        const lesson = section.sectionContent.find(
+          (l) => l.lessonId === itemId
+        );
+        if (lesson) {
+          return {
+            sectionId: section.sectionId,
+            sectionName: section.sectionName,
+            lessonName: lesson.lessonName,
+          };
+        }
+      } else if (
+        itemType === "test" &&
+        section.sectionType === 1 &&
+        section.sectionTestContent
+      ) {
+        const test = section.sectionTestContent.find(
+          (t) => t.sectionTestId === itemId
+        );
+        if (test) {
+          return {
+            sectionId: section.sectionId,
+            sectionName: section.sectionName,
+          };
+        }
+      }
+    }
+    return null;
+  };
+
   const toggleSection = (index) => {
     setExpandedSections((prev) => {
       const next = new Set(prev);
@@ -174,7 +212,29 @@ const CourseContent = () => {
         return;
       }
 
-      const payload = isTest ? { sectionId } : { lessonId: id };
+      // Ensure we have the necessary context
+      let contextInfo = {};
+      if (!sectionId) {
+        contextInfo = findInfoForItem(id, isTest ? "test" : "lesson") || {};
+      }
+
+      const finalSectionId = sectionId || contextInfo.sectionId;
+      const finalSectionName = sectionName || contextInfo.sectionName;
+      const finalLessonName = lessonName || contextInfo.lessonName;
+
+      const payload = {};
+      if (isTest) {
+        payload.sectionTestId = id;
+        if (finalSectionId) {
+          payload.sectionId = finalSectionId;
+        }
+      } else {
+        payload.lessonId = id;
+        if (finalSectionId) {
+          payload.sectionId = finalSectionId;
+        }
+      }
+
       const response = await fetch(
         "https://codixa.runasp.net/api/CourseProgress/GetLessonTestDetails",
         {
@@ -196,14 +256,15 @@ const CourseContent = () => {
 
       if (isTest) {
         // It's a test
-        if (Array.isArray(data.questions)) {
+        if (Array.isArray(data) && data.length > 0) {
           setTestResult(null);
           setActiveItem({
             isTest: true,
             sectionTestId: id,
-            sectionName,
-            questions: data.questions,
-            message: data.message,
+            sectionName: finalSectionName,
+            questions: data,
+            message: data.Message || data.message,
+            isCompleted: false, // Indicate test is ready to be taken
           });
         } else if (
           typeof data.Result !== "undefined" &&
@@ -214,9 +275,10 @@ const CourseContent = () => {
           setActiveItem({
             isTest: true,
             sectionTestId: id,
-            sectionName,
+            sectionName: finalSectionName,
             questions: [],
-            message: data.message,
+            message: data.Message || data.message,
+            isCompleted: true, // Indicate test is already completed
           });
         } else {
           // Fallback
@@ -224,9 +286,11 @@ const CourseContent = () => {
           setActiveItem({
             isTest: true,
             sectionTestId: id,
-            sectionName,
+            sectionName: finalSectionName,
             questions: data.questions || [],
-            message: data.message || "No questions / result found.",
+            message:
+              data.Message || data.message || "No questions / result found.",
+            isCompleted: false,
           });
         }
       } else {
@@ -236,9 +300,9 @@ const CourseContent = () => {
           ...data,
           isTest: false,
           lessonId: id,
-          sectionName,
-          lessonName,
-          message: data.message,
+          sectionName: finalSectionName,
+          lessonName: finalLessonName,
+          message: data.Message || data.message,
         });
       }
       setError("");
@@ -265,11 +329,18 @@ const CourseContent = () => {
         return;
       }
 
-      // If next is a test => send {sectionId}, else => send {lessonId}
-      const payload =
-        nextItem.type === "test"
-          ? { sectionId: nextItem.sectionId }
-          : { lessonId: nextItem.id };
+      const payload = {};
+      if (nextItem.type === "test") {
+        payload.sectionTestId = nextItem.id;
+        if (nextItem.sectionId) {
+          payload.sectionId = nextItem.sectionId;
+        }
+      } else {
+        payload.lessonId = nextItem.id;
+        if (nextItem.sectionId) {
+          payload.sectionId = nextItem.sectionId;
+        }
+      }
 
       const response = await fetch(
         "https://codixa.runasp.net/api/CourseProgress/GetLessonTestDetails",
@@ -291,14 +362,15 @@ const CourseContent = () => {
 
       if (nextItem.type === "test") {
         // It's a test
-        if (Array.isArray(data.questions)) {
+        if (Array.isArray(data) && data.length > 0) {
           setTestResult(null);
           setActiveItem({
             isTest: true,
             sectionTestId: nextItem.id,
             sectionName: nextItem.sectionName,
-            questions: data.questions,
-            message: data.message,
+            questions: data,
+            message: data.Message || data.message,
+            isCompleted: false, // Indicate test is ready to be taken
           });
         } else if (
           typeof data.Result !== "undefined" &&
@@ -310,7 +382,8 @@ const CourseContent = () => {
             sectionTestId: nextItem.id,
             sectionName: nextItem.sectionName,
             questions: [],
-            message: data.message,
+            message: data.Message || data.message,
+            isCompleted: true, // Indicate test is already completed
           });
         } else {
           setTestResult(null);
@@ -319,7 +392,9 @@ const CourseContent = () => {
             sectionTestId: nextItem.id,
             sectionName: nextItem.sectionName,
             questions: data.questions || [],
-            message: data.message || "No questions / result found.",
+            message:
+              data.Message || data.message || "No questions / result found.",
+            isCompleted: false,
           });
         }
       } else {
@@ -331,7 +406,7 @@ const CourseContent = () => {
           lessonId: nextItem.id,
           sectionName: nextItem.sectionName,
           lessonName: nextItem.lessonName,
-          message: data.message,
+          message: data.Message || data.message,
         });
       }
     } catch (err) {
