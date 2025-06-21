@@ -148,12 +148,12 @@ const SearchPage = () => {
             Search Results
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="flex justify-content-start sm:gap-6 ">
             {isLoading ? (
               [...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-xl shadow-lg h-[400px] sm:h-[450px] animate-pulse"
+                  className="bg-white rounded-xl shadow-lg h-[25rem] sm:h-[28.125rem] animate-pulse"
                 />
               ))
             ) : courses.length === 0 ? (
@@ -239,7 +239,7 @@ const FilterSection = ({
             {isMounted &&
               categories.map((category) => (
                 <li key={category.categoryId}>
-                  <label className="flex items-center space-x-2 sm:space-x-3">
+                  <label className="flex items-center space-x-2 sm:space-x-3 p-2 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">
                     <input
                       type="checkbox"
                       checked={selectedCategory === category.categoryId}
@@ -250,7 +250,7 @@ const FilterSection = ({
                             : category.categoryId
                         )
                       }
-                      className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md"
+                      className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md accent-primary"
                     />
                     <span className="text-sm sm:text-base text-gray-700">
                       {category.name}
@@ -280,7 +280,7 @@ const FilterSection = ({
               {getFilterItems(section).map((item) => (
                 <label
                   key={item.value}
-                  className="flex items-center space-x-2 sm:space-x-3"
+                  className="flex items-center space-x-2 sm:space-x-3 p-2 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
                 >
                   <input
                     type="checkbox"
@@ -302,7 +302,7 @@ const FilterSection = ({
                         );
                       }
                     }}
-                    className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md"
+                    className="form-checkbox h-4 w-4 sm:h-5 sm:w-5 text-primary border-2 border-gray-300 rounded-md accent-primary"
                   />
                   <span className="text-sm sm:text-base text-gray-700">
                     {item.label}
@@ -318,14 +318,13 @@ const FilterSection = ({
 };
 
 const CourseCard = ({ course }) => (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col h-[380px] sm:h-[420px]">
-    <div className="relative w-full aspect-video">
+  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col w-80">
+    <div className="relative w-full aspect-video ">
       <Image
         src={course.imageUrl}
         alt={course.title}
         fill
         className="object-cover"
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         priority
       />
       <div className="absolute top-2 right-2 bg-primary/90 text-white px-2 py-1 text-xs sm:px-3 sm:text-sm rounded-full">
@@ -333,7 +332,7 @@ const CourseCard = ({ course }) => (
       </div>
     </div>
 
-    <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-grow">
+    <div className="p-3 sm:p-4 md:p-5 flex flex-col ">
       <div className="flex items-center justify-between mb-2 sm:mb-3">
         <div className="flex items-center gap-1 sm:gap-2">
           <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 flex items-center justify-center">
@@ -346,17 +345,17 @@ const CourseCard = ({ course }) => (
           </span>
         </div>
       </div>
+      <div className="flex-grow">
+        <Link href={`/coursedetail/${course.id}`} className="block mb-2">
+          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
+            {course.title}
+          </h3>
+        </Link>
 
-      <Link href={`/coursedetail/${course.id}`} className="block mb-2">
-        <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
-          {course.title}
-        </h3>
-      </Link>
-
-      <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-2 sm:line-clamp-3 flex-grow">
-        {course.description || "No description available"}
-      </p>
-
+        <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-3 h-[3.75rem] sm:h-[3.75rem]">
+          {course.description || "No description available"}
+        </p>
+      </div>
       <Link
         href={`/coursedetail/${course.id}`}
         className="inline-flex items-center bg-primary text-white px-3 py-2 text-sm rounded-lg hover:bg-primary-dark transition-colors mt-auto"

@@ -16,6 +16,7 @@ import {
   BackwardIcon,
   SpeakerWaveIcon,
   CogIcon,
+  ArrowLeftIcon,
 } from "@heroicons/react/24/outline";
 
 const CourseMainContent = ({
@@ -28,6 +29,8 @@ const CourseMainContent = ({
   error,
   nextItem,
 }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
   const playerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.8);
@@ -166,6 +169,23 @@ const CourseMainContent = ({
     };
   }, []);
 
+  const handleNextQuestion = () => {
+    if (
+      activeItem.questions &&
+      currentQuestionIndex < activeItem.questions.length - 1
+    ) {
+      setCurrentQuestionIndex((prev) => prev + 1);
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex((prev) => prev - 1);
+    }
+  };
+
+  const currentQuestion = activeItem?.questions?.[currentQuestionIndex];
+
   return (
     <div className="flex-1 p-8 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 bg-gradient-to-br from-gray-50 to-white">
       <AnimatePresence mode="wait">
@@ -267,96 +287,111 @@ const CourseMainContent = ({
                   />
                 ) : (
                   <>
-                    {activeItem.questions?.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="space-y-6"
-                      >
-                        {activeItem.questions.map((question, index) => (
-                          <motion.div
-                            key={question.QuestionId}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{
-                              opacity: 1,
-                              y: 0,
-                              transition: { delay: index * 0.1 },
-                            }}
-                            className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
-                          >
-                            <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                              <span className="flex items-center justify-center w-6 h-6 bg-primary text-white rounded-full text-sm font-bold">
-                                {index + 1}
-                              </span>
-                              {question.Question}
-                            </h3>
-
-                            <div className="space-y-3 pl-8">
-                              {question.Choices.map((choice) => (
-                                <label
-                                  key={choice.ChoicesQuestionId}
-                                  className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors
-                                    ${
-                                      answers[question.QuestionId] ===
+                    <AnimatePresence mode="wait">
+                      {currentQuestion && (
+                        <motion.div
+                          key={currentQuestion.QuestionId}
+                          initial={{ opacity: 0, x: 50 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -50 }}
+                          transition={{ duration: 0.3 }}
+                          className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+                        >
+                          <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                            <span className="flex items-center justify-center w-6 h-6 bg-primary text-white rounded-full text-sm font-bold">
+                              {currentQuestionIndex + 1}
+                            </span>
+                            {currentQuestion.Question}
+                          </h3>
+                          <div className="space-y-3 pl-8">
+                            {currentQuestion.Choices.map((choice) => (
+                              <label
+                                key={choice.ChoicesQuestionId}
+                                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                                  answers[currentQuestion.QuestionId] ===
+                                  choice.ChoicesQuestionId
+                                    ? "bg-blue-50 border border-blue-200"
+                                    : "hover:bg-gray-50 border border-transparent"
+                                }`}
+                              >
+                                <div className="relative">
+                                  <input
+                                    type="radio"
+                                    name={`question-${currentQuestion.QuestionId}`}
+                                    onChange={() =>
+                                      setAnswers((prev) => ({
+                                        ...prev,
+                                        [currentQuestion.QuestionId]:
+                                          choice.ChoicesQuestionId,
+                                      }))
+                                    }
+                                    checked={
+                                      answers[currentQuestion.QuestionId] ===
                                       choice.ChoicesQuestionId
-                                        ? "bg-blue-50 border border-blue-200"
-                                        : "hover:bg-gray-50 border border-transparent"
-                                    }`}
-                                >
-                                  <div className="relative">
-                                    <input
-                                      type="radio"
-                                      name={`question-${question.QuestionId}`}
-                                      onChange={() =>
-                                        setAnswers((prev) => ({
-                                          ...prev,
-                                          [question.QuestionId]:
-                                            choice.ChoicesQuestionId,
-                                        }))
-                                      }
-                                      checked={
-                                        answers[question.QuestionId] ===
-                                        choice.ChoicesQuestionId
-                                      }
-                                      className="w-4 h-4 text-primary border-gray-300 focus:ring-blue-500"
+                                    }
+                                    className="w-4 h-4 text-primary border-gray-300 focus:ring-blue-500"
+                                  />
+                                  {answers[currentQuestion.QuestionId] ===
+                                    choice.ChoicesQuestionId && (
+                                    <motion.div
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"
                                     />
-                                    {answers[question.QuestionId] ===
-                                      choice.ChoicesQuestionId && (
-                                      <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"
-                                      />
-                                    )}
-                                  </div>
-                                  <span className="text-gray-700">
-                                    {choice.Answer}
-                                  </span>
-                                </label>
-                              ))}
-                            </div>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
+                                  )}
+                                </div>
+                                <span className="text-gray-700">
+                                  {choice.Answer}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
                     {activeItem.questions?.length > 0 && (
                       <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{
                           opacity: 1,
                           y: 0,
-                          transition: { delay: 0.5 },
+                          transition: { delay: 0.2 },
                         }}
-                        className="mt-8 sticky bottom-8 flex justify-center"
+                        className="mt-8 sticky bottom-8 flex justify-between items-center"
                       >
                         <button
-                          onClick={handleTestSubmit}
-                          className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-white rounded-xl
-                                 transition-all flex items-center gap-3 font-medium shadow-lg shadow-green-200 hover:shadow-green-300"
+                          onClick={handlePreviousQuestion}
+                          disabled={currentQuestionIndex === 0}
+                          className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl transition-all flex items-center gap-2 font-medium shadow-sm hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Submit Test
-                          <CheckCircleIcon className="w-5 h-5" />
+                          <ArrowLeftIcon className="w-5 h-5" />
+                          Previous
                         </button>
+
+                        {currentQuestionIndex <
+                        activeItem.questions.length - 1 ? (
+                          <button
+                            onClick={handleNextQuestion}
+                            disabled={!answers[currentQuestion?.QuestionId]}
+                            className="px-6 py-3 bg-gradient-to-r from-primary to-primary-100 hover:to-primary-100/50 text-white rounded-xl transition-all flex items-center gap-2 font-medium shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Next
+                            <ArrowRightIcon className="w-5 h-5" />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={handleTestSubmit}
+                            disabled={
+                              Object.keys(answers).length !==
+                              activeItem.questions.length
+                            }
+                            className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-emerald-600 hover:to-green-500 text-white rounded-xl transition-all flex items-center gap-3 font-medium shadow-lg shadow-green-200 hover:shadow-green-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Submit Test
+                            <CheckCircleIcon className="w-5 h-5" />
+                          </button>
+                        )}
                       </motion.div>
                     )}
                   </>
