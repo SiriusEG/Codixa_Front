@@ -20,7 +20,7 @@ const SearchPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-
+  /*fixed ? send git */
   useEffect(() => {
     setIsMounted(true);
     fetch("https://codixa.runasp.net/api/CourseCategory")
