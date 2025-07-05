@@ -17,6 +17,7 @@ import {
   SpeakerWaveIcon,
   CogIcon,
   ArrowLeftIcon,
+  ArrowDownTrayIcon,
 } from "@heroicons/react/24/outline";
 
 const CourseMainContent = ({
@@ -28,6 +29,12 @@ const CourseMainContent = ({
   handleNextLesson,
   error,
   nextItem,
+  fetchLessonDetails,
+  isLastLesson,
+  courseId,
+  progress,
+  onProgressUpdate,
+  certificateView,
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -41,6 +48,9 @@ const CourseMainContent = ({
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [showQualityMenu, setShowQualityMenu] = useState(false);
   const [videoQuality, setVideoQuality] = useState("auto");
+  const [isFinishing, setIsFinishing] = useState(false);
+  const [certificateData, setCertificateData] = useState(null);
+  const [loadingCertificate, setLoadingCertificate] = useState(false);
 
   const speedOptions = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
   const qualityOptions = ["auto", "1080p", "720p", "480p", "360p"];
@@ -186,8 +196,341 @@ const CourseMainContent = ({
 
   const currentQuestion = activeItem?.questions?.[currentQuestionIndex];
 
+  // Add the retry handler for the test
+  const handleRetryTest = () => {
+    setAnswers && setAnswers({});
+    setCurrentQuestionIndex(0);
+    // Re-fetch the test questions for the current test
+    if (
+      activeItem &&
+      activeItem.isTest &&
+      activeItem.sectionTestId &&
+      fetchLessonDetails
+    ) {
+      fetchLessonDetails(
+        activeItem.sectionTestId,
+        true,
+        activeItem.sectionId,
+        activeItem.sectionName
+      );
+    }
+  };
+
+  // Handler for finishing the last lesson/section
+  const handleFinishAndCertificate = async () => {
+    setIsFinishing(true);
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      if (activeItem && activeItem.lessonId) {
+        await fetch(
+          `https://codixa.runasp.net/api/CourseProgress/MarkLessonAsCompleted/${activeItem.lessonId}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+      // Call the GetCertification API
+      if (courseId) {
+        await fetch(
+          `https://codixa.runasp.net/api/Certification/GetCertification/${courseId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+      if (typeof onProgressUpdate === "function") {
+        onProgressUpdate();
+      }
+    } catch (error) {
+      console.error("Error finishing lesson for certificate:", error);
+    } finally {
+      setIsFinishing(false);
+    }
+  };
+
+  // Debugging output for props
+  console.log("CourseMainContent props:", {
+    isLastLesson,
+    progress,
+    activeItem,
+    onProgressUpdate,
+  });
+
+  // PDF Download function
+  const downloadCertificate = async () => {
+    try {
+      // Dynamically import the libraries
+      const html2canvas = (await import("html2canvas")).default;
+      const jsPDF = (await import("jspdf")).default;
+
+      const certificateElement = document.getElementById("certificate-canvas");
+      if (!certificateElement) {
+        console.error("Certificate element not found");
+        return;
+      }
+
+      // Show loading state
+      const downloadBtn = document.getElementById("download-btn");
+      if (downloadBtn) {
+        downloadBtn.disabled = true;
+        downloadBtn.innerHTML = "Generating PDF...";
+      }
+
+      // Capture the certificate as canvas
+      const canvas = await html2canvas(certificateElement, {
+        scale: 2, // Higher quality
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
+        width: certificateElement.offsetWidth,
+        height: certificateElement.offsetHeight,
+      });
+
+      // Create PDF
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("landscape", "mm", "a4");
+
+      // Calculate dimensions to fit the certificate properly
+      const imgWidth = 297; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      // Center the image on the page
+      const x = 0;
+      const y = (210 - imgHeight) / 2; // A4 height is 210mm
+
+      pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+
+      // Generate filename
+      const studentName =
+        certificateData?.studntName ||
+        certificateData?.StudntName ||
+        certificateData?.userName ||
+        certificateData?.UserName ||
+        "Student";
+      const courseName =
+        certificateData?.courseName || certificateData?.CourseName || "Course";
+      const filename = `${studentName}_${courseName}_Certificate.pdf`;
+
+      // Download the PDF
+      pdf.save(filename);
+
+      // Reset button state
+      if (downloadBtn) {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = "Download PDF";
+      }
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      // Reset button state on error
+      const downloadBtn = document.getElementById("download-btn");
+      if (downloadBtn) {
+        downloadBtn.disabled = false;
+        downloadBtn.innerHTML = "Download PDF";
+      }
+    }
+  };
+
+  useEffect(() => {
+    const fetchCertificateData = async () => {
+      if (activeItem?.type === "certificate" || certificateView) {
+        setLoadingCertificate(true);
+        try {
+          const token = localStorage.getItem("token");
+          if (!token || !courseId) return;
+          const response = await fetch(
+            `https://codixa.runasp.net/api/Certification/GetCertification/${courseId}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setCertificateData(data);
+          } else {
+            setCertificateData(null);
+          }
+        } catch (e) {
+          setCertificateData(null);
+        } finally {
+          setLoadingCertificate(false);
+        }
+      }
+    };
+    fetchCertificateData();
+  }, [activeItem, certificateView, courseId]);
+
+  // Certificate view rendering
+  if (activeItem?.type === "certificate" || certificateView) {
+    return (
+      <div className="flex items-center w-full justify-center min-h-screen bg-gray-100 p-8 select-none">
+        {/* Download Button */}
+        <button
+          id="download-btn"
+          onClick={downloadCertificate}
+          className="absolute top-[20%] right-[5%] z-40 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200 shadow-lg"
+        >
+          <ArrowDownTrayIcon className="w-5 h-5" />
+          Download certificate
+        </button>
+
+        {/* CERTIFICATE CANVAS */}
+        <div
+          id="certificate-canvas"
+          className="relative w-full h-[35rem] bg-white"
+        >
+          {/* Watermark */}
+          <span className="absolute inset-0 flex items-center justify-center text-[10rem] leading-none font-extrabold text-green-50 pointer-events-none">
+            Codixa
+          </span>
+
+          {/* Top‑left W3 logo (replace with your own asset if different) */}
+          <img
+            src="/logo.gif" /* original path kept */
+            alt="W3Schools Logo"
+            className="absolute top-8 left-8 w-24"
+          />
+
+          {/* MAIN TEXT BLOCK */}
+          <div className="relative z-10 flex flex-col items-center text-center px-6 py-4">
+            <h2 className="text-2xl font-extrabold tracking-wider text-yellow-800 mb-8">
+              CERTIFICATE OF COMPLETION
+            </h2>
+
+            {loadingCertificate ? (
+              <div className="text-yellow-600 font-semibold text-lg mt-6">
+                Loading certificate...
+              </div>
+            ) : certificateData ? (
+              <>
+                <p className="text-lg text-gray-700 mb-2">
+                  This certifies that
+                </p>
+
+                <p className="text-3xl font-bold text-gray-900 mb-4">
+                  {certificateData.studntName ||
+                    certificateData.StudntName ||
+                    certificateData.userName ||
+                    certificateData.UserName ||
+                    "[Student Name]"}
+                </p>
+
+                <p className="text-lg text-gray-700 mb-2">
+                  has completed the necessary courses of study and passed
+                </p>
+
+                <p className="text-2xl font-semibold text-green-700 mb-6">
+                  {certificateData.courseName ||
+                    certificateData.CourseName ||
+                    "[Course Name]"}
+                </p>
+
+                {/* Extra descriptor line to mimic sample certificate */}
+                <p className="text-md text-gray-600 mb-8 max-w-xl">
+                  with fundamental knowledge of web development using HTML5
+                </p>
+
+                {/* Instructor & association kept from original code */}
+                <p className="text-md text-gray-600 mb-1">
+                  Instructor:{" "}
+                  {certificateData.instructorName ||
+                    certificateData.InstructorName ||
+                    "[Instructor]"}
+                </p>
+                <p className="text-md text-gray-600 mb-8">
+                  Association:{" "}
+                  <span className="font-bold text-green-700">codixa</span>
+                </p>
+
+                <p className="text-sm text-gray-600">
+                  Issued{" "}
+                  {certificateData.certificationDate ||
+                    certificateData.CertificationDate ||
+                    certificateData.date ||
+                    certificateData.Date ||
+                    "[Date]"}
+                </p>
+              </>
+            ) : (
+              <div className="text-red-500 font-semibold mt-6">
+                No certificate found.
+              </div>
+            )}
+          </div>
+
+          {/* Signature block */}
+          <div className="absolute bottom-20 right-16 text-center">
+            {/* Optional graphic signature; leave the img tag if you have a file */}
+            <span className="text-sm font-medium text-gray-800">
+              Instructor:{" "}
+              {certificateData?.instructorName ||
+                certificateData?.InstructorName ||
+                "[Instructor]"}
+            </span>
+            <br />
+            <span className="text-xs text-gray-600">for Codixa</span>
+          </div>
+
+          {/* Verification link */}
+          <div className="absolute bottom-8 left-16 text-xs text-gray-600 leading-snug">
+            Verify completion at:
+            <br />
+            <a
+              href={`https://codixa.vercel.app/certification/${
+                certificateData?.certificationId ||
+                certificateData?.CertificationId ||
+                ""
+              }
+            `}
+              className="underline text-blue-600 break-all"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              https://codixa.vercel.app/certification/
+              {certificateData?.certificationId ||
+                certificateData?.CertificationId ||
+                ""}
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 p-8 h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 bg-gradient-to-br from-gray-50 to-white">
+      {/* Finish to get Certificate Button or Next Lesson Button */}
+      {isLastLesson ? (
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={handleFinishAndCertificate}
+            className="px-6 py-3 border-none outline-none bg-yellow-500 rounded-xl text-white font-semibold"
+            disabled={isFinishing}
+          >
+            {isFinishing ? "Loading..." : "Finish to get Certificate"}
+          </button>
+        </div>
+      ) : (
+        nextItem && (
+          <div className="flex justify-end mb-4">
+            <button
+              onClick={handleNextWithProgress}
+              className="px-6 py-3 border-none outline-none bg-primary rounded-xl text-white font-semibold"
+            >
+              Next Lesson
+            </button>
+          </div>
+        )
+      )}
       <AnimatePresence mode="wait">
         {activeItem?.message?.includes("Access Denied") ? (
           <motion.div
@@ -256,34 +599,24 @@ const CourseMainContent = ({
                   )}
                 </div>
               </div>
-              {nextItem && (
-                <button
-                  onClick={handleNextWithProgress}
-                  className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary-100  hover:to-primary-100/50 text-white rounded-xl transition-all 
-                         flex items-center gap-2 text-sm font-medium shadow-md hover:shadow-lg"
-                >
-                  Next Lesson
-                  <ArrowRightIcon className="w-4 h-4" />
-                </button>
-              )}
             </div>
-
-            {activeItem.message && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-blue-50 text-primary rounded-xl border border-blue-200"
-              >
-                {activeItem.message}
-              </motion.div>
-            )}
 
             {activeItem.isTest ? (
               <div className="space-y-6 max-w-3xl mx-auto">
+                {testResult &&
+                  testResult.Message &&
+                  testResult.Message !==
+                    "You have already passed this test." && (
+                    <div className="text-center text-red-600 font-semibold text-lg mb-4">
+                      {testResult.Message}
+                    </div>
+                  )}
                 {testResult ? (
                   <TestResults
                     testResult={testResult}
                     handleNextLesson={handleNextLesson}
+                    onRetry={handleRetryTest}
+                    s
                   />
                 ) : (
                   <>

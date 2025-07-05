@@ -11,10 +11,26 @@ import { useToast } from "../context/ToastContext";
 
 export default function CourseManagement() {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("course info");
+
+  // Initialize activeTab from sessionStorage with instructor-specific key
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("activeTabManageInstructor");
+      return saved || "course info";
+    }
+    return "course info";
+  });
+
   const [sections, setSections] = useState([]);
   const [courseData, setCourseData] = useState(null);
   const { addToast } = useToast();
+
+  // Save activeTab to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("activeTabManageInstructor", activeTab);
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     fetchCourseData();

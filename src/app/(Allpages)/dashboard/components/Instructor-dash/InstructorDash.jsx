@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../../../../../lib/hooks"; // Adjust path if necessary
 import { useRouter } from "next/navigation";
 
@@ -14,12 +14,50 @@ import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Courses from "./Courses";
 
 const InstructorDashboard = () => {
-  const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true);
+  // Initialize state from sessionStorage with instructor-specific keys
+  const [activeMenu, setActiveMenu] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("activeMenuInstructorDash");
+      return saved || "dashboard";
+    }
+    return "dashboard";
+  });
+
+  const [isSidebarExpanded, setSidebarExpanded] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("isSidebarExpandedInstructorDash");
+      return saved ? JSON.parse(saved) : true;
+    }
+    return true;
+  });
+
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();
+
+  // Save activeMenu to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("activeMenuInstructorDash", activeMenu);
+    }
+  }, [activeMenu]);
+
+  // Save isSidebarExpanded to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(
+        "isSidebarExpandedInstructorDash",
+        JSON.stringify(isSidebarExpanded)
+      );
+    }
+  }, [isSidebarExpanded]);
+
   const handleLogout = async () => {
+    // Clear instructor-specific sessionStorage items on logout
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("activeMenuInstructorDash");
+      sessionStorage.removeItem("isSidebarExpandedInstructorDash");
+    }
     await dispatch(logout());
     router.replace("/");
     setTimeout(() => {
@@ -58,21 +96,22 @@ const InstructorDashboard = () => {
 
         {/* Profile Section */}
         <div className="mb-8 flex flex-col mr-4 items-center">
-        <div className="relative">
-                {userInfo?.ProfilePicturePath === "null" || !userInfo?.ProfilePicturePath ? (
-                  <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-600 text-sm font-medium">
-                      {userInfo?.name?.charAt(0)?.toUpperCase() || "?"}
-                    </span>
-                  </div>
-                ) : (
-                  <img
-                    src={`https://codixa.runasp.net/${userInfo.ProfilePicturePath}`}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full"
-                  />
-                )}
+          <div className="relative">
+            {userInfo?.ProfilePicturePath === "null" ||
+            !userInfo?.ProfilePicturePath ? (
+              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-600 text-sm font-medium">
+                  {userInfo?.name?.charAt(0)?.toUpperCase() || "?"}
+                </span>
               </div>
+            ) : (
+              <img
+                src={`https://codixa.runasp.net/${userInfo.ProfilePicturePath}`}
+                alt="Profile"
+                className="w-8 h-8 rounded-full"
+              />
+            )}
+          </div>
           {isSidebarExpanded && (
             <>
               <h2 className="text-lg font-semibold">

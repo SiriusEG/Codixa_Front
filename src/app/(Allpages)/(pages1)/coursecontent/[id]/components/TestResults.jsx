@@ -9,9 +9,17 @@ import {
 } from "@heroicons/react/24/outline";
 import { FaRegLightbulb } from "react-icons/fa";
 
-const TestResults = ({ testResult, handleNextLesson }) => {
-  const progress =
-    typeof testResult.Result === "number" ? testResult.Result : 0;
+const TestResults = ({ testResult, handleNextLesson, onRetry }) => {
+  // Parse the progress as a number, even if it's a string like '33.3%'
+  let progress = 0;
+  if (typeof testResult.Result === "number") {
+    progress = testResult.Result;
+  } else if (typeof testResult.Result === "string") {
+    const match = testResult.Result.match(/([\d.]+)/);
+    if (match) {
+      progress = parseFloat(match[1]);
+    }
+  }
   const isPassed = testResult.IsPassed;
 
   return (
@@ -99,11 +107,17 @@ const TestResults = ({ testResult, handleNextLesson }) => {
             {isPassed ? "Congratulations!" : "Keep Learning"}
           </h3>
           <p className="text-gray-600 max-w-md">
-            {testResult.message ||
-              (isPassed
-                ? "You've successfully completed the assessment and demonstrated your knowledge!"
-                : "You're making progress. Review the material and try again to improve your score.")}
+            {isPassed
+              ? "You've successfully completed the assessment and demonstrated your knowledge!"
+              : "You're making progress. Review the material and try again to improve your score."}
           </p>
+          {testResult.message ? (
+            <div className=" text-red-700 text-center">
+              {testResult.message}
+            </div>
+          ) : (
+            <></>
+          )}
         </motion.div>
       </div>
 
@@ -139,7 +153,7 @@ const TestResults = ({ testResult, handleNextLesson }) => {
         transition={{ delay: 1.5, duration: 0.5 }}
       >
         <button
-          onClick={handleNextLesson}
+          onClick={isPassed ? handleNextLesson : onRetry}
           className="w-full py-4 px-6 bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-primary text-white rounded-xl
                     transition-all flex items-center justify-center gap-3 font-medium shadow-lg shadow-blue-200 hover:shadow-blue-300"
         >

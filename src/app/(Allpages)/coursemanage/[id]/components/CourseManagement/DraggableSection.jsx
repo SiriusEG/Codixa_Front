@@ -278,8 +278,8 @@ export default function DraggableSection({
 
           {/* Test Configuration Modal */}
           {showTestModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-lg max-w-2xl w-full">
+            <div className="fixed inset-0 bg-black/20  flex items-center justify-center p-4 z-50">
+              <div className="bg-white rounded-xl shadow-lg w-full max-w-6xl max-h-[95vh] overflow-hidden">
                 <TestSectionForm
                   sectionId={section.sectionId}
                   onClose={() => setShowTestModal(false)}

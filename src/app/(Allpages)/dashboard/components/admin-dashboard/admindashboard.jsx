@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../../../../../lib/hooks"; // Adjust the path as necessary
 import { useRouter } from "next/navigation";
 import { TbStatusChange } from "react-icons/tb";
@@ -20,13 +20,50 @@ import InstructorRequests from "./InstructorRequests";
 import AdminControl from "./AdminControl";
 
 const AdminDashboard = () => {
-  const [activeMenu, setActiveMenu] = useState("statics");
-  const [isSidebarExpanded, setSidebarExpanded] = useState(true); // Toggle state
+  // Initialize state from sessionStorage with admin-specific keys
+  const [activeMenu, setActiveMenu] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("activeMenuAdminDash");
+      return saved || "statics";
+    }
+    return "statics";
+  });
+
+  const [isSidebarExpanded, setSidebarExpanded] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem("isSidebarExpandedAdminDash");
+      return saved ? JSON.parse(saved) : true;
+    }
+    return true;
+  });
+
   const { userInfo } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
+  // Save activeMenu to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("activeMenuAdminDash", activeMenu);
+    }
+  }, [activeMenu]);
+
+  // Save isSidebarExpanded to sessionStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem(
+        "isSidebarExpandedAdminDash",
+        JSON.stringify(isSidebarExpanded)
+      );
+    }
+  }, [isSidebarExpanded]);
+
   const handleLogout = async () => {
+    // Clear admin-specific sessionStorage items on logout
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("activeMenuAdminDash");
+      sessionStorage.removeItem("isSidebarExpandedAdminDash");
+    }
     await dispatch(logout());
     router.replace("/");
     setTimeout(() => {
@@ -87,7 +124,8 @@ const AdminDashboard = () => {
         {/* Profile Section */}
         <div className="mb-8 flex flex-col mr-4 items-center">
           <div className="relative">
-            {userInfo?.ProfilePicturePath && userInfo.ProfilePicturePath !== "null" ? (
+            {userInfo?.ProfilePicturePath &&
+            userInfo.ProfilePicturePath !== "null" ? (
               <img
                 src={`https://codixa.runasp.net/${userInfo.ProfilePicturePath}`}
                 alt="Profile"

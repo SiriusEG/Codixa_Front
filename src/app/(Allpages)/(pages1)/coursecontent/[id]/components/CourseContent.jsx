@@ -19,6 +19,8 @@ const CourseContent = () => {
   const [expandedSections, setExpandedSections] = useState(new Set());
   const [lessonTypes, setLessonTypes] = useState({});
   const [nextItem, setNextItem] = useState(null);
+  const [progressState, setProgressState] = useState(0);
+  const [activeCertificate, setActiveCertificate] = useState(false);
 
   const findInfoForItem = (itemId, itemType) => {
     if (!currentProgress) return null;
@@ -454,6 +456,53 @@ const CourseContent = () => {
     }
   };
 
+  // Calculate flat items and progress
+  const flatItems = buildFlatItems();
+  const totalItems = flatItems.length;
+  const completedItems = flatItems.filter((item) => item.isCompleted).length;
+  const progress =
+    totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  // Keep progressState in sync with calculated progress
+  useEffect(() => {
+    setProgressState(progress);
+  }, [progress]);
+
+  // Callback to update progress after marking last lesson as completed
+  const handleProgressUpdate = () => {
+    // Recalculate completed items and progress
+    const updatedFlatItems = buildFlatItems();
+    const updatedCompleted = updatedFlatItems.filter(
+      (item) => item.isCompleted
+    ).length;
+    const updatedProgress =
+      totalItems > 0 ? Math.round((updatedCompleted / totalItems) * 100) : 0;
+    setProgressState(updatedProgress);
+  };
+
+  // Detect if the current activeItem is the last lesson/test
+  let isLastLesson = false;
+  if (activeItem) {
+    const currentIndex = flatItems.findIndex(
+      (item) =>
+        item.id ===
+          (activeItem.isTest
+            ? activeItem.sectionTestId
+            : activeItem.lessonId) &&
+        item.type === (activeItem.isTest ? "test" : "lesson")
+    );
+    isLastLesson = currentIndex === flatItems.length - 1;
+  }
+
+  // Handler to select certificate from sidebar
+  const handleSelectCertificate = () => setActiveCertificate(true);
+
+  // When a lesson or test is selected, reset activeCertificate
+  const handleLessonSelect = (...args) => {
+    setActiveCertificate(false);
+    fetchLessonDetails(...args);
+  };
+
   if (loading) {
     return <div className="text-center p-8 h-screen">Loading...</div>;
   }
@@ -464,12 +513,15 @@ const CourseContent = () => {
         currentProgress={currentProgress}
         expandedSections={expandedSections}
         toggleSection={toggleSection}
-        activeItem={activeItem}
+        activeItem={activeCertificate ? { type: "certificate" } : activeItem}
         lessonTypes={lessonTypes}
-        fetchLessonDetails={fetchLessonDetails}
+        fetchLessonDetails={handleLessonSelect}
+        progress={progressState}
+        courseId={courseId}
+        onSelectCertificate={handleSelectCertificate}
       />
       <CourseMainContent
-        activeItem={activeItem}
+        activeItem={activeCertificate ? { type: "certificate" } : activeItem}
         testResult={testResult}
         answers={answers}
         setAnswers={setAnswers}
@@ -477,6 +529,12 @@ const CourseContent = () => {
         handleNextLesson={handleNextLesson}
         error={error}
         nextItem={nextItem}
+        fetchLessonDetails={fetchLessonDetails}
+        isLastLesson={isLastLesson}
+        courseId={courseId}
+        progress={progressState}
+        onProgressUpdate={handleProgressUpdate}
+        certificateView={activeCertificate}
       />
     </div>
   );
