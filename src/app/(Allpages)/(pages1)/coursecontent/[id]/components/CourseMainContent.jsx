@@ -35,6 +35,7 @@ const CourseMainContent = ({
   progress,
   onProgressUpdate,
   certificateView,
+  onShowCertificate,
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
@@ -247,6 +248,10 @@ const CourseMainContent = ({
       }
       if (typeof onProgressUpdate === "function") {
         onProgressUpdate();
+      }
+      // Show the certificate view after successfully completing the lesson
+      if (typeof onShowCertificate === "function") {
+        onShowCertificate();
       }
     } catch (error) {
       console.error("Error finishing lesson for certificate:", error);

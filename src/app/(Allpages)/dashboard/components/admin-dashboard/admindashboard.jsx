@@ -8,6 +8,7 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { LiaChalkboardTeacherSolid } from "react-icons/lia";
 import { LuExpand } from "react-icons/lu";
 import { LuShrink } from "react-icons/lu";
+import { FaTags } from "react-icons/fa";
 
 import {
   AiOutlineSetting,
@@ -18,6 +19,7 @@ import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Status from "./status";
 import InstructorRequests from "./InstructorRequests";
 import AdminControl from "./AdminControl";
+import CategoryManagement from "./CategoryManagement";
 
 const AdminDashboard = () => {
   // Initialize state from sessionStorage with admin-specific keys
@@ -90,6 +92,12 @@ const AdminDashboard = () => {
         return (
           <div>
             <AdminControl />
+          </div>
+        );
+      case "categories":
+        return (
+          <div>
+            <CategoryManagement />
           </div>
         );
       case "courses":
@@ -166,6 +174,7 @@ const AdminDashboard = () => {
               id: "admincontrol",
               icon: <AiOutlineSetting />,
             },
+            { name: "Categories", id: "categories", icon: <FaTags /> },
             { name: "Courses", id: "courses", icon: <SiCoursera /> },
             { name: "Settings", id: "settings", icon: <AiOutlineSetting /> },
           ].map((item) => (

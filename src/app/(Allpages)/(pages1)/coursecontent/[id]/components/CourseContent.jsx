@@ -535,6 +535,7 @@ const CourseContent = () => {
         progress={progressState}
         onProgressUpdate={handleProgressUpdate}
         certificateView={activeCertificate}
+        onShowCertificate={() => setActiveCertificate(true)}
       />
     </div>
   );
