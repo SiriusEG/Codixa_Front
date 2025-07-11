@@ -20,6 +20,8 @@ import Status from "./status";
 import InstructorRequests from "./InstructorRequests";
 import AdminControl from "./AdminControl";
 import CategoryManagement from "./CategoryManagement";
+import TeacherManagement from "./TeacherManagement";
+import StudentManagement from "./StudentManagement";
 
 const AdminDashboard = () => {
   // Initialize state from sessionStorage with admin-specific keys
@@ -88,6 +90,18 @@ const AdminDashboard = () => {
             <InstructorRequests />;
           </div>
         );
+      case "teachers":
+        return (
+          <div>
+            <TeacherManagement />
+          </div>
+        );
+      case "students":
+        return (
+          <div>
+            <StudentManagement />
+          </div>
+        );
       case "admincontrol":
         return (
           <div>
@@ -102,8 +116,8 @@ const AdminDashboard = () => {
         );
       case "courses":
         return <div>Courses Content</div>;
-      case "settings":
-        return <div>Settings Content</div>;
+      // case "settings":
+      //   return <div>Settings Content</div>;
       default:
         return (
           <div>
@@ -167,6 +181,16 @@ const AdminDashboard = () => {
             {
               name: "Teacher Control",
               id: "teachercontrol",
+              icon: <LiaChalkboardTeacherSolid />,
+            },
+            {
+              name: "Teachers",
+              id: "teachers",
+              icon: <LiaChalkboardTeacherSolid />,
+            },
+            {
+              name: "Students",
+              id: "students",
               icon: <LiaChalkboardTeacherSolid />,
             },
             {

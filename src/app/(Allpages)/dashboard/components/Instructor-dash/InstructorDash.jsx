@@ -12,6 +12,10 @@ import { SiCoursera } from "react-icons/si";
 import { LuExpand, LuShrink } from "react-icons/lu";
 import { logout } from "../../../../../../lib/reducers/auth/logInSlice";
 import Courses from "./Courses";
+import ChangePassword from "./ChangePassword";
+import EditProfile from "./EditProfile";
+import { RiProfileFill } from "react-icons/ri";
+import { MdPassword } from "react-icons/md";
 
 const InstructorDashboard = () => {
   // Initialize state from sessionStorage with instructor-specific keys
@@ -73,6 +77,10 @@ const InstructorDashboard = () => {
             <Courses />
           </div>
         );
+      case "changepassword":
+        return <ChangePassword />;
+      case "editprofile":
+        return <EditProfile />;
       default:
         return <div>Instructor Dashboard Content</div>;
     }
@@ -130,7 +138,17 @@ const InstructorDashboard = () => {
           {[
             { name: "Dashboard", id: "dashboard", icon: <AiOutlineHome /> },
             { name: "Courses", id: "courses", icon: <SiCoursera /> },
-            { name: "Settings", id: "settings", icon: <AiOutlineSetting /> },
+            {
+              name: "Edit Profile",
+              id: "editprofile",
+              icon: <RiProfileFill />,
+            },
+            {
+              name: "Change Password",
+              id: "changepassword",
+              icon: <MdPassword />,
+            },
+            // { name: "Settings", id: "settings", icon: <AiOutlineSetting /> },
           ].map((item) => (
             <li
               key={item.id}

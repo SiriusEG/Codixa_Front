@@ -20,11 +20,13 @@ export default async function handler(req, res) {
       // Return the response from the external API
       res.status(200).json(response.data);
     } catch (error) {
-      const status = error.response?.status || 500;
-      const message = error.response?.data?.error || error.message;
-
-      // Return the error to the client
-      res.status(status).json({ error: message });
+      if (error.response) {
+        // Forward the full error response from the external API
+        res.status(error.response.status).json(error.response.data);
+      } else {
+        // Network or unknown error
+        res.status(500).json({ error: error.message || "Unknown error" });
+      }
     }
   } else {
     res.setHeader("Allow", ["POST"]);
