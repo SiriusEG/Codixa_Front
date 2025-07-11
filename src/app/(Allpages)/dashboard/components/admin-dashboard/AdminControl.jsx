@@ -191,18 +191,6 @@ const AdminControl = () => {
                   <button
                     className="px-4 py-2 bg-primary text-white rounded hover:bg-primary-100"
                     onClick={() => {
-                      setPwdAdminId(admin.userId);
-                      setShowPwdModal(true);
-                      setNewPassword("");
-                      setPwdError(null);
-                      setPwdSuccess(null);
-                    }}
-                  >
-                    Change Password
-                  </button>
-                  <button
-                    className="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    onClick={() => {
                       setEditAdmin(admin);
                       setEditForm({
                         email: admin.email || "",
@@ -223,7 +211,19 @@ const AdminControl = () => {
                       setShowEditModal(true);
                     }}
                   >
-                    Edit
+                    Admin data Edit
+                  </button>
+                  <button
+                    className="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    onClick={() => {
+                      setPwdAdminId(admin.userId);
+                      setShowPwdModal(true);
+                      setNewPassword("");
+                      setPwdError(null);
+                      setPwdSuccess(null);
+                    }}
+                  >
+                    password
                   </button>
                 </td>
               </tr>
@@ -668,25 +668,51 @@ const AdminControl = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Photo
-                </label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    setEditForm((f) => ({ ...f, newPhoto: file }));
-                    setEditPreview(file ? URL.createObjectURL(file) : null);
-                  }}
-                  className="w-full"
-                />
-                {editPreview && (
-                  <img
-                    src={editPreview}
-                    alt="Preview"
-                    className="mt-2 w-16 h-16 rounded-full object-cover"
+                <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                <div className="flex items-center gap-4">
+                  <label
+                    htmlFor="edit-photo-upload"
+                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full shadow cursor-pointer hover:bg-green-700 transition-colors font-semibold"
+                    style={{ display: 'inline-flex' }}
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" /></svg>
+                    <span>Upload Photo</span>
+                  </label>
+                  <input
+                    id="edit-photo-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={e => {
+                      const file = e.target.files[0];
+                      setEditForm(f => ({ ...f, newPhoto: file }));
+                      setEditPreview(file ? URL.createObjectURL(file) : null);
+                    }}
+                    className="hidden"
                   />
+                  <span className="text-gray-700 text-sm font-medium truncate max-w-[120px]">
+                    {editForm.newPhoto ? editForm.newPhoto.name : "No file chosen"}
+                  </span>
+                </div>
+                {editPreview && (
+                  <div className="relative inline-block mt-2">
+                    <img
+                      src={editPreview}
+                      alt="Preview"
+                      className="w-20 h-20 rounded-full object-cover border-4 border-green-400 shadow-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setEditForm(f => ({ ...f, newPhoto: null }));
+                        setEditPreview(null);
+                        document.getElementById('edit-photo-upload').value = '';
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-600"
+                      title="Remove"
+                    >
+                      ×
+                    </button>
+                  </div>
                 )}
               </div>
               <div className="flex justify-end gap-4 pt-6">

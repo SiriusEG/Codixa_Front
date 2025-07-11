@@ -171,7 +171,6 @@ const AdminDashboard = () => {
               <p className="text-sm text-gray-400">
                 {userInfo?.role || "Admin"}
               </p>
-              <p className="text-sm text-gray-400">alex.johnson@gmail.com</p>
             </>
           )}
         </div>
