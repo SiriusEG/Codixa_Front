@@ -37,14 +37,20 @@ const LoginForm = () => {
       const token = result.payload;
       dispatch(decodeToken(token));
       router.push("/");
+    } else if (logInAction.rejected.match(result)) {
+      // Debug: Log the error details
+      console.log("Login failed:", result.error);
+      console.log("Error payload:", result.payload);
     }
   };
 
   useEffect(() => {
+    console.log("Error state changed:", error); // Debug: Log error state changes
     if (error) {
+      console.log("Setting form error:", error.message); // Debug: Log when setting error
       setError("root", { message: error?.message });
     }
-  }, [error]);
+  }, [error, setError]);
 
   return (
     <div

@@ -35,6 +35,7 @@ const TeacherManagement = () => {
     message: "",
     type: "success",
   });
+  const [preview, setPreview] = useState(null);
 
   const fetchTeachers = async () => {
     setLoading(true);
@@ -62,6 +63,14 @@ const TeacherManagement = () => {
   const handleEdit = (idx) => {
     setEditIdx(idx);
     setEditData({ ...teachers[idx] });
+    setPreview(
+      teachers[idx].profilePic
+        ? `https://codixa.runasp.net/${teachers[idx].profilePic.replace(
+            /\\/g,
+            "/"
+          )}`
+        : null
+    );
     setShowEditModal(true);
   };
 
@@ -73,10 +82,12 @@ const TeacherManagement = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setEditData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
+    if (name === "profilePic") {
+      setEditData((prev) => ({ ...prev, profilePic: files[0] }));
+      setPreview(files[0] ? URL.createObjectURL(files[0]) : null);
+    } else {
+      setEditData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSave = async (id) => {
@@ -197,14 +208,22 @@ const TeacherManagement = () => {
               <tr key={t.id} className="border-b hover:bg-gray-50">
                 <td className="px-4 py-2">
                   {t.profilePic ? (
-                    <img
-                      src={`https://codixa.runasp.net/${t.profilePic.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      alt="Profile"
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
+                    typeof t.profilePic === "string" ? (
+                      <img
+                        src={`https://codixa.runasp.net/${t.profilePic.replace(
+                          /\\/g,
+                          "/"
+                        )}`}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <img
+                        src={URL.createObjectURL(t.profilePic)}
+                        alt="Profile"
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                    )
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                       <span className="text-gray-600 text-lg font-medium">
@@ -298,6 +317,24 @@ const TeacherManagement = () => {
                 placeholder="Specialty"
                 required
               />
+              {/* Profile Picture Upload */}
+              <div>
+                <label className="block text-sm mb-1">Profile Picture</label>
+                <input
+                  type="file"
+                  name="profilePic"
+                  accept="image/*"
+                  onChange={handleChange}
+                  className="w-full"
+                />
+                {preview && (
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="mt-2 w-16 h-16 rounded-full object-cover"
+                  />
+                )}
+              </div>
               {/* Show API response here too */}
               {error && <div className="text-red-600 text-sm">{error}</div>}
               {success && (

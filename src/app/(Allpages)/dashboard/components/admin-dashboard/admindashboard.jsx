@@ -22,6 +22,8 @@ import AdminControl from "./AdminControl";
 import CategoryManagement from "./CategoryManagement";
 import TeacherManagement from "./TeacherManagement";
 import StudentManagement from "./StudentManagement";
+import { GiTeacher } from "react-icons/gi";
+import { IoMan } from "react-icons/io5";
 
 const AdminDashboard = () => {
   // Initialize state from sessionStorage with admin-specific keys
@@ -186,12 +188,12 @@ const AdminDashboard = () => {
             {
               name: "Teachers",
               id: "teachers",
-              icon: <LiaChalkboardTeacherSolid />,
+              icon: <GiTeacher />,
             },
             {
               name: "Students",
               id: "students",
-              icon: <LiaChalkboardTeacherSolid />,
+              icon: <IoMan />,
             },
             {
               name: "Admin Control",

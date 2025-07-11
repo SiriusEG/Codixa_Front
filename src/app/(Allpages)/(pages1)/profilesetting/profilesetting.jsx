@@ -1,26 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../../../../lib/hooks";
-import { AiOutlineSetting } from "react-icons/ai";
-import { useRouter } from "next/navigation";
-import { AiOutlineHome } from "react-icons/ai";
-// import { toast } from "react-hot-toast";
+import React, { useEffect, useState, useRef } from "react";
 
-// Minimal custom toast system
+/* ───────────────── toast ───────────────── */
 function Toast({ message, type, onClose }) {
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 px-4 py-2 rounded shadow-lg text-white transition-all duration-300 ${
-        type === "error" ? "bg-red-500" : "bg-green-500"
+      className={`fixed bottom-6 right-6 z-50 px-4 py-2 rounded shadow-lg text-white ${
+        type === "error" ? "bg-red-500" : "bg-green-600"
       }`}
-      style={{ minWidth: 200 }}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center gap-4">
         <span>{message}</span>
-        <button
-          className="ml-4 text-white text-lg font-bold focus:outline-none"
-          onClick={onClose}
-        >
+        <button onClick={onClose} className="text-xl font-bold">
           ×
         </button>
       </div>
@@ -28,143 +19,161 @@ function Toast({ message, type, onClose }) {
   );
 }
 
-// Edit Profile Modal
-function EditProfileModal({ studentData, onClose, onSave, showToast }) {
-  const [form, setForm] = React.useState({
-    name: studentData?.name || "",
-    email: studentData?.email || "",
-    profilePicture: null,
-    currentPassword: "",
+/* ───────────── helper for API ───────────── */
+async function apiFetch(url, opts = {}) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(url, {
+    ...opts,
+    headers: {
+      ...(opts.headers || {}),
+      Authorization: token ? `Bearer ${token}` : "",
+    },
   });
-  const [preview, setPreview] = React.useState(
-    studentData?.ProfilePicturePath
-      ? `https://codixa.runasp.net/${studentData.ProfilePicturePath}`
-      : null
-  );
-  const [saving, setSaving] = React.useState(false);
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "profilePicture") {
-      setForm((f) => ({ ...f, profilePicture: files[0] }));
-      setPreview(files[0] ? URL.createObjectURL(files[0]) : preview);
+  if (!res.ok) throw new Error(await res.text());
+  const json = await res.json();
+  return json.data ?? json; // unwrap if backend uses {data: …}
+}
+/* ─────────────── Edit Profile ─────────────── */
+function EditProfileModal({ student, onClose, refresh, toast }) {
+  const [form, setForm] = useState({
+    studentFullName: student.studentFullName ?? "",
+    email: student.email ?? "",
+    userName: student.userName ?? "",
+    phoneNumber: student.phoneNumber ?? "",
+    profilePic: null,
+    Password: "", // new password (optional)
+  });
+
+  const [preview, setPreview] = useState(null);
+  const [showPwd, setShowPwd] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  /* ---------- field change ---------- */
+  const change = ({ target }) => {
+    if (target.name === "profilePic") {
+      setForm({ ...form, profilePic: target.files[0] });
+      setPreview(target.files[0] ? URL.createObjectURL(target.files[0]) : null);
     } else {
-      setForm((f) => ({ ...f, [name]: value }));
+      setForm({ ...form, [target.name]: target.value });
     }
   };
-  const handleSubmit = async (e) => {
+
+  /* ---------- submit ---------- */
+  const submit = async (e) => {
     e.preventDefault();
-    if (!form.currentPassword) {
-      showToast("Current password is required", "error");
-      return;
-    }
     setSaving(true);
+
     try {
       const fd = new FormData();
-      fd.append("name", form.name);
-      fd.append("email", form.email);
-      fd.append("currentPassword", form.currentPassword);
-      if (form.profilePicture) fd.append("profilePicture", form.profilePicture);
-      const res = await fetch(
+      fd.append("StudentFullName", form.studentFullName);
+      fd.append("Email", form.email);
+      fd.append("UserName", form.userName);
+      fd.append("PhoneNumber", form.phoneNumber);
+      if (form.Password) fd.append("Password", form.Password);
+      if (form.profilePic) fd.append("ProfilePic", form.profilePic);
+
+      await apiFetch(
         "https://codixa.runasp.net/api/account/ChangeStudentData",
         {
           method: "PUT",
-          credentials: "include",
           body: fd,
         }
       );
-      if (!res.ok) throw new Error("Failed to update profile");
-      const data = await res.json();
-      onSave(
-        data.data || data,
-        form,
-        form.profilePicture ? preview : studentData.ProfilePicturePath
-      );
-      showToast("Profile updated successfully", "success");
+
+      toast("Profile updated");
+      await refresh();
       onClose();
-    } catch (err) {
-      showToast("Failed to update profile", "error");
+    } catch {
+      toast("Failed to update profile", "error");
     } finally {
       setSaving(false);
     }
   };
+
+  /* ---------- JSX ---------- */
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-30">
+    <div
+      className="fixed inset-0  flex items-center justify-center bg-black/40 p-4"
+      style={{ zIndex: 100 }}
+    >
       <form
-        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
-        onSubmit={handleSubmit}
+        onSubmit={submit}
+        className="bg-white rounded-lg p-6 w-full max-w-md space-y-4"
       >
-        <h2 className="text-xl font-bold mb-4">Edit Profile</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Full Name</label>
+        <h2 className="text-xl font-bold">Edit Profile</h2>
+
+        {[
+          ["studentFullName", "Full Name"],
+          ["email", "Email"],
+          ["userName", "Username"],
+          ["phoneNumber", "Phone"],
+        ].map(([key, label]) => (
+          <div key={key}>
+            <label className="block text-sm mb-1">{label}</label>
+            <input
+              name={key}
+              value={form[key]}
+              onChange={change}
+              required={key !== "phoneNumber"}
+              className="w-full border px-3 py-2 rounded"
+            />
+          </div>
+        ))}
+
+        {/* profile pic */}
+        <div>
+          <label className="block text-sm mb-1">Profile Picture</label>
           <input
-            name="name"
-            type="text"
-            value={form.name}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Email Address
-          </label>
-          <input
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Profile Picture
-          </label>
-          <input
-            name="profilePicture"
             type="file"
+            name="profilePic"
             accept="image/*"
-            onChange={handleChange}
-            className="w-full"
+            onChange={change}
           />
           {preview && (
             <img
               src={preview}
-              alt="Preview"
+              alt="preview"
               className="mt-2 w-16 h-16 rounded-full object-cover"
             />
           )}
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Current Password <span className="text-red-500">*</span>
-          </label>
-          <input
-            name="currentPassword"
-            type="password"
-            value={form.currentPassword}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
+
+        {/*  PASSWORD */}
+        <div>
+          <label className="block text-sm mb-1">Current Password</label>
+          <div className="relative">
+            <input
+              type={showPwd ? "text" : "password"}
+              name="Password"
+              value={form.Password}
+              onChange={change}
+              className="w-full border px-3 py-2 rounded"
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-2 text-sm text-gray-500"
+              onClick={() => setShowPwd((s) => !s)}
+            >
+              {showPwd ? "Hide" : "Show"}
+            </button>
+          </div>
         </div>
-        <div className="flex justify-end gap-2 mt-6">
+
+        {/* buttons */}
+        <div className="flex justify-end gap-2 pt-2">
           <button
             type="button"
-            className="px-4 py-2 bg-gray-200 rounded"
             onClick={onClose}
-            disabled={saving}
+            className="px-4 py-2 border rounded"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-primary text-white rounded"
             disabled={saving}
+            className="px-4 py-2 bg-primary text-white rounded"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            {saving ? "Saving…" : "Save"}
           </button>
         </div>
       </form>
@@ -172,141 +181,92 @@ function EditProfileModal({ studentData, onClose, onSave, showToast }) {
   );
 }
 
-// Change Password Modal
-function ChangePasswordModal({ onClose, showToast }) {
-  const [form, setForm] = React.useState({
+/* ─────────────── Change Password ─────────────── */
+function ChangePasswordModal({ onClose, toast }) {
+  const [form, setForm] = useState({
     oldPassword: "",
     newPassword: "",
-    confirmPassword: "",
+    confirm: "",
   });
-  const [show, setShow] = React.useState({
-    old: false,
-    new: false,
-    confirm: false,
-  });
-  const [saving, setSaving] = React.useState(false);
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
-  };
-  const handleShow = (field) => setShow((s) => ({ ...s, [field]: !s[field] }));
-  const handleSubmit = async (e) => {
+  const [show, setShow] = useState({ old: false, new: false, confirm: false });
+  const [saving, setSaving] = useState(false);
+
+  const change = ({ target }) =>
+    setForm({ ...form, [target.name]: target.value });
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (!form.oldPassword || !form.newPassword || !form.confirmPassword) {
-      showToast("All fields are required", "error");
-      return;
-    }
-    if (form.newPassword !== form.confirmPassword) {
-      showToast("Passwords do not match", "error");
-      return;
-    }
+    if (form.newPassword !== form.confirm)
+      return toast("Passwords do not match", "error");
     setSaving(true);
     try {
-      const res = await fetch(
-        "https://codixa.runasp.net/api/account/ChangeStudentPassword",
-        {
-          method: "PUT",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            oldPassword: form.oldPassword,
-            newPassword: form.newPassword,
-          }),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to change password");
-      showToast("Password changed successfully", "success");
+      await apiFetch("https://codixa.runasp.net/api/account/ChangePassword", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          oldPassword: form.oldPassword,
+          newPassword: form.newPassword,
+          confirmNewPassword: form.confirm,
+        }),
+      });
+      toast("Password changed");
       onClose();
-    } catch (err) {
-      showToast("Failed to change password", "error");
+    } catch {
+      toast("Failed to change password", "error");
     } finally {
       setSaving(false);
     }
   };
+
+  const pwdInput = (name, label, key) => (
+    <div key={key}>
+      <label className="block text-sm mb-1">{label}</label>
+      <div className="relative">
+        <input
+          type={show[name] ? "text" : "password"}
+          name={name}
+          value={form[name]}
+          onChange={change}
+          required
+          className="w-full border px-3 py-2 rounded"
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-2 text-sm text-gray-500"
+          onClick={() => setShow((s) => ({ ...s, [name]: !s[name] }))}
+        >
+          {show[name] ? "Hide" : "Show"}
+        </button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-30">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40 p-4">
       <form
-        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
-        onSubmit={handleSubmit}
+        onSubmit={submit}
+        className="bg-white rounded-lg p-6 w-full max-w-md space-y-4"
       >
-        <h2 className="text-xl font-bold mb-4">Change Password</h2>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Old Password</label>
-          <div className="relative">
-            <input
-              name="oldPassword"
-              type={show.old ? "text" : "password"}
-              value={form.oldPassword}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-            <button
-              type="button"
-              className="absolute right-2 top-2 text-gray-500"
-              onClick={() => handleShow("old")}
-            >
-              {show.old ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">New Password</label>
-          <div className="relative">
-            <input
-              name="newPassword"
-              type={show.new ? "text" : "password"}
-              value={form.newPassword}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-            <button
-              type="button"
-              className="absolute right-2 top-2 text-gray-500"
-              onClick={() => handleShow("new")}
-            >
-              {show.new ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">
-            Confirm New Password
-          </label>
-          <div className="relative">
-            <input
-              name="confirmPassword"
-              type={show.confirm ? "text" : "password"}
-              value={form.confirmPassword}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
-              required
-            />
-            <button
-              type="button"
-              className="absolute right-2 top-2 text-gray-500"
-              onClick={() => handleShow("confirm")}
-            >
-              {show.confirm ? "Hide" : "Show"}
-            </button>
-          </div>
-        </div>
-        <div className="flex justify-end gap-2 mt-6">
+        <h2 className="text-xl font-bold">Change Password</h2>
+        {[
+          ["oldPassword", "Old Password", "old"],
+          ["newPassword", "New Password", "new"],
+          ["confirm", "Confirm New Password", "confirm"],
+        ].map((a) => pwdInput(...a))}
+        <div className="flex justify-end gap-2 pt-2">
           <button
             type="button"
-            className="px-4 py-2 bg-gray-200 rounded"
             onClick={onClose}
-            disabled={saving}
+            className="px-4 py-2 border rounded"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-primary text-white rounded"
             disabled={saving}
+            className="px-4 py-2 bg-primary text-white rounded"
           >
-            {saving ? "Saving..." : "Change Password"}
+            {saving ? "Saving…" : "Update"}
           </button>
         </div>
       </form>
@@ -314,205 +274,143 @@ function ChangePasswordModal({ onClose, showToast }) {
   );
 }
 
-const ProfileSettings = () => {
-  // Remove userInfo from Redux, use local state
-  // const { userInfo } = useAppSelector((state) => state.user);
-  const [studentData, setStudentData] = useState(null);
+/* ─────────────────── main ─────────────────── */
+export default function ProfileSettings() {
+  const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [changePasswordModalOpen, setChangePasswordModalOpen] = useState(false);
-  const router = useRouter();
-  const [toastData, setToastData] = useState({
-    message: "",
-    type: "success",
-    visible: false,
-  });
-  const toastTimeoutRef = React.useRef();
+  const [editOpen, setEditOpen] = useState(false);
+  const [passOpen, setPassOpen] = useState(false);
 
-  const showToast = (message, type = "success") => {
-    setToastData({ message, type, visible: true });
-    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    toastTimeoutRef.current = setTimeout(() => {
-      setToastData((prev) => ({ ...prev, visible: false }));
-    }, 3000);
+  const [toast, setToast] = useState({ visible: false, message: "", type: "" });
+  const toastTimer = useRef();
+
+  const showToast = (msg, type = "success") => {
+    setToast({ visible: true, message: msg, type });
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(
+      () => setToast((t) => ({ ...t, visible: false })),
+      3000
+    );
+  };
+
+  const refresh = async () => {
+    const data = await apiFetch(
+      "https://codixa.runasp.net/api/Account/GetStudentData"
+    );
+    setStudent(data);
   };
 
   useEffect(() => {
-    return () => {
-      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
-    };
+    refresh()
+      .catch(() => showToast("Failed to load profile", "error"))
+      .finally(() => setLoading(false));
+    return () => clearTimeout(toastTimer.current);
   }, []);
 
-  useEffect(() => {
-    const fetchStudentData = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          "https://codixa.runasp.net/api/Account/GetStudentData",
-          {
-            credentials: "include",
-          }
-        );
-        if (!res.ok) throw new Error("Failed to fetch student data");
-        const data = await res.json();
-        setStudentData(data.data || data); // handle both {data: ...} and direct
-      } catch (err) {
-        showToast("Failed to load profile data", "error");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStudentData();
-  }, []);
+  /* normalise any picture path */
+  const rawPic =
+    student &&
+    (student.profilePic ??
+      student.ProfilePic ??
+      student.profilePicturePath ??
+      student.ProfilePicturePath ??
+      student.profilePicPath ??
+      student.ProfilePicPath ??
+      "");
+  const picUrl = rawPic
+    ? rawPic.startsWith("http")
+      ? rawPic
+      : `https://codixa.runasp.net/${rawPic
+          .replace(/\\/g, "/")
+          .replace(/^\/+/, "")}`
+    : null;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
       <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-primary">
-                Profile Settings
-              </h1>
-
-              {/* Navigation Tabs */}
-              {/* <div className="ml-8 flex space-x-8">
-                <button
-                  onClick={() => router.push("/dashboard")}
-                  className="flex items-center text-gray-500 hover:text-primary-100"
-                >
-                  <AiOutlineHome className="inline-block mr-2" />
-                  Back to Dashboard
-                </button>
-              </div> */}
-            </div>
-
-            {/* Profile Section */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center">
-                <div className="relative">
-                  {studentData?.ProfilePicturePath === "null" ||
-                  !studentData?.ProfilePicturePath ? (
-                    <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                      <span className="text-gray-600 text-sm font-medium">
-                        {studentData?.name?.charAt(0)?.toUpperCase() || "?"}
-                      </span>
-                    </div>
-                  ) : (
-                    <img
-                      src={`https://codixa.runasp.net/${studentData.ProfilePicturePath}`}
-                      alt="Profile"
-                      className="w-8 h-8 rounded-full"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center">
+          <h1 className="text-2xl font-bold text-primary">Profile Settings</h1>
         </div>
       </nav>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-semibold mb-6">Profile Information</h2>
+      <main className="max-w-7xl mx-auto p-6">
+        <div className="max-w-xl mx-auto">
+          <div className="bg-white shadow rounded-lg p-6 text-center">
             {loading ? (
-              <div className="flex justify-center items-center h-32">
-                <div className="loader" />
-              </div>
+              <p>Loading…</p>
             ) : (
-              <div className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={studentData?.name || ""}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    readOnly
+              <>
+                {picUrl ? (
+                  <img
+                    src={picUrl}
+                    alt="avatar"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-primary mx-auto"
                   />
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-4xl font-bold text-gray-500 mx-auto">
+                    {student?.studentFullName?.[0]?.toUpperCase() ?? "?"}
+                  </div>
+                )}
+
+                <h2 className="mt-4 text-xl font-semibold">
+                  {student.studentFullName}
+                </h2>
+                <p className="text-gray-500">{student.email}</p>
+
+                <div className="mt-6 space-y-1 text-sm text-gray-600">
+                  <p>
+                    <span className="font-medium text-gray-800">Username:</span>{" "}
+                    {student.userName}
+                  </p>
+                  {student.phoneNumber && (
+                    <p>
+                      <span className="font-medium text-gray-800">Phone:</span>{" "}
+                      {student.phoneNumber}
+                    </p>
+                  )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    value={studentData?.email || ""}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Account Type
-                  </label>
-                  <input
-                    type="text"
-                    value={studentData?.role || ""}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    readOnly
-                  />
-                </div>
-
-                <div className="flex gap-4 mt-8 border-t pt-6">
+                <div className="flex justify-center gap-4 mt-6">
                   <button
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                    onClick={() => setEditModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded"
+                    onClick={() => setEditOpen(true)}
                   >
                     Edit Profile
                   </button>
                   <button
-                    className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                    onClick={() => setChangePasswordModalOpen(true)}
+                    className="px-4 py-2 bg-primary text-white rounded"
+                    onClick={() => setPassOpen(true)}
                   >
                     Change Password
                   </button>
                 </div>
-              </div>
+              </>
             )}
           </div>
         </div>
-        {/* Edit Profile Modal */}
-        {editModalOpen && (
+
+        {editOpen && (
           <EditProfileModal
-            studentData={studentData}
-            onClose={() => setEditModalOpen(false)}
-            onSave={(updated, form, newPic) => {
-              setStudentData((prev) => ({
-                ...prev,
-                ...form,
-                ProfilePicturePath: newPic,
-              }));
-            }}
-            showToast={showToast}
+            student={student}
+            onClose={() => setEditOpen(false)}
+            refresh={refresh}
+            toast={showToast}
           />
         )}
-        {/* Change Password Modal */}
-        {changePasswordModalOpen && (
+        {passOpen && (
           <ChangePasswordModal
-            onClose={() => setChangePasswordModalOpen(false)}
-            showToast={showToast}
+            onClose={() => setPassOpen(false)}
+            toast={showToast}
           />
         )}
-        {/* Toast Notification */}
-        {toastData.visible && (
+
+        {toast.visible && (
           <Toast
-            message={toastData.message}
-            type={toastData.type}
-            onClose={() =>
-              setToastData((prev) => ({ ...prev, visible: false }))
-            }
+            {...toast}
+            onClose={() => setToast((t) => ({ ...t, visible: false }))}
           />
         )}
       </main>
     </div>
   );
-};
-
-export default ProfileSettings;
+}
