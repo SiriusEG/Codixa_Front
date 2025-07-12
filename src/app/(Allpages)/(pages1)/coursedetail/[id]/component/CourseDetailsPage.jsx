@@ -52,8 +52,14 @@ const CourseDetailsPage = () => {
 
   const loadCourseData = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await fetch(
-        `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`
+        `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (!response.ok)
