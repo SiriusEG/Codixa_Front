@@ -96,33 +96,7 @@ const CourseHomePage = () => {
         setError(err.message);
         // Fallback to default courses if API fails
         setCourses([
-          {
-            courseId: 1,
-            courseName: "Digital Marketing Mastery",
-            courseDescription: "Become a digital marketing expert from scratch",
-            courseCardPhotoFilePath:
-              "https://i.pinimg.com/474x/a0/95/cd/a095cda32b2e721db20551b17e488d52.jpg",
-            level: 3,
-            language: 0,
-          },
-          {
-            courseId: 2,
-            courseName: "Web Development Bootcamp",
-            courseDescription: "Full-stack development career path",
-            courseCardPhotoFilePath:
-              "https://i.pinimg.com/474x/22/bc/8e/22bc8ebef610eb881071e1a7007a7a80.jpg",
-            level: 3,
-            language: 0,
-          },
-          {
-            courseId: 3,
-            courseName: "Graphic Design Pro",
-            courseDescription: "Master professional design tools",
-            courseCardPhotoFilePath:
-              "https://i.pinimg.com/474x/45/27/9b/45279bf5fade53b05ed0a36535740576.jpg",
-            level: 3,
-            language: 0,
-          },
+          /*fake data in old edition*/
         ]);
       } finally {
         setLoading(false);
