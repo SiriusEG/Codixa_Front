@@ -153,7 +153,7 @@ const SearchPage = () => {
               [...Array(6)].map((_, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-xl shadow-lg h-[25rem] sm:h-[28.125rem] animate-pulse"
+                  className="bg-white rounded-xl shadow-lg h-[400px] sm:h-[450px] animate-pulse"
                 />
               ))
             ) : courses.length === 0 ? (
@@ -318,50 +318,46 @@ const FilterSection = ({
 };
 
 const CourseCard = ({ course }) => (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col w-80">
-    <div className="relative w-full aspect-video ">
+  <div className="flex flex-col w-72 lg:w-80 sm:w-64 h-96 lg:h-[25rem] sm:h-80 p-4 rounded-xl shadow-xl bg-white overflow-hidden">
+    {/* IMAGE */}
+    <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden flex-shrink-0 relative">
       <Image
         src={course.imageUrl}
-        alt={course.title}
+        alt={`${course.title} image`}
         fill
+        sizes="(max-width: 640px) 100vw, 300px"
         className="object-cover"
-        priority
       />
-      <div className="absolute top-2 right-2 bg-primary/90 text-white px-2 py-1 text-xs sm:px-3 sm:text-sm rounded-full">
-        {course.category || "Uncategorized"}
-      </div>
     </div>
 
-    <div className="p-3 sm:p-4 md:p-5 flex flex-col ">
-      <div className="flex items-center justify-between mb-2 sm:mb-3">
-        <div className="flex items-center gap-1 sm:gap-2">
-          <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gray-200 flex items-center justify-center">
-            <span className="text-gray-600 text-xs sm:text-sm">
-              {course.instructorFullName?.charAt(0)}
-            </span>
-          </div>
-          <span className="text-gray-600 text-xs sm:text-sm truncate max-w-24 sm:max-w-32">
-            {course.instructorFullName}
-          </span>
-        </div>
+    {/* AUTHOR & TITLE */}
+    <div className="flex items-center gap-2 mt-2 flex-shrink-0">
+      <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center">
+        <span className="text-gray-600 text-[0.65rem] font-medium">
+          {course.instructorFullName?.charAt(0)}
+        </span>
       </div>
-      <div className="flex-grow">
-        <Link href={`/coursedetail/${course.id}`} className="block mb-2">
-          <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-800 hover:text-primary transition-colors line-clamp-2">
-            {course.title}
-          </h3>
-        </Link>
+      <span className="text-gray-600 text-[0.65rem] truncate max-w-[10rem]">
+        {course.instructorFullName}
+      </span>
+    </div>
 
-        <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-3 h-[3.75rem] sm:h-[3.75rem]">
-          {course.description || "No description available"}
-        </p>
-      </div>
+    <h3 className="text-sm sm:text-base font-semibold text-gray-800 mt-1 line-clamp-1 flex-shrink-0">
+      {course.title}
+    </h3>
+
+    {/* DESCRIPTION */}
+    <p className="text-[0.6rem] sm:text-xs text-gray-600 mt-1 mb-2 line-clamp-2 flex-shrink-0">
+      {course.description || "No description available"}
+    </p>
+
+    {/* BUTTON */}
+    <div className="mt-auto flex-shrink-0">
       <Link
         href={`/coursedetail/${course.id}`}
-        className="inline-flex items-center bg-primary text-white px-3 py-2 text-sm rounded-lg hover:bg-primary-dark transition-colors mt-auto"
+        className="block w-full py-2 bg-primary text-white rounded-xl font-semibold text-[0.65rem] sm:text-xs text-center transition-colors duration-300 hover:bg-primary-100"
       >
-        <span className="mr-1 sm:mr-2">View Course</span>
-        <FaArrowRight className="text-xs sm:text-sm" />
+        View Course
       </Link>
     </div>
   </div>

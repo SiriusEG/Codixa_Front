@@ -11,6 +11,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "@types/form-data": "^2.5.2",
     "@types/formidable": "^3.4.5",
     "aos": "^3.0.0-beta.6",

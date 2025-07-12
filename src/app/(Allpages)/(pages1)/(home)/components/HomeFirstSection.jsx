@@ -60,6 +60,78 @@ const AnimatedNumber = ({ value, suffix }) => {
 };
 
 const CourseHomePage = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch courses from API
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        // Get token from localStorage or environment variable
+        const token =
+          localStorage.getItem("authToken") ||
+          process.env.NEXT_PUBLIC_API_TOKEN;
+
+        const response = await fetch(
+          "https://codixa.runasp.net/api/Courses/GetLastCourses",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setCourses(data);
+      } catch (err) {
+        console.error("Error fetching courses:", err);
+        setError(err.message);
+        // Fallback to default courses if API fails
+        setCourses([
+          {
+            courseId: 1,
+            courseName: "Digital Marketing Mastery",
+            courseDescription: "Become a digital marketing expert from scratch",
+            courseCardPhotoFilePath:
+              "https://i.pinimg.com/474x/a0/95/cd/a095cda32b2e721db20551b17e488d52.jpg",
+            level: 3,
+            language: 0,
+          },
+          {
+            courseId: 2,
+            courseName: "Web Development Bootcamp",
+            courseDescription: "Full-stack development career path",
+            courseCardPhotoFilePath:
+              "https://i.pinimg.com/474x/22/bc/8e/22bc8ebef610eb881071e1a7007a7a80.jpg",
+            level: 3,
+            language: 0,
+          },
+          {
+            courseId: 3,
+            courseName: "Graphic Design Pro",
+            courseDescription: "Master professional design tools",
+            courseCardPhotoFilePath:
+              "https://i.pinimg.com/474x/45/27/9b/45279bf5fade53b05ed0a36535740576.jpg",
+            level: 3,
+            language: 0,
+          },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
+
   // Rest of the component remains the same
   const features = [
     {
@@ -81,33 +153,6 @@ const CourseHomePage = () => {
       icon: <FaUsers className="w-8 h-8 text-primary" />,
       title: "Community Support",
       description: "Join our learning network",
-    },
-  ];
-
-  const courses = [
-    {
-      title: "Digital Marketing Mastery",
-      image:
-        "https://i.pinimg.com/474x/a0/95/cd/a095cda32b2e721db20551b17e488d52.jpg",
-      description: "Become a digital marketing expert from scratch",
-      lessons: 32,
-      rating: 4.8,
-    },
-    {
-      title: "Web Development Bootcamp",
-      image:
-        "https://i.pinimg.com/474x/22/bc/8e/22bc8ebef610eb881071e1a7007a7a80.jpg",
-      description: "Full-stack development career path",
-      lessons: 45,
-      rating: 4.9,
-    },
-    {
-      title: "Graphic Design Pro",
-      image:
-        "https://i.pinimg.com/474x/45/27/9b/45279bf5fade53b05ed0a36535740576.jpg",
-      description: "Master professional design tools",
-      lessons: 28,
-      rating: 4.7,
     },
   ];
 
@@ -357,47 +402,72 @@ const CourseHomePage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="group"
-              >
-                <div className="relative h-[280px] rounded-2xl overflow-hidden mb-6">
-                  <Image
-                    src={course.image}
-                    alt={course.title}
-                    fill
-                    className="object-cover transform group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <button className="w-full py-3 bg-white text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-colors duration-300">
-                        Enroll Now
-                      </button>
+          {loading ? (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-500 mb-4">
+                Error loading courses: {error}
+              </p>
+              <p className="text-gray-600">Showing fallback courses</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {courses.map((course, index) => (
+                <motion.div
+                  key={course.courseId || index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.2 }}
+                  className="group"
+                >
+                  <div className="relative h-[280px] rounded-2xl overflow-hidden mb-6">
+                    <Image
+                      src={
+                        course.courseCardPhotoFilePath
+                          ? course.courseCardPhotoFilePath.startsWith("http")
+                            ? course.courseCardPhotoFilePath
+                            : `https://codixa.runasp.net/${course.courseCardPhotoFilePath.replace(
+                                /\\/g,
+                                "/"
+                              )}`
+                          : "https://via.placeholder.com/400x280?text=Course+Image"
+                      }
+                      alt={course.courseName}
+                      fill
+                      className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <Link
+                          href={`coursedetail/${course.courseId}`}
+                          className="block w-full py-3 bg-white text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-colors duration-300 text-center"
+                        >
+                          Enroll Now
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="px-4 py-1.5 bg-primary/5 text-primary rounded-full text-sm font-medium">
-                    {course.lessons} lessons
-                  </span>
-                  <div className="flex items-center text-yellow-500">
-                    <FaStar className="mr-1" />
-                    <span className="font-semibold">{course.rating}</span>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="px-4 py-1.5 bg-primary/5 text-primary rounded-full text-sm font-medium">
+                      Level {course.level || 1}
+                    </span>
+                    <div className="flex items-center text-yellow-500">
+                      <FaStar className="mr-1" />
+                      <span className="font-semibold">4.8</span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="text-xl font-bold mb-2  transition-colors">
-                  {course.title}
-                </h3>
-                <p className="text-gray-600">{course.description}</p>
-              </motion.div>
-            ))}
-          </div>
+                  <h3 className="text-xl font-bold mb-2 transition-colors">
+                    {course.courseName}
+                  </h3>
+                  <p className="text-gray-600">{course.courseDescription}</p>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

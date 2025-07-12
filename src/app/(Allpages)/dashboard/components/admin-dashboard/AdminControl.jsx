@@ -147,7 +147,7 @@ const AdminControl = () => {
               <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Photo
               </th>
-              {["User Name", "Email", "Phone"].map((header) => (
+              {["User Name", "Email", "Phone", "Action"].map((header) => (
                 <th
                   key={header}
                   className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -668,29 +668,45 @@ const AdminControl = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Photo</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Photo
+                </label>
                 <div className="flex items-center gap-4">
                   <label
                     htmlFor="edit-photo-upload"
                     className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-full shadow cursor-pointer hover:bg-green-700 transition-colors font-semibold"
-                    style={{ display: 'inline-flex' }}
+                    style={{ display: "inline-flex" }}
                   >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12" /></svg>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"
+                      />
+                    </svg>
                     <span>Upload Photo</span>
                   </label>
                   <input
                     id="edit-photo-upload"
                     type="file"
                     accept="image/*"
-                    onChange={e => {
+                    onChange={(e) => {
                       const file = e.target.files[0];
-                      setEditForm(f => ({ ...f, newPhoto: file }));
+                      setEditForm((f) => ({ ...f, newPhoto: file }));
                       setEditPreview(file ? URL.createObjectURL(file) : null);
                     }}
                     className="hidden"
                   />
                   <span className="text-gray-700 text-sm font-medium truncate max-w-[120px]">
-                    {editForm.newPhoto ? editForm.newPhoto.name : "No file chosen"}
+                    {editForm.newPhoto
+                      ? editForm.newPhoto.name
+                      : "No file chosen"}
                   </span>
                 </div>
                 {editPreview && (
@@ -703,9 +719,9 @@ const AdminControl = () => {
                     <button
                       type="button"
                       onClick={() => {
-                        setEditForm(f => ({ ...f, newPhoto: null }));
+                        setEditForm((f) => ({ ...f, newPhoto: null }));
                         setEditPreview(null);
-                        document.getElementById('edit-photo-upload').value = '';
+                        document.getElementById("edit-photo-upload").value = "";
                       }}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center shadow hover:bg-red-600"
                       title="Remove"

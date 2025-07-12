@@ -16,6 +16,7 @@ import ChangePassword from "./ChangePassword";
 import EditProfile from "./EditProfile";
 import { RiProfileFill } from "react-icons/ri";
 import { MdPassword } from "react-icons/md";
+import Status from "../admin-dashboard/status";
 
 const InstructorDashboard = () => {
   // Initialize state from sessionStorage with instructor-specific keys
@@ -82,7 +83,11 @@ const InstructorDashboard = () => {
       case "editprofile":
         return <EditProfile />;
       default:
-        return <div>Instructor Dashboard Content</div>;
+        return (
+          <div>
+            <Status />
+          </div>
+        );
     }
   };
 
@@ -128,7 +133,6 @@ const InstructorDashboard = () => {
               <p className="text-sm text-gray-400">
                 {userInfo?.role || "Instructor"}
               </p>
-              <p className="text-sm text-gray-400">alex.johnson@gmail.com</p>
             </>
           )}
         </div>

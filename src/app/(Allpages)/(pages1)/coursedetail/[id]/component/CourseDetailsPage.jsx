@@ -215,6 +215,7 @@ const MainContent = ({
           feedbacks={courseData.feedBacks}
           courseId={params.id}
           onFeedbackUpdated={reloadCourseData}
+          userCanDeleteOrUpdate={courseData?.userCanDeleteOrUpdate}
         />
       )}
     </div>

@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 import CourseModal from "./components/CourseModal";
 import { motion } from "framer-motion";
 import PaginationControls from "./PaginationControls";
+import Image from "next/image";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -99,7 +100,9 @@ function Courses() {
       ) : !courses || courses.length === 0 ? (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">No courses found</p>
-          <p className="text-gray-400 text-sm mt-2">Create your first course to get started</p>
+          <p className="text-gray-400 text-sm mt-2">
+            Create your first course to get started
+          </p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -111,48 +114,63 @@ function Courses() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             >
-              <div className="relative min-h-[25rem] flex flex-col">
-                <img
-                  src={
-                    course.courseCardPhotoPath
-                      ? `https://codixa.runasp.net/${course.courseCardPhotoPath.replace(
-                          /\\/g,
-                          "/"
-                        )}`
-                      : "/placeholder.jpg"
-                  }
-                  alt={course.courseName}
-                  className="w-full h-48 object-cover rounded-t-xl"
-                />
+              {/* ────────────── Card Shell ────────────── */}
+              <div className="flex flex-col bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                {/* IMAGE – ratio-locked, no padding */}
+                <div className="relative w-full aspect-[4/3]">
+                  <Image
+                    src={
+                      course.courseCardPhotoPath
+                        ? `https://codixa.runasp.net/${course.courseCardPhotoPath.replace(
+                            /\\/g,
+                            "/"
+                          )}`
+                        : "/placeholder.jpg"
+                    }
+                    alt={course.courseName}
+                    fill
+                    sizes="(max-width:640px) 100vw, 320px"
+                    className="object-cover"
+                  />
+                </div>
 
-                <div className="p-4 flex-1 flex flex-col">
-                  <div className="flex flex-row justify-between items-center">
-                    <h3 className="font-semibold text-lg">
+                {/* CONTENT */}
+                <div className="p-4 flex flex-col flex-1">
+                  {/* TITLE + STATUS */}
+                  <div className="flex justify-between items-center gap-2">
+                    <h3 className="font-semibold text-sm sm:text-base line-clamp-1 text-gray-800">
                       {course.courseName}
                     </h3>
                     <p
-                      className={`text-sm font-semibold ${
+                      className={`text-[0.6rem] sm:text-sm font-semibold ${
                         course.isPublished ? "text-green-500" : "text-red-500"
                       }`}
                     >
                       {course.isPublished ? "Published" : "Unpublished"}
                     </p>
                   </div>
-                  <p className="text-sm text-gray-600">{course.categoryName}</p>
-                  <p className="text-gray-700 text-sm mt-2 line-clamp-3">
-                    {course.courseDescription}
+
+                  {/* CATEGORY */}
+                  <p className="text-[0.6rem] sm:text-sm text-gray-600 line-clamp-1 mt-0.5">
+                    {course.categoryName}
                   </p>
 
-                  <div className="flex justify-between items-center border-t pt-4 mt-auto gap-2">
+                  {/* DESCRIPTION */}
+                  <p className="text-[0.6rem] sm:text-sm text-gray-700 line-clamp-3 mt-2">
+                    {course.courseDescription || "No description available"}
+                  </p>
+
+                  {/* ACTIONS */}
+                  <div className="mt-auto flex gap-2 pt-4 border-t">
                     <Link
                       href={`/coursemanage/${course.courseId}`}
-                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
+                      className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-center text-[0.6rem] sm:text-sm font-medium transition-colors"
                     >
                       Manage
                     </Link>
                     <button
                       onClick={() => handleDeleteConfirmation(course.courseId)}
-                      className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg flex items-center transition-colors flex-1 justify-center"
+                      className="flex-1 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg text-[0.6rem] sm:text-sm font-medium transition-colors"
                     >
                       Delete
                     </button>

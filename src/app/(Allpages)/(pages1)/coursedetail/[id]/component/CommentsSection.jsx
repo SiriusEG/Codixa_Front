@@ -297,7 +297,7 @@ export const CommentsSection = ({ feedbacks, courseId, onFeedbackUpdated }) => {
                     </h3>
                     <StarRating averageRating={feedback.rate} />
                   </div>
-                  {hasToken && (
+                  {feedback.userCanDeleteOrUpdate && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => {
