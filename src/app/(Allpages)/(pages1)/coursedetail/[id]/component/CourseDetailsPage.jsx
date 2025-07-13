@@ -57,7 +57,7 @@ const CourseDetailsPage = () => {
         `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token ? `Bearer ${token}` : null,
           },
         }
       );
