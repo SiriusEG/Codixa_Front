@@ -55,11 +55,14 @@ const CourseDetailsPage = () => {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `https://codixa.runasp.net/api/Courses/CourseDetails/${params.id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : null,
-          },
-        }
+
+        token
+          ? {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          : {}
       );
 
       if (!response.ok)
